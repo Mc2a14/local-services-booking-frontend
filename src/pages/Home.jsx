@@ -99,17 +99,42 @@ function Home() {
             <div key={service.id} className="card" style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              {service.image_url ? (
-                <img 
-                  src={service.image_url} 
-                  alt={service.title} 
-                  style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '5px', marginBottom: '15px' }}
-                  onError={(e) => {
-                    e.target.onerror = null
-                    e.target.src = 'https://via.placeholder.com/200?text=No+Image'
+              <div style={{ position: 'relative', width: '100%', height: '200px', marginBottom: '15px' }}>
+                {service.image_url ? (
+                  <img 
+                    src={service.image_url} 
+                    alt={service.title} 
+                    style={{ 
+                      width: '100%', 
+                      height: '200px', 
+                      objectFit: 'cover', 
+                      borderRadius: '5px',
+                      display: 'block'
+                    }}
+                    onError={(e) => {
+                      e.target.style.display = 'none'
+                    }}
+                  />
+                ) : null}
+                <div 
+                  style={{ 
+                    width: '100%', 
+                    height: '200px', 
+                    backgroundColor: '#e9ecef', 
+                    borderRadius: '5px', 
+                    display: service.image_url ? 'none' : 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#6c757d',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0
                   }}
-                />
-              ) : (
+                  className="image-placeholder"
+                >
+                  No Image
+                </div>
+              </div>
                 <div style={{ 
                   width: '100%', 
                   height: '200px', 
