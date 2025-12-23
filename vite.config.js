@@ -11,6 +11,14 @@ export default defineConfig({
         changeOrigin: true
       }
     }
+  },
+  preview: {
+    port: 8080,
+    host: true,
+    allowedHosts: [
+      'local-services-booking-frontend-production.up.railway.app',
+      '.up.railway.app' // Allow all Railway subdomains
+    ]
   }
 })
 
