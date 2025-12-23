@@ -100,7 +100,7 @@ function Home() {
                  onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
                  onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
               <div style={{ position: 'relative', width: '100%', height: '200px', marginBottom: '15px' }}>
-                {service.image_url ? (
+                {service.image_url && (
                   <img 
                     src={service.image_url} 
                     alt={service.title} 
@@ -113,9 +113,11 @@ function Home() {
                     }}
                     onError={(e) => {
                       e.target.style.display = 'none'
+                      const placeholder = e.target.nextElementSibling
+                      if (placeholder) placeholder.style.display = 'flex'
                     }}
                   />
-                ) : null}
+                )}
                 <div 
                   style={{ 
                     width: '100%', 
@@ -135,19 +137,6 @@ function Home() {
                   No Image
                 </div>
               </div>
-                <div style={{ 
-                  width: '100%', 
-                  height: '200px', 
-                  backgroundColor: '#e9ecef', 
-                  borderRadius: '5px', 
-                  marginBottom: '15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#6c757d'
-                }}>
-                  No Image
-                </div>
               )}
               <h3>{service.title}</h3>
               {service.business_name && (
