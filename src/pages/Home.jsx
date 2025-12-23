@@ -137,7 +137,6 @@ function Home() {
                   No Image
                 </div>
               </div>
-              )}
               <h3>{service.title}</h3>
               {service.business_name && (
                 <p style={{ color: '#007bff', fontWeight: 'bold', marginBottom: '10px' }}>
