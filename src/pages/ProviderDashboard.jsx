@@ -228,6 +228,15 @@ function ProviderDashboard({ user }) {
                 {service.average_rating && (
                   <p style={{ marginTop: '10px' }}>⭐ {service.average_rating} ({service.review_count} reviews)</p>
                 )}
+                <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
+                  <button
+                    onClick={() => navigate(`/edit-service/${service.id}`)}
+                    className="btn btn-primary"
+                    style={{ flex: 1 }}
+                  >
+                    ✏️ Edit Service
+                  </button>
+                </div>
               </div>
             ))
           )}

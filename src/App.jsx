@@ -11,6 +11,7 @@ import BookService from './pages/BookService'
 import BookServiceGuest from './pages/BookServiceGuest'
 import BusinessBookingPage from './pages/BusinessBookingPage'
 import AddService from './pages/AddService'
+import EditService from './pages/EditService'
 import ProviderProfile from './pages/ProviderProfile'
 import Availability from './pages/Availability'
 import { getToken, apiRequest } from './utils/auth'
@@ -64,6 +65,7 @@ function App() {
         
         {/* Provider-only routes */}
         <Route path="/add-service" element={user && user.user_type === 'provider' ? <AddService user={user} /> : <Navigate to="/login" />} />
+        <Route path="/edit-service/:id" element={user && user.user_type === 'provider' ? <EditService user={user} /> : <Navigate to="/login" />} />
         <Route path="/provider-profile" element={user && user.user_type === 'provider' ? <ProviderProfile user={user} /> : <Navigate to="/login" />} />
         <Route path="/availability" element={user && user.user_type === 'provider' ? <Availability user={user} /> : <Navigate to="/login" />} />
       </Routes>

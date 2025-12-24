@@ -139,6 +139,42 @@ function ProviderProfile({ user }) {
             />
           </div>
 
+          <div className="form-group">
+            <label>Business Image/Logo URL</label>
+            <input
+              type="url"
+              name="business_image_url"
+              value={formData.business_image_url}
+              onChange={handleChange}
+              placeholder="https://example.com/your-business-logo.jpg"
+            />
+            <small style={{ color: '#666', marginTop: '5px', display: 'block' }}>
+              Add a URL to your business logo or main business image. This will be displayed on your booking page. 
+              Recommended: Square image (500x500px or larger) for best results.
+            </small>
+            {formData.business_image_url && (
+              <div style={{ marginTop: '10px' }}>
+                <img 
+                  src={formData.business_image_url} 
+                  alt="Preview" 
+                  style={{ 
+                    maxWidth: '150px', 
+                    maxHeight: '150px', 
+                    borderRadius: '8px',
+                    border: '2px solid #ddd'
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none'
+                    e.target.nextSibling.style.display = 'block'
+                  }}
+                />
+                <div style={{ display: 'none', color: '#dc3545', fontSize: '12px', marginTop: '5px' }}>
+                  Image failed to load. Please check the URL.
+                </div>
+              </div>
+            )}
+          </div>
+
           {hasProfile && formData.business_slug && (
             <div className="form-group">
               <label>Your Booking Page</label>
