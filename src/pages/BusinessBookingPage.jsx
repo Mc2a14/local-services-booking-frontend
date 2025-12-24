@@ -64,28 +64,26 @@ function BusinessBookingPage() {
 
   return (
     <>
-      <div className="container" style={{ maxWidth: '900px' }}>
-        {/* Business Header with Hero Image */}
+      <div className="container" style={{ maxWidth: '800px' }}>
+        {/* Business Header */}
+      <div className="card" style={{ marginBottom: '30px', textAlign: 'center' }}>
         {business.business_image_url && (
-          <div style={{ marginBottom: '30px', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-            <img 
-              src={business.business_image_url} 
-              alt={business.business_name}
-              style={{
-                width: '100%',
-                maxHeight: '400px',
-                objectFit: 'contain',
-                backgroundColor: '#f8f9fa',
-                display: 'block'
-              }}
-              onError={(e) => {
-                e.target.style.display = 'none'
-              }}
-            />
-          </div>
+          <img 
+            src={business.business_image_url} 
+            alt={business.business_name}
+            style={{
+              width: '220px',
+              height: '220px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              marginBottom: '20px',
+              border: '4px solid #007bff'
+            }}
+            onError={(e) => {
+              e.target.style.display = 'none'
+            }}
+          />
         )}
-        
-        <div className="card" style={{ marginBottom: '30px', textAlign: 'center' }}>
         <h1 style={{ marginBottom: '10px', color: '#007bff' }}>{business.business_name}</h1>
         {business.description && (
           <p style={{ color: '#666', fontSize: '18px', marginBottom: '20px' }}>
