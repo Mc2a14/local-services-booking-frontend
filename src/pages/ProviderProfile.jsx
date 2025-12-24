@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import ImageCropper from '../components/ImageCropper'
 
 function ProviderProfile({ user }) {
   const navigate = useNavigate()
@@ -18,6 +19,8 @@ function ProviderProfile({ user }) {
   const [loading, setLoading] = useState(false)
   const [checking, setChecking] = useState(true)
   const [hasProfile, setHasProfile] = useState(false)
+  const [showCropper, setShowCropper] = useState(false)
+  const [imageToCrop, setImageToCrop] = useState(null)
 
   useEffect(() => {
     checkProfile()
@@ -155,45 +158,11 @@ function ProviderProfile({ user }) {
                       return
                     }
                     
-                    // Compress image before converting to base64
+                    // Load image and show cropper for adjustment
                     const reader = new FileReader()
                     reader.onloadend = () => {
-                      const img = new Image()
-                      img.onload = () => {
-                        // Create canvas to resize/compress
-                        const canvas = document.createElement('canvas')
-                        // Resize to max 400px for circular business logo (smaller file size)
-                        const MAX_WIDTH = 400
-                        const MAX_HEIGHT = 400
-                        let width = img.width
-                        let height = img.height
-                        
-                        // Calculate new dimensions
-                        if (width > height) {
-                          if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width
-                            width = MAX_WIDTH
-                          }
-                        } else {
-                          if (height > MAX_HEIGHT) {
-                            width *= MAX_HEIGHT / height
-                            height = MAX_HEIGHT
-                          }
-                        }
-                        
-                        canvas.width = width
-                        canvas.height = height
-                        const ctx = canvas.getContext('2d')
-                        ctx.drawImage(img, 0, 0, width, height)
-                        
-                        // Reduce quality to 0.6 for smaller file size (business logos don't need high quality)
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6)
-                        setFormData({
-                          ...formData,
-                          business_image_url: compressedDataUrl
-                        })
-                      }
-                      img.src = reader.result
+                      setImageToCrop(reader.result)
+                      setShowCropper(true)
                     }
                     reader.readAsDataURL(file)
                   }
@@ -208,12 +177,35 @@ function ProviderProfile({ user }) {
               type="url"
               name="business_image_url"
               value={formData.business_image_url && formData.business_image_url.startsWith('http') ? formData.business_image_url : ''}
-              onChange={handleChange}
+              onChange={(e) => {
+                const url = e.target.value
+                if (url && url.startsWith('http')) {
+                  // Load the image from URL and show cropper
+                  const img = new Image()
+                  img.crossOrigin = 'anonymous'
+                  img.onload = () => {
+                    const canvas = document.createElement('canvas')
+                    canvas.width = img.width
+                    canvas.height = img.height
+                    const ctx = canvas.getContext('2d')
+                    ctx.drawImage(img, 0, 0)
+                    setImageToCrop(canvas.toDataURL('image/jpeg'))
+                    setShowCropper(true)
+                  }
+                  img.onerror = () => {
+                    // If loading fails, just set the URL directly (will use as-is)
+                    handleChange(e)
+                  }
+                  img.src = url
+                } else {
+                  handleChange(e)
+                }
+              }}
               placeholder="https://example.com/your-business-logo.jpg"
             />
             <small style={{ color: '#666', marginTop: '5px', display: 'block' }}>
-              Upload an image file or paste a URL. This will be displayed on your booking page. 
-              Recommended: Square image (500x500px or larger) for best results. Max file size: 2MB (images will be automatically compressed).
+              Upload an image file or paste a URL. You can adjust how it appears in the circle. 
+              Recommended: Square image (500x500px or larger) for best results. Max file size: 2MB.
             </small>
             {formData.business_image_url && (
               <div style={{ marginTop: '10px' }}>
@@ -398,6 +390,27 @@ function ProviderProfile({ user }) {
           </button>
         </form>
       </div>
+
+      {/* Image Cropper Modal */}
+      {showCropper && imageToCrop && (
+        <ImageCropper
+          imageSrc={imageToCrop}
+          onCropComplete={(croppedImage) => {
+            setFormData({
+              ...formData,
+              business_image_url: croppedImage
+            })
+            setShowCropper(false)
+            setImageToCrop(null)
+          }}
+          onCancel={() => {
+            setShowCropper(false)
+            setImageToCrop(null)
+            const fileInput = document.querySelector('input[type="file"]')
+            if (fileInput) fileInput.value = ''
+          }}
+        />
+      )}
     </div>
   )
 }
