@@ -11,7 +11,8 @@ function ProviderProfile({ user }) {
     address: '',
     email_password: '',
     email_service_type: 'gmail',
-    business_slug: ''
+    business_slug: '',
+    business_image_url: ''
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -34,7 +35,8 @@ function ProviderProfile({ user }) {
           address: data.provider.address || '',
           email_password: '', // Don't show existing password for security
           email_service_type: data.provider.email_service_type || 'gmail',
-          business_slug: data.provider.business_slug || ''
+          business_slug: data.provider.business_slug || '',
+          business_image_url: data.provider.business_image_url || ''
         })
       }
     } catch (err) {

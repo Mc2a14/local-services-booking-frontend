@@ -7,6 +7,7 @@ function BusinessBookingPage() {
   const navigate = useNavigate()
   const [business, setBusiness] = useState(null)
   const [services, setServices] = useState([])
+  const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const API_URL = import.meta.env.VITE_API_URL || '/api'
@@ -24,6 +25,7 @@ function BusinessBookingPage() {
       const data = await response.json()
       setBusiness(data.business)
       setServices(data.services || [])
+      setTestimonials(data.testimonials || [])
     } catch (err) {
       setError(err.message || 'Business not found')
     } finally {
@@ -67,6 +69,23 @@ function BusinessBookingPage() {
       <div className="container" style={{ maxWidth: '800px' }}>
         {/* Business Header */}
       <div className="card" style={{ marginBottom: '30px', textAlign: 'center' }}>
+        {business.business_image_url && (
+          <img 
+            src={business.business_image_url} 
+            alt={business.business_name}
+            style={{
+              width: '150px',
+              height: '150px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              marginBottom: '20px',
+              border: '4px solid #007bff'
+            }}
+            onError={(e) => {
+              e.target.style.display = 'none'
+            }}
+          />
+        )}
         <h1 style={{ marginBottom: '10px', color: '#007bff' }}>{business.business_name}</h1>
         {business.description && (
           <p style={{ color: '#666', fontSize: '18px', marginBottom: '20px' }}>
@@ -162,6 +181,55 @@ function BusinessBookingPage() {
             </div>
           ))}
         </div>
+      )}
+
+      {/* Testimonials Section */}
+      {testimonials.length > 0 && (
+        <>
+          <h2 style={{ marginTop: '50px', marginBottom: '20px' }}>What Our Customers Say</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+            {testimonials.map(testimonial => (
+              <div key={testimonial.id} className="card" style={{ padding: '20px' }}>
+                <div style={{ marginBottom: '15px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <div style={{ 
+                      fontSize: '24px',
+                      marginRight: '10px'
+                    }}>
+                      {'⭐'.repeat(testimonial.rating)}
+                    </div>
+                    <div>
+                      <strong>{testimonial.customer_name}</strong>
+                      {testimonial.service_title && (
+                        <div style={{ fontSize: '12px', color: '#666' }}>
+                          {testimonial.service_title}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                {testimonial.comment && (
+                  <p style={{ color: '#333', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
+                    "{testimonial.comment}"
+                  </p>
+                )}
+                <div style={{ 
+                  fontSize: '12px', 
+                  color: '#999', 
+                  marginTop: '15px',
+                  borderTop: '1px solid #eee',
+                  paddingTop: '10px'
+                }}>
+                  {new Date(testimonial.created_at).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
       )}
       </div>
     </>
