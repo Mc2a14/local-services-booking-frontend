@@ -1,39 +1,21 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getToken } from '../utils/auth'
 
 function Home() {
   const navigate = useNavigate()
-  const [services, setServices] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [businessSlug, setBusinessSlug] = useState('')
   const token = getToken()
 
-  useEffect(() => {
-    loadServices()
-  }, [])
-
-  const loadServices = async () => {
-    try {
-      // Public endpoint - no auth needed
-      // Use the same API_URL logic but without auth header
-      const API_URL = import.meta.env.VITE_API_URL || '/api'
-      const response = await fetch(`${API_URL}/services/browse`)
-      const data = await response.json()
-      setServices(data.services || [])
-    } catch (err) {
-      console.error('Error loading services:', err)
-    } finally {
-      setLoading(false)
+  const handleBusinessSlugSubmit = (e) => {
+    e.preventDefault()
+    if (businessSlug.trim()) {
+      navigate(`/${businessSlug.trim()}`)
     }
   }
 
-  const handleBookClick = (serviceId) => {
-    // Always use guest booking - no login required
-    navigate(`/book-service/${serviceId}`)
-  }
-
   return (
-    <div className="container">
+    <div className="container" style={{ maxWidth: '900px' }}>
       {/* Header */}
       <header style={{ 
         display: 'flex', 
@@ -43,12 +25,12 @@ function Home() {
         paddingBottom: '20px',
         borderBottom: '2px solid #007bff'
       }}>
-        <h1 style={{ margin: 0, color: '#007bff' }}>Local Services Booking</h1>
+        <h1 style={{ margin: 0, color: '#007bff' }}>BookingPro</h1>
         <div style={{ display: 'flex', gap: '10px' }}>
           {token ? (
             <>
               <button onClick={() => navigate('/dashboard')} className="btn btn-primary">
-                My Account
+                Dashboard
               </button>
               <button onClick={() => {
                 localStorage.removeItem('token')
@@ -63,111 +45,115 @@ function Home() {
                 Login
               </button>
               <button onClick={() => navigate('/register')} className="btn btn-primary">
-                Sign Up
+                Get Started
               </button>
             </>
           )}
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero Section for Business Owners */}
       <div style={{ 
         textAlign: 'center', 
         marginBottom: '50px',
-        padding: '40px 20px',
+        padding: '60px 20px',
         backgroundColor: '#f8f9fa',
         borderRadius: '10px'
       }}>
-        <h2 style={{ fontSize: '2.5rem', marginBottom: '20px' }}>Book Local Services Easily</h2>
-        <p style={{ fontSize: '1.2rem', color: '#666', maxWidth: '600px', margin: '0 auto' }}>
-          Find and book services from local providers. Simple, fast, and convenient.
+        <h1 style={{ fontSize: '3rem', marginBottom: '20px', color: '#007bff' }}>
+          Your Booking Page + AI Receptionist
+        </h1>
+        <p style={{ fontSize: '1.3rem', color: '#666', maxWidth: '700px', margin: '0 auto 30px' }}>
+          Give your customers a simple way to book your services online. 
+          Include an AI assistant to answer common questions 24/7.
         </p>
+        <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <button 
+            onClick={() => navigate('/register')} 
+            className="btn btn-primary"
+            style={{ padding: '15px 40px', fontSize: '18px' }}
+          >
+            Create Your Booking Page
+          </button>
+          <button 
+            onClick={() => navigate('/login')} 
+            className="btn btn-secondary"
+            style={{ padding: '15px 40px', fontSize: '18px' }}
+          >
+            Sign In
+          </button>
+        </div>
       </div>
 
-      {/* Services Grid */}
-      <h2 style={{ marginBottom: '30px' }}>Available Services</h2>
-      
-      {loading ? (
-        <div style={{ textAlign: 'center', padding: '40px' }}>Loading services...</div>
-      ) : services.length === 0 ? (
-        <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-          <p>No services available at the moment. Check back soon!</p>
+      {/* Features */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', 
+        gap: '30px',
+        marginBottom: '50px'
+      }}>
+        <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '15px' }}>📅</div>
+          <h3>Easy Booking</h3>
+          <p style={{ color: '#666' }}>
+            Customers can book your services instantly, no account needed
+          </p>
         </div>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-          {services.map(service => (
-            <div key={service.id} className="card" style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
-                 onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                 onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}>
-              <div style={{ position: 'relative', width: '100%', height: '200px', marginBottom: '15px' }}>
-                {service.image_url && (
-                  <img 
-                    src={service.image_url} 
-                    alt={service.title} 
-                    style={{ 
-                      width: '100%', 
-                      height: '200px', 
-                      objectFit: 'cover', 
-                      borderRadius: '5px',
-                      display: 'block'
-                    }}
-                    onError={(e) => {
-                      e.target.style.display = 'none'
-                      const placeholder = e.target.nextElementSibling
-                      if (placeholder) placeholder.style.display = 'flex'
-                    }}
-                  />
-                )}
-                <div 
-                  style={{ 
-                    width: '100%', 
-                    height: '200px', 
-                    backgroundColor: '#e9ecef', 
-                    borderRadius: '5px', 
-                    display: service.image_url ? 'none' : 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#6c757d',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0
-                  }}
-                  className="image-placeholder"
-                >
-                  No Image
-                </div>
-              </div>
-              <h3>{service.title}</h3>
-              {service.business_name && (
-                <p style={{ color: '#007bff', fontWeight: 'bold', marginBottom: '10px' }}>
-                  {service.business_name}
-                </p>
-              )}
-              <p style={{ color: '#666', marginBottom: '10px', minHeight: '50px' }}>
-                {service.description}
-              </p>
-              <p style={{ fontWeight: 'bold', fontSize: '24px', color: '#007bff', marginBottom: '10px' }}>
-                ${service.price}
-              </p>
-              {service.average_rating && (
-                <p style={{ marginBottom: '15px' }}>
-                  ⭐ {service.average_rating} ({service.review_count} {service.review_count === 1 ? 'review' : 'reviews'})
-                </p>
-              )}
-              <button 
-                onClick={() => handleBookClick(service.id)}
-                className="btn btn-primary"
-                style={{ width: '100%' }}
-              >
-                Book Now
-              </button>
-            </div>
-          ))}
+        <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '15px' }}>🤖</div>
+          <h3>AI Receptionist</h3>
+          <p style={{ color: '#666' }}>
+            AI-powered chat handles common questions automatically
+          </p>
         </div>
-      )}
+        <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '15px' }}>📧</div>
+          <h3>Email Confirmations</h3>
+          <p style={{ color: '#666' }}>
+            Automatic email confirmations sent from your business email
+          </p>
+        </div>
+        <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
+          <div style={{ fontSize: '48px', marginBottom: '15px' }}>🔗</div>
+          <h3>Your Own Link</h3>
+          <p style={{ color: '#666' }}>
+            Share your unique booking page link with customers
+          </p>
+        </div>
+      </div>
+
+      {/* For Customers Section */}
+      <div className="card" style={{ padding: '40px', textAlign: 'center' }}>
+        <h2 style={{ marginBottom: '20px' }}>Have a Booking Link?</h2>
+        <p style={{ color: '#666', marginBottom: '30px' }}>
+          Enter your business booking link below to view available services
+        </p>
+        <form onSubmit={handleBusinessSlugSubmit} style={{ maxWidth: '500px', margin: '0 auto' }}>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <input
+              type="text"
+              value={businessSlug}
+              onChange={(e) => setBusinessSlug(e.target.value)}
+              placeholder="your-business-name"
+              style={{
+                flex: 1,
+                padding: '12px',
+                fontSize: '16px',
+                border: '1px solid #ddd',
+                borderRadius: '5px'
+              }}
+            />
+            <button type="submit" className="btn btn-primary">
+              Go to Booking Page
+            </button>
+          </div>
+          <small style={{ display: 'block', marginTop: '10px', color: '#666' }}>
+            Example: If your link is bookingpro.com/joe-plumbing, enter "joe-plumbing"
+          </small>
+        </form>
+      </div>
     </div>
   )
 }
 
 export default Home
-

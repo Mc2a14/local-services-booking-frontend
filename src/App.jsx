@@ -9,6 +9,7 @@ import Bookings from './pages/Bookings'
 import ProviderDashboard from './pages/ProviderDashboard'
 import BookService from './pages/BookService'
 import BookServiceGuest from './pages/BookServiceGuest'
+import BusinessBookingPage from './pages/BusinessBookingPage'
 import AddService from './pages/AddService'
 import ProviderProfile from './pages/ProviderProfile'
 import Availability from './pages/Availability'
@@ -44,10 +45,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Public routes */}
+        {/* Public routes - exact paths first */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={!user ? <Login setUser={setUser} /> : <Navigate to="/dashboard" />} />
         <Route path="/register" element={!user ? <Register setUser={setUser} /> : <Navigate to="/dashboard" />} />
+        
+        {/* Public business booking page - MUST come after exact routes */}
+        <Route path="/:businessSlug" element={<BusinessBookingPage />} />
         
         {/* Protected routes - require login */}
         <Route path="/dashboard" element={user ? (user.user_type === 'provider' ? <ProviderDashboard user={user} /> : <Dashboard user={user} />) : <Navigate to="/login" />} />

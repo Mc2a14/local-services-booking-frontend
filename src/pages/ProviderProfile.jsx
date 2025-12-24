@@ -10,7 +10,8 @@ function ProviderProfile({ user }) {
     phone: '',
     address: '',
     email_password: '',
-    email_service_type: 'gmail'
+    email_service_type: 'gmail',
+    business_slug: ''
   })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -32,7 +33,8 @@ function ProviderProfile({ user }) {
           phone: data.provider.phone || '',
           address: data.provider.address || '',
           email_password: '', // Don't show existing password for security
-          email_service_type: data.provider.email_service_type || 'gmail'
+          email_service_type: data.provider.email_service_type || 'gmail',
+          business_slug: data.provider.business_slug || ''
         })
       }
     } catch (err) {

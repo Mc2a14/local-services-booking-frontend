@@ -8,6 +8,7 @@ function ProviderDashboard({ user }) {
   const [loading, setLoading] = useState(true)
   const [hasProfile, setHasProfile] = useState(false)
   const [profileError, setProfileError] = useState('')
+  const [provider, setProvider] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -18,7 +19,8 @@ function ProviderDashboard({ user }) {
     try {
       // Check if provider profile exists
       try {
-        await apiRequest('/providers/me')
+        const profileData = await apiRequest('/providers/me')
+        setProvider(profileData.provider)
         setHasProfile(true)
         setProfileError('')
         
@@ -78,6 +80,59 @@ function ProviderDashboard({ user }) {
         <h1>Provider Dashboard - {user.full_name}</h1>
         <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
       </div>
+
+      {/* Business Booking Link - Prominently Displayed */}
+      {hasProfile && provider?.business_slug && (
+        <div className="card" style={{ 
+          backgroundColor: '#e7f3ff', 
+          border: '2px solid #007bff',
+          padding: '30px',
+          marginBottom: '30px',
+          textAlign: 'center'
+        }}>
+          <h2 style={{ marginBottom: '15px', color: '#007bff' }}>Your Booking Page</h2>
+          <p style={{ fontSize: '18px', marginBottom: '20px', color: '#333' }}>
+            Share this link with your customers to let them book your services:
+          </p>
+          <div style={{ 
+            backgroundColor: 'white', 
+            padding: '15px', 
+            borderRadius: '5px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '15px',
+            flexWrap: 'wrap'
+          }}>
+            <code style={{ 
+              fontSize: '18px', 
+              color: '#007bff',
+              wordBreak: 'break-all',
+              flex: 1,
+              textAlign: 'left'
+            }}>
+              {window.location.origin}/{provider.business_slug}
+            </code>
+            <button
+              onClick={() => {
+                const link = `${window.location.origin}/${provider.business_slug}`
+                navigator.clipboard.writeText(link)
+                alert('Link copied to clipboard!')
+              }}
+              className="btn btn-primary"
+            >
+              📋 Copy Link
+            </button>
+          </div>
+          <button
+            onClick={() => window.open(`/${provider.business_slug}`, '_blank')}
+            className="btn btn-secondary"
+          >
+            👁️ Preview Your Booking Page
+          </button>
+        </div>
+      )}
 
       <nav style={{ display: 'flex', gap: '20px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #ddd', flexWrap: 'wrap' }}>
         <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
