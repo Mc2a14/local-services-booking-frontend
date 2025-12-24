@@ -137,6 +137,62 @@ function ProviderProfile({ user }) {
             />
           </div>
 
+          {hasProfile && formData.business_slug && (
+            <div className="form-group">
+              <label>Your Booking Page</label>
+              <div style={{ 
+                backgroundColor: '#e7f3ff', 
+                padding: '20px', 
+                borderRadius: '5px',
+                border: '1px solid #007bff',
+                textAlign: 'center'
+              }}>
+                <a
+                  href={`/${formData.business_slug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontSize: '20px',
+                    color: '#007bff',
+                    textDecoration: 'none',
+                    fontWeight: 'bold',
+                    display: 'block',
+                    marginBottom: '10px',
+                    wordBreak: 'break-word'
+                  }}
+                  onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                >
+                  {formData.business_name || 'View Booking Page'}
+                  <span style={{ fontSize: '14px', marginLeft: '8px' }}>🔗</span>
+                </a>
+                <div style={{ 
+                  fontSize: '11px', 
+                  color: '#666', 
+                  marginBottom: '15px',
+                  fontFamily: 'monospace'
+                }}>
+                  {window.location.origin}/{formData.business_slug}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const link = `${window.location.origin}/${formData.business_slug}`
+                    navigator.clipboard.writeText(link)
+                    alert('Link copied!')
+                  }}
+                  className="btn btn-primary"
+                  style={{ padding: '8px 20px', fontSize: '14px' }}
+                >
+                  📋 Copy Link
+                </button>
+              </div>
+              <small style={{ color: '#666', marginTop: '10px', display: 'block' }}>
+                This is your unique booking page. Share the link above with customers!
+              </small>
+            </div>
+          )}
+
           <div style={{ 
             marginTop: '30px', 
             paddingTop: '30px', 
