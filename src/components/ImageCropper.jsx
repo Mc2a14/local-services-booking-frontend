@@ -97,45 +97,55 @@ function ImageCropper({ imageSrc, onCropComplete, onCancel }) {
     ctx.closePath()
     ctx.clip()
     
-    // Container dimensions (circular, so width === height)
-    const containerSize = Math.min(container.offsetWidth, container.offsetHeight)
+    // Container is 400px circular
+    const containerSize = 400
     
-    // Calculate how the image is displayed
-    // Image is scaled to cover the container and positioned with transform
+    // Image natural dimensions
     const imgNaturalWidth = img.naturalWidth
     const imgNaturalHeight = img.naturalHeight
-    
-    // Calculate the displayed image size (scaled to cover container at current zoom)
     const imgAspect = imgNaturalWidth / imgNaturalHeight
-    let displayedWidth, displayedHeight
     
+    // Calculate how image fills the container
+    // Image is displayed with objectFit: cover, so it fills the container
+    let displayedWidth, displayedHeight
     if (imgAspect > 1) {
       // Landscape: height fills container
-      displayedHeight = containerSize * zoom
+      displayedHeight = containerSize
       displayedWidth = displayedHeight * imgAspect
     } else {
       // Portrait: width fills container
-      displayedWidth = containerSize * zoom
+      displayedWidth = containerSize
       displayedHeight = displayedWidth / imgAspect
     }
     
-    // Calculate the source crop area
-    // The visible area is what's inside the circle
-    // Position offset accounts for panning
-    const offsetX = -position.x * (imgNaturalWidth / displayedWidth)
-    const offsetY = -position.y * (imgNaturalHeight / displayedHeight)
+    // Apply zoom (zoom makes image larger)
+    displayedWidth *= zoom
+    displayedHeight *= zoom
     
-    // The crop size in source image coordinates
-    const cropSizeInSource = (containerSize * imgNaturalWidth) / displayedWidth
+    // Scale from displayed pixels to source pixels
+    const scaleX = imgNaturalWidth / displayedWidth
+    const scaleY = imgNaturalHeight / displayedHeight
     
-    // Center point in source image
-    const centerX = imgNaturalWidth / 2 + offsetX
-    const centerY = imgNaturalHeight / 2 + offsetY
+    // The crop area in source coordinates
+    // The visible circle has radius containerSize/2 = 200px
+    // In displayed coordinates
+    const cropRadius = containerSize / 2
+    
+    // Convert position offset from displayed pixels to source pixels
+    const sourceOffsetX = -position.x * scaleX
+    const sourceOffsetY = -position.y * scaleY
+    
+    // Center of crop in source coordinates
+    const centerX = imgNaturalWidth / 2 + sourceOffsetX
+    const centerY = imgNaturalHeight / 2 + sourceOffsetY
+    
+    // Crop size in source coordinates (diameter)
+    const cropDiameter = (cropRadius * 2) * Math.max(scaleX, scaleY)
     
     // Source rectangle (square for circle)
-    const sourceX = Math.max(0, centerX - cropSizeInSource / 2)
-    const sourceY = Math.max(0, centerY - cropSizeInSource / 2)
-    const sourceSize = Math.min(cropSizeInSource, Math.min(imgNaturalWidth - sourceX, imgNaturalHeight - sourceY))
+    const sourceSize = Math.min(cropDiameter, Math.min(imgNaturalWidth, imgNaturalHeight))
+    const sourceX = Math.max(0, Math.min(imgNaturalWidth - sourceSize, centerX - sourceSize / 2))
+    const sourceY = Math.max(0, Math.min(imgNaturalHeight - sourceSize, centerY - sourceSize / 2))
     
     // Draw the image
     ctx.drawImage(
@@ -217,18 +227,20 @@ function ImageCropper({ imageSrc, onCropComplete, onCancel }) {
               position: 'absolute',
               top: '50%',
               left: '50%',
-              transform: `translate(${-50 + position.x / 4}%, ${-50 + position.y / 4}%) scale(${zoom})`,
-              width: '100%',
-              height: '100%',
+              transform: `translate(calc(-50% + ${position.x}px), calc(-50% + ${position.y}px)) scale(${zoom})`,
+              minWidth: '100%',
+              minHeight: '100%',
+              width: 'auto',
+              height: 'auto',
+              maxWidth: 'none',
+              maxHeight: 'none',
               objectFit: 'cover',
               userSelect: 'none',
               pointerEvents: 'none'
             }}
             onLoad={() => {
               // Center the image initially
-              if (imageRef.current) {
-                setPosition({ x: 0, y: 0 })
-              }
+              setPosition({ x: 0, y: 0 })
             }}
           />
         </div>
@@ -321,4 +333,3 @@ function ImageCropper({ imageSrc, onCropComplete, onCancel }) {
 }
 
 export default ImageCropper
-
