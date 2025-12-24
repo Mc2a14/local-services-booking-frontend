@@ -162,8 +162,9 @@ function ProviderProfile({ user }) {
                       img.onload = () => {
                         // Create canvas to resize/compress
                         const canvas = document.createElement('canvas')
-                        const MAX_WIDTH = 1000
-                        const MAX_HEIGHT = 1000
+                        // Resize to max 400px for circular business logo (smaller file size)
+                        const MAX_WIDTH = 400
+                        const MAX_HEIGHT = 400
                         let width = img.width
                         let height = img.height
                         
@@ -185,8 +186,8 @@ function ProviderProfile({ user }) {
                         const ctx = canvas.getContext('2d')
                         ctx.drawImage(img, 0, 0, width, height)
                         
-                        // Convert to base64 with compression (0.85 quality)
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85)
+                        // Reduce quality to 0.6 for smaller file size (business logos don't need high quality)
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.6)
                         setFormData({
                           ...formData,
                           business_image_url: compressedDataUrl
