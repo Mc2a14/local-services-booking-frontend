@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import ChatWidget from '../components/ChatWidget'
 
 function BusinessBookingPage() {
   const { businessSlug } = useParams()
@@ -60,8 +61,11 @@ function BusinessBookingPage() {
 
 
   return (
-    <div className="container" style={{ maxWidth: '800px' }}>
-      {/* Business Header */}
+    <>
+      <ChatWidget businessSlug={businessSlug} businessName={business?.business_name} />
+      
+      <div className="container" style={{ maxWidth: '800px' }}>
+        {/* Business Header */}
       <div className="card" style={{ marginBottom: '30px', textAlign: 'center' }}>
         <h1 style={{ marginBottom: '10px', color: '#007bff' }}>{business.business_name}</h1>
         {business.description && (
@@ -159,7 +163,8 @@ function BusinessBookingPage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }
 
