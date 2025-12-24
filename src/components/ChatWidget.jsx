@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-function ChatWidget({ businessSlug, businessName }) {
+function ChatWidget({ businessSlug, businessName, inline = false }) {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([
     {
@@ -78,6 +78,47 @@ function ChatWidget({ businessSlug, businessName }) {
   }
 
   if (!isOpen) {
+    if (inline) {
+      // Inline button style - shown in the page flow
+      return (
+        <div style={{ marginBottom: '30px', textAlign: 'center' }}>
+          <button
+            onClick={() => setIsOpen(true)}
+            style={{
+              padding: '15px 30px',
+              fontSize: '18px',
+              borderRadius: '8px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              fontWeight: 'bold',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = '#0056b3'
+              e.target.style.transform = 'translateY(-2px)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = '#007bff'
+              e.target.style.transform = 'translateY(0)'
+            }}
+            aria-label="Open chat"
+          >
+            💬 Ask {businessName || 'us'} a question
+          </button>
+          <p style={{ marginTop: '10px', color: '#666', fontSize: '14px' }}>
+            Get instant answers about our services, hours, and more
+          </p>
+        </div>
+      )
+    }
+    
+    // Floating button style - bottom right corner
     return (
       <button
         onClick={() => setIsOpen(true)}
@@ -109,20 +150,21 @@ function ChatWidget({ businessSlug, businessName }) {
   return (
     <div
       style={{
-        position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        width: '380px',
-        maxWidth: 'calc(100vw - 40px)',
-        height: '500px',
-        maxHeight: 'calc(100vh - 40px)',
+        position: inline ? 'relative' : 'fixed',
+        bottom: inline ? 'auto' : '20px',
+        right: inline ? 'auto' : '20px',
+        width: inline ? '100%' : '380px',
+        maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
+        height: inline ? '500px' : '500px',
+        maxHeight: inline ? '500px' : 'calc(100vh - 40px)',
         backgroundColor: 'white',
         borderRadius: '12px',
         boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
         display: 'flex',
         flexDirection: 'column',
         zIndex: 1000,
-        border: '1px solid #e0e0e0'
+        border: '1px solid #e0e0e0',
+        marginBottom: inline ? '30px' : '0'
       }}
     >
       {/* Header */}

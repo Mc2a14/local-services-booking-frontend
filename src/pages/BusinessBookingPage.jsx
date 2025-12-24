@@ -64,8 +64,6 @@ function BusinessBookingPage() {
 
   return (
     <>
-      <ChatWidget businessSlug={businessSlug} businessName={business?.business_name} />
-      
       <div className="container" style={{ maxWidth: '800px' }}>
         {/* Business Header */}
       <div className="card" style={{ marginBottom: '30px', textAlign: 'center' }}>
@@ -103,6 +101,9 @@ function BusinessBookingPage() {
           </p>
         )}
       </div>
+
+      {/* AI Chat Widget - Prominent placement */}
+      <ChatWidget businessSlug={businessSlug} businessName={business?.business_name} inline={true} />
 
       {/* Services */}
       <h2 style={{ marginBottom: '20px' }}>Available Services</h2>
