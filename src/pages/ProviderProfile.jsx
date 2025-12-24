@@ -140,17 +140,47 @@ function ProviderProfile({ user }) {
           </div>
 
           <div className="form-group">
-            <label>Business Image/Logo URL</label>
+            <label>Business Image/Logo</label>
+            <div style={{ marginBottom: '10px' }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0]
+                  if (file) {
+                    // Check file size (limit to 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                      alert('Image is too large. Please use an image smaller than 5MB.')
+                      e.target.value = ''
+                      return
+                    }
+                    
+                    const reader = new FileReader()
+                    reader.onloadend = () => {
+                      setFormData({
+                        ...formData,
+                        business_image_url: reader.result
+                      })
+                    }
+                    reader.readAsDataURL(file)
+                  }
+                }}
+                style={{ marginBottom: '10px' }}
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <strong>OR</strong> Paste an image URL:
+            </div>
             <input
               type="url"
               name="business_image_url"
-              value={formData.business_image_url}
+              value={formData.business_image_url && formData.business_image_url.startsWith('http') ? formData.business_image_url : ''}
               onChange={handleChange}
               placeholder="https://example.com/your-business-logo.jpg"
             />
             <small style={{ color: '#666', marginTop: '5px', display: 'block' }}>
-              Add a URL to your business logo or main business image. This will be displayed on your booking page. 
-              Recommended: Square image (500x500px or larger) for best results.
+              Upload an image file or paste a URL. This will be displayed on your booking page. 
+              Recommended: Square image (500x500px or larger) for best results. Max file size: 5MB.
             </small>
             {formData.business_image_url && (
               <div style={{ marginTop: '10px' }}>
@@ -169,8 +199,28 @@ function ProviderProfile({ user }) {
                   }}
                 />
                 <div style={{ display: 'none', color: '#dc3545', fontSize: '12px', marginTop: '5px' }}>
-                  Image failed to load. Please check the URL.
+                  Image failed to load. Please check the URL or try uploading again.
                 </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ ...formData, business_image_url: '' })
+                    const fileInput = document.querySelector('input[type="file"]')
+                    if (fileInput) fileInput.value = ''
+                  }}
+                  style={{
+                    marginTop: '10px',
+                    padding: '5px 10px',
+                    fontSize: '12px',
+                    backgroundColor: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Remove Image
+                </button>
               </div>
             )}
           </div>

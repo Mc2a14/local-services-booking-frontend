@@ -141,14 +141,84 @@ function AddService({ user }) {
           </div>
 
           <div className="form-group">
-            <label>Image URL (Optional)</label>
+            <label>Service Image (Optional)</label>
+            <div style={{ marginBottom: '10px' }}>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files[0]
+                  if (file) {
+                    // Check file size (limit to 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                      alert('Image is too large. Please use an image smaller than 5MB.')
+                      e.target.value = ''
+                      return
+                    }
+                    
+                    const reader = new FileReader()
+                    reader.onloadend = () => {
+                      setFormData({
+                        ...formData,
+                        image_url: reader.result
+                      })
+                    }
+                    reader.readAsDataURL(file)
+                  }
+                }}
+                style={{ marginBottom: '10px' }}
+              />
+            </div>
+            <div style={{ marginBottom: '10px' }}>
+              <strong>OR</strong> Paste an image URL:
+            </div>
             <input
               type="url"
               name="image_url"
-              value={formData.image_url}
+              value={formData.image_url && formData.image_url.startsWith('http') ? formData.image_url : ''}
               onChange={handleChange}
               placeholder="https://example.com/image.jpg"
             />
+            <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+              Upload an image file or paste a URL. Recommended: 800x600px or larger. Max file size: 5MB.
+            </small>
+            {formData.image_url && (
+              <div style={{ marginTop: '10px' }}>
+                <img 
+                  src={formData.image_url} 
+                  alt="Preview" 
+                  style={{ 
+                    maxWidth: '200px', 
+                    maxHeight: '200px', 
+                    borderRadius: '8px',
+                    border: '2px solid #ddd'
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none'
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFormData({ ...formData, image_url: '' })
+                    const fileInput = document.querySelector('input[type="file"]')
+                    if (fileInput) fileInput.value = ''
+                  }}
+                  style={{
+                    marginTop: '10px',
+                    padding: '5px 10px',
+                    fontSize: '12px',
+                    backgroundColor: '#dc3545',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '4px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Remove Image
+                </button>
+              </div>
+            )}
           </div>
 
           <button 
