@@ -14,6 +14,7 @@ import AddService from './pages/AddService'
 import EditService from './pages/EditService'
 import ProviderProfile from './pages/ProviderProfile'
 import Availability from './pages/Availability'
+import ManageFAQs from './pages/ManageFAQs'
 import { getToken, apiRequest } from './utils/auth'
 
 function App() {
@@ -68,6 +69,7 @@ function App() {
         <Route path="/edit-service/:id" element={user && user.user_type === 'provider' ? <EditService user={user} /> : <Navigate to="/login" />} />
         <Route path="/provider-profile" element={user && user.user_type === 'provider' ? <ProviderProfile user={user} /> : <Navigate to="/login" />} />
         <Route path="/availability" element={user && user.user_type === 'provider' ? <Availability user={user} /> : <Navigate to="/login" />} />
+        <Route path="/manage-faqs" element={user && user.user_type === 'provider' ? <ManageFAQs user={user} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   )

@@ -152,6 +152,7 @@ function ProviderDashboard({ user }) {
         <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
         <button onClick={() => navigate('/bookings')} className="btn btn-primary">Bookings</button>
         <button onClick={() => navigate('/availability')} className="btn btn-primary">Set Availability</button>
+        <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 Manage FAQs</button>
         <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">My Profile</button>
       </nav>
 
