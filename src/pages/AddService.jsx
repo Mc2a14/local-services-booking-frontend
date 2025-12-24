@@ -149,19 +149,51 @@ function AddService({ user }) {
                 onChange={(e) => {
                   const file = e.target.files[0]
                   if (file) {
-                    // Check file size (limit to 5MB)
-                    if (file.size > 5 * 1024 * 1024) {
-                      alert('Image is too large. Please use an image smaller than 5MB.')
+                    // Check file size (limit to 2MB for better performance)
+                    if (file.size > 2 * 1024 * 1024) {
+                      alert('Image is too large. Please use an image smaller than 2MB. You can compress it using an online tool or resize it before uploading.')
                       e.target.value = ''
                       return
                     }
                     
+                    // Compress image before converting to base64
                     const reader = new FileReader()
                     reader.onloadend = () => {
-                      setFormData({
-                        ...formData,
-                        image_url: reader.result
-                      })
+                      const img = new Image()
+                      img.onload = () => {
+                        // Create canvas to resize/compress
+                        const canvas = document.createElement('canvas')
+                        const MAX_WIDTH = 1200
+                        const MAX_HEIGHT = 800
+                        let width = img.width
+                        let height = img.height
+                        
+                        // Calculate new dimensions
+                        if (width > height) {
+                          if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width
+                            width = MAX_WIDTH
+                          }
+                        } else {
+                          if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height
+                            height = MAX_HEIGHT
+                          }
+                        }
+                        
+                        canvas.width = width
+                        canvas.height = height
+                        const ctx = canvas.getContext('2d')
+                        ctx.drawImage(img, 0, 0, width, height)
+                        
+                        // Convert to base64 with compression (0.85 quality)
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85)
+                        setFormData({
+                          ...formData,
+                          image_url: compressedDataUrl
+                        })
+                      }
+                      img.src = reader.result
                     }
                     reader.readAsDataURL(file)
                   }
@@ -180,7 +212,7 @@ function AddService({ user }) {
               placeholder="https://example.com/image.jpg"
             />
             <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
-              Upload an image file or paste a URL. Recommended: 800x600px or larger. Max file size: 5MB.
+              Upload an image file or paste a URL. Recommended: 800x600px or larger. Max file size: 2MB (images will be automatically compressed).
             </small>
             {formData.image_url && (
               <div style={{ marginTop: '10px' }}>
