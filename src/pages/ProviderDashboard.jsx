@@ -96,24 +96,37 @@ function ProviderDashboard({ user }) {
           </p>
           <div style={{ 
             backgroundColor: 'white', 
-            padding: '15px', 
+            padding: '20px', 
             borderRadius: '5px',
-            marginBottom: '20px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '15px',
-            flexWrap: 'wrap'
+            marginBottom: '20px'
           }}>
-            <code style={{ 
-              fontSize: '18px', 
-              color: '#007bff',
-              wordBreak: 'break-all',
-              flex: 1,
-              textAlign: 'left'
+            <a
+              href={`/${provider.business_slug}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                fontSize: '24px',
+                color: '#007bff',
+                textDecoration: 'none',
+                fontWeight: 'bold',
+                display: 'block',
+                marginBottom: '15px',
+                wordBreak: 'break-word'
+              }}
+              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+            >
+              {provider.business_name || 'View Booking Page'}
+              <span style={{ fontSize: '16px', marginLeft: '8px' }}>🔗</span>
+            </a>
+            <div style={{ 
+              fontSize: '12px', 
+              color: '#666', 
+              marginBottom: '15px',
+              fontFamily: 'monospace'
             }}>
               {window.location.origin}/{provider.business_slug}
-            </code>
+            </div>
             <button
               onClick={() => {
                 const link = `${window.location.origin}/${provider.business_slug}`
@@ -121,16 +134,17 @@ function ProviderDashboard({ user }) {
                 alert('Link copied to clipboard!')
               }}
               className="btn btn-primary"
+              style={{ marginRight: '10px' }}
             >
               📋 Copy Link
             </button>
+            <button
+              onClick={() => window.open(`/${provider.business_slug}`, '_blank')}
+              className="btn btn-secondary"
+            >
+              👁️ Preview
+            </button>
           </div>
-          <button
-            onClick={() => window.open(`/${provider.business_slug}`, '_blank')}
-            className="btn btn-secondary"
-          >
-            👁️ Preview Your Booking Page
-          </button>
         </div>
       )}
 
