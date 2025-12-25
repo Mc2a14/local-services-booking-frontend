@@ -137,7 +137,7 @@ function Availability({ user }) {
 
       <div className="card">
         <h1>Set Your Availability Schedule</h1>
-        <p style={{ color: '#666', marginBottom: '30px' }}>
+        <p style={{ color: '#475569', marginBottom: '30px' }}>
           Set your weekly business hours. Customers will only be able to book during these times.
         </p>
 
@@ -157,7 +157,7 @@ function Availability({ user }) {
                   marginBottom: '10px',
                   backgroundColor: day.is_available ? '#f8f9fa' : '#fff',
                   borderRadius: '5px',
-                  border: '1px solid #ddd'
+                  border: '1px solid #E5E7EB'
                 }}
               >
                 <div style={{ width: '120px' }}>
@@ -181,7 +181,7 @@ function Availability({ user }) {
                         value={day.start_time}
                         onChange={(e) => handleChange(index, 'start_time', e.target.value)}
                         required={day.is_available}
-                        style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+                        style={{ padding: '8px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                       />
                     </div>
 
@@ -192,7 +192,7 @@ function Availability({ user }) {
                         value={day.end_time}
                         onChange={(e) => handleChange(index, 'end_time', e.target.value)}
                         required={day.is_available}
-                        style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+                        style={{ padding: '8px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                       />
                     </div>
                   </>

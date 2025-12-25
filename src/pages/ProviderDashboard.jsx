@@ -85,13 +85,13 @@ function ProviderDashboard({ user }) {
       {hasProfile && provider?.business_slug && (
         <div className="card" style={{ 
           backgroundColor: '#e7f3ff', 
-          border: '2px solid #007bff',
+          border: '2px solid #2563EB',
           padding: '30px',
           marginBottom: '30px',
           textAlign: 'center'
         }}>
-          <h2 style={{ marginBottom: '15px', color: '#007bff' }}>Your Booking Page</h2>
-          <p style={{ fontSize: '18px', marginBottom: '20px', color: '#333' }}>
+          <h2 style={{ marginBottom: '15px', color: '#2563EB' }}>Your Booking Page</h2>
+          <p style={{ fontSize: '18px', marginBottom: '20px', color: '#0F172A' }}>
             Share this link with your customers to let them book your services:
           </p>
           <div style={{ 
@@ -106,7 +106,7 @@ function ProviderDashboard({ user }) {
               rel="noopener noreferrer"
               style={{
                 fontSize: '24px',
-                color: '#007bff',
+                color: '#2563EB',
                 textDecoration: 'none',
                 fontWeight: 'bold',
                 display: 'block',
@@ -121,7 +121,7 @@ function ProviderDashboard({ user }) {
             </a>
             <div style={{ 
               fontSize: '12px', 
-              color: '#666', 
+              color: '#475569', 
               marginBottom: '15px',
               fontFamily: 'monospace'
             }}>
@@ -148,7 +148,7 @@ function ProviderDashboard({ user }) {
         </div>
       )}
 
-      <nav style={{ display: 'flex', gap: '20px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #ddd', flexWrap: 'wrap' }}>
+      <nav style={{ display: 'flex', gap: '20px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #E5E7EB', flexWrap: 'wrap' }}>
         <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
         <button onClick={() => navigate('/bookings')} className="btn btn-primary">Bookings</button>
         <button onClick={() => navigate('/availability')} className="btn btn-primary">Set Availability</button>
@@ -203,15 +203,15 @@ function ProviderDashboard({ user }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    color: '#6c757d',
+                    color: '#E2E8F0',
                     fontSize: '14px'
                   }}>
                     No Image
                   </div>
                 )}
                 <h3>{service.title}</h3>
-                <p style={{ color: '#666', marginBottom: '10px' }}>{service.description}</p>
-                <p style={{ fontWeight: 'bold', fontSize: '18px', color: '#007bff', marginBottom: '10px' }}>
+                <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
+                <p style={{ fontWeight: 'bold', fontSize: '18px', color: '#2563EB', marginBottom: '10px' }}>
                   ${service.price}
                 </p>
                 <p>Duration: {service.duration_minutes} minutes</p>

@@ -86,7 +86,7 @@ function ProviderProfile({ user }) {
     <div className="container" style={{ maxWidth: '600px' }}>
       <div className="card">
         <h1>{hasProfile ? 'Update' : 'Create'} Provider Profile</h1>
-        <p style={{ color: '#666', marginBottom: '30px' }}>
+        <p style={{ color: '#475569', marginBottom: '30px' }}>
           {hasProfile 
             ? 'Update your business information'
             : 'Set up your provider profile to start offering services'
@@ -203,7 +203,7 @@ function ProviderProfile({ user }) {
               }}
               placeholder="https://example.com/your-business-logo.jpg"
             />
-            <small style={{ color: '#666', marginTop: '5px', display: 'block' }}>
+            <small style={{ color: '#475569', marginTop: '5px', display: 'block' }}>
               Upload an image file or paste a URL. You can adjust how it appears in the circle. 
               Recommended: Square image (500x500px or larger) for best results. Max file size: 2MB.
             </small>
@@ -216,14 +216,14 @@ function ProviderProfile({ user }) {
                     maxWidth: '150px', 
                     maxHeight: '150px', 
                     borderRadius: '8px',
-                    border: '2px solid #ddd'
+                    border: '2px solid #E5E7EB'
                   }}
                   onError={(e) => {
                     e.target.style.display = 'none'
                     e.target.nextSibling.style.display = 'block'
                   }}
                 />
-                <div style={{ display: 'none', color: '#dc3545', fontSize: '12px', marginTop: '5px' }}>
+                <div style={{ display: 'none', color: '#DC2626', fontSize: '12px', marginTop: '5px' }}>
                   Image failed to load. Please check the URL or try uploading again.
                 </div>
                 <button
@@ -237,7 +237,7 @@ function ProviderProfile({ user }) {
                     marginTop: '10px',
                     padding: '5px 10px',
                     fontSize: '12px',
-                    backgroundColor: '#dc3545',
+                    backgroundColor: '#DC2626',
                     color: 'white',
                     border: 'none',
                     borderRadius: '4px',
@@ -257,7 +257,7 @@ function ProviderProfile({ user }) {
                 backgroundColor: '#e7f3ff', 
                 padding: '20px', 
                 borderRadius: '5px',
-                border: '1px solid #007bff',
+                border: '1px solid #2563EB',
                 textAlign: 'center'
               }}>
                 <a
@@ -266,7 +266,7 @@ function ProviderProfile({ user }) {
                   rel="noopener noreferrer"
                   style={{
                     fontSize: '20px',
-                    color: '#007bff',
+                    color: '#2563EB',
                     textDecoration: 'none',
                     fontWeight: 'bold',
                     display: 'block',
@@ -281,7 +281,7 @@ function ProviderProfile({ user }) {
                 </a>
                 <div style={{ 
                   fontSize: '11px', 
-                  color: '#666', 
+                  color: '#475569', 
                   marginBottom: '15px',
                   fontFamily: 'monospace'
                 }}>
@@ -300,7 +300,7 @@ function ProviderProfile({ user }) {
                   📋 Copy Link
                 </button>
               </div>
-              <small style={{ color: '#666', marginTop: '10px', display: 'block' }}>
+              <small style={{ color: '#475569', marginTop: '10px', display: 'block' }}>
                 This is your unique booking page. Share the link above with customers!
               </small>
             </div>
@@ -312,7 +312,7 @@ function ProviderProfile({ user }) {
             borderTop: '2px solid #e0e0e0' 
           }}>
             <h3 style={{ marginBottom: '15px' }}>Email Configuration</h3>
-            <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>
+            <p style={{ color: '#475569', fontSize: '14px', marginBottom: '20px' }}>
               To send booking confirmation emails to your customers, you need to provide your email app password.
               <strong> Your email address ({user.email}) will be used to send emails.</strong>
             </p>
@@ -323,7 +323,7 @@ function ProviderProfile({ user }) {
                 name="email_service_type"
                 value={formData.email_service_type}
                 onChange={handleChange}
-                style={{ padding: '10px', borderRadius: '5px', border: '1px solid #ddd', width: '100%' }}
+                style={{ padding: '10px', borderRadius: '5px', border: '1px solid #E5E7EB', width: '100%' }}
               >
                 <option value="gmail">Gmail</option>
                 <option value="smtp">Custom SMTP</option>
@@ -342,7 +342,7 @@ function ProviderProfile({ user }) {
                 placeholder={formData.email_service_type === 'gmail' ? 'Gmail App Password (16 characters)' : 'Email password or API key'}
                 style={{ fontFamily: 'monospace' }}
               />
-              <small style={{ display: 'block', color: '#666', marginTop: '5px', fontSize: '12px' }}>
+              <small style={{ display: 'block', color: '#475569', marginTop: '5px', fontSize: '12px' }}>
                 {formData.email_service_type === 'gmail' ? (
                   <>
                     <strong>For Gmail:</strong> You need a Gmail App Password (not your regular password).
@@ -351,7 +351,7 @@ function ProviderProfile({ user }) {
                       href="https://myaccount.google.com/apppasswords" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      style={{ color: '#007bff' }}
+                      style={{ color: '#2563EB' }}
                     >
                       Get Gmail App Password here →
                     </a>
@@ -372,7 +372,7 @@ function ProviderProfile({ user }) {
                 padding: '15px', 
                 borderRadius: '5px', 
                 marginBottom: '20px',
-                border: '1px solid #ffc107'
+                border: '1px solid #F59E0B'
               }}>
                 <strong>⚠️ Note:</strong> Without an email password, booking confirmations will be logged but not sent via email.
                 Customers will still see their booking confirmation on the website.

@@ -55,14 +55,14 @@ function Services({ user }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#6c757d'
+                  color: '#E2E8F0'
                 }}>
                   No Image
                 </div>
               )}
               <h3>{service.title}</h3>
-              <p style={{ color: '#666', marginBottom: '10px' }}>{service.description}</p>
-              <p style={{ fontWeight: 'bold', fontSize: '20px', color: '#007bff', marginBottom: '10px' }}>${service.price}</p>
+              <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
+              <p style={{ fontWeight: 'bold', fontSize: '20px', color: '#2563EB', marginBottom: '10px' }}>${service.price}</p>
               {service.average_rating && (
                 <p style={{ marginBottom: '15px' }}>⭐ {service.average_rating} ({service.review_count} reviews)</p>
               )}

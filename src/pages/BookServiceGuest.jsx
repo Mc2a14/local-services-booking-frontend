@@ -168,9 +168,9 @@ function BookServiceGuest() {
           ← Back to Home
         </button>
         <div className="card">
-          <h1 style={{ color: '#dc3545' }}>Service Not Found</h1>
-          <p style={{ color: '#666', marginBottom: '20px' }}>{error}</p>
-          <p style={{ color: '#666', marginBottom: '20px' }}>
+          <h1 style={{ color: '#DC2626' }}>Service Not Found</h1>
+          <p style={{ color: '#475569', marginBottom: '20px' }}>{error}</p>
+          <p style={{ color: '#475569', marginBottom: '20px' }}>
             The service you're looking for doesn't exist or is no longer available.
           </p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
@@ -188,8 +188,8 @@ function BookServiceGuest() {
           ← Back to Home
         </button>
         <div className="card">
-          <h1 style={{ color: '#dc3545' }}>Service Not Found</h1>
-          <p style={{ color: '#666', marginBottom: '20px' }}>
+          <h1 style={{ color: '#DC2626' }}>Service Not Found</h1>
+          <p style={{ color: '#475569', marginBottom: '20px' }}>
             The service you're looking for doesn't exist or is no longer available.
           </p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
@@ -219,8 +219,8 @@ function BookServiceGuest() {
         <div className="card" style={{ padding: '40px' }}>
           <div style={{ textAlign: 'center', marginBottom: '30px' }}>
             <div style={{ fontSize: '60px', marginBottom: '20px' }}>✅</div>
-            <h1 style={{ color: '#28a745', marginBottom: '10px' }}>Booking Confirmed!</h1>
-            <p style={{ fontSize: '18px', color: '#666' }}>
+            <h1 style={{ color: '#16A34A', marginBottom: '10px' }}>Booking Confirmed!</h1>
+            <p style={{ fontSize: '18px', color: '#475569' }}>
               Thank you, {bookingDetails.customer_name}!
             </p>
           </div>
@@ -231,36 +231,36 @@ function BookServiceGuest() {
             borderRadius: '10px', 
             marginBottom: '30px' 
           }}>
-            <h2 style={{ marginBottom: '20px', color: '#333' }}>Booking Details</h2>
+            <h2 style={{ marginBottom: '20px', color: '#0F172A' }}>Booking Details</h2>
             
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Booking ID:</strong>
-              <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#007bff' }}>#{bookingDetails.id}</span>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Booking ID:</strong>
+              <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#2563EB' }}>#{bookingDetails.id}</span>
             </div>
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Service:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Service:</strong>
               <span style={{ fontSize: '18px' }}>{bookingDetails.service_title}</span>
             </div>
 
             {bookingDetails.business_name && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Business:</strong>
-                <span style={{ fontSize: '18px', color: '#007bff' }}>{bookingDetails.business_name}</span>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Business:</strong>
+                <span style={{ fontSize: '18px', color: '#2563EB' }}>{bookingDetails.business_name}</span>
               </div>
             )}
 
             {bookingDetails.price && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Price:</strong>
-                <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#007bff' }}>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Price:</strong>
+                <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#2563EB' }}>
                   ${parseFloat(bookingDetails.price).toFixed(2)}
                 </span>
               </div>
             )}
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Date & Time:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Date & Time:</strong>
               <span style={{ fontSize: '18px' }}>
                 {formattedDate} at {formattedTime}
               </span>
@@ -268,13 +268,13 @@ function BookServiceGuest() {
 
             {bookingDetails.duration_minutes && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Duration:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Duration:</strong>
                 <span style={{ fontSize: '18px' }}>{bookingDetails.duration_minutes} minutes</span>
               </div>
             )}
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Status:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Status:</strong>
               <span style={{ 
                 fontSize: '16px', 
                 padding: '5px 15px', 
@@ -290,19 +290,19 @@ function BookServiceGuest() {
 
             {bookingDetails.customer_phone && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Your Phone:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Your Phone:</strong>
                 <span style={{ fontSize: '18px' }}>{bookingDetails.customer_phone}</span>
               </div>
             )}
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Email:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Email:</strong>
               <span style={{ fontSize: '18px' }}>{bookingDetails.customer_email}</span>
             </div>
 
             {bookingDetails.notes && (
               <div style={{ marginTop: '20px' }}>
-                <strong style={{ color: '#666', display: 'block', marginBottom: '5px' }}>Notes:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Notes:</strong>
                 <span style={{ fontSize: '16px', fontStyle: 'italic' }}>{bookingDetails.notes}</span>
               </div>
             )}
@@ -355,12 +355,12 @@ function BookServiceGuest() {
         <div style={{ marginBottom: '30px' }}>
           <h2>{service.title}</h2>
           {service.business_name && (
-            <p style={{ color: '#007bff', fontWeight: 'bold', marginBottom: '10px' }}>
+            <p style={{ color: '#2563EB', fontWeight: 'bold', marginBottom: '10px' }}>
               {service.business_name}
             </p>
           )}
-          <p style={{ color: '#666', marginBottom: '10px' }}>{service.description}</p>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
+          <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
+          <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#2563EB' }}>
             ${service.price}
           </p>
           {service.average_rating && (
@@ -368,14 +368,14 @@ function BookServiceGuest() {
           )}
         </div>
 
-        <p style={{ marginBottom: '20px', color: '#666' }}>
+        <p style={{ marginBottom: '20px', color: '#475569' }}>
           Please fill in your information to complete the booking. No account required!
         </p>
 
         {error && <div className="error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
-          <div style={{ marginBottom: '25px', paddingBottom: '25px', borderBottom: '1px solid #ddd' }}>
+          <div style={{ marginBottom: '25px', paddingBottom: '25px', borderBottom: '1px solid #E5E7EB' }}>
             <h3 style={{ marginBottom: '15px' }}>Your Information</h3>
             
             <div className="form-group">
@@ -398,7 +398,7 @@ function BookServiceGuest() {
                 required
                 placeholder="john@example.com"
               />
-              <small style={{ color: '#666', marginTop: '5px', display: 'block' }}>
+              <small style={{ color: '#475569', marginTop: '5px', display: 'block' }}>
                 A confirmation email will be sent to this address
               </small>
             </div>
@@ -476,7 +476,7 @@ function BookServiceGuest() {
             {submitting ? 'Booking...' : 'Confirm Booking'}
           </button>
 
-          <p style={{ marginTop: '20px', textAlign: 'center', color: '#666', fontSize: '14px' }}>
+          <p style={{ marginTop: '20px', textAlign: 'center', color: '#475569', fontSize: '14px' }}>
             By booking, you agree to receive a confirmation email at the provided email address.
           </p>
         </form>

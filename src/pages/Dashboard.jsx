@@ -34,7 +34,7 @@ function Dashboard({ user }) {
         <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
       </div>
 
-      <nav style={{ display: 'flex', gap: '20px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #ddd' }}>
+      <nav style={{ display: 'flex', gap: '20px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #E5E7EB' }}>
         <button onClick={() => navigate('/')} className="btn btn-secondary">Public Home</button>
         <button onClick={() => navigate('/dashboard')} className="btn btn-primary">My Dashboard</button>
         <button onClick={() => navigate('/bookings')} className="btn btn-primary">My Bookings</button>
@@ -69,14 +69,14 @@ function Dashboard({ user }) {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#6c757d'
+                  color: '#E2E8F0'
                 }}>
                   No Image
                 </div>
               )}
               <h3>{service.title}</h3>
-              <p style={{ color: '#666', marginBottom: '10px' }}>{service.description}</p>
-              <p style={{ fontWeight: 'bold', fontSize: '20px', color: '#007bff' }}>${service.price}</p>
+              <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
+              <p style={{ fontWeight: 'bold', fontSize: '20px', color: '#2563EB' }}>${service.price}</p>
               {service.average_rating && (
                 <p>⭐ {service.average_rating} ({service.review_count} reviews)</p>
               )}

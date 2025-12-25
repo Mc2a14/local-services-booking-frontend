@@ -49,8 +49,8 @@ function BusinessBookingPage() {
     return (
       <div className="container" style={{ maxWidth: '600px' }}>
         <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-          <h1 style={{ color: '#dc3545' }}>Business Not Found</h1>
-          <p style={{ color: '#666', marginBottom: '20px' }}>
+          <h1 style={{ color: '#DC2626' }}>Business Not Found</h1>
+          <p style={{ color: '#475569', marginBottom: '20px' }}>
             The business page you're looking for doesn't exist.
           </p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
@@ -78,7 +78,7 @@ function BusinessBookingPage() {
               borderRadius: '12px',
               objectFit: 'cover',
               marginBottom: '20px',
-              border: '2px solid #007bff',
+              border: '2px solid #2563EB',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
             }}
             onError={(e) => {
@@ -86,19 +86,19 @@ function BusinessBookingPage() {
             }}
           />
         )}
-        <h1 style={{ marginBottom: '10px', color: '#007bff' }}>{business.business_name}</h1>
+        <h1 style={{ marginBottom: '10px', color: '#2563EB' }}>{business.business_name}</h1>
         {business.description && (
-          <p style={{ color: '#666', fontSize: '18px', marginBottom: '20px' }}>
+          <p style={{ color: '#475569', fontSize: '18px', marginBottom: '20px' }}>
             {business.description}
           </p>
         )}
         {business.phone && (
-          <p style={{ color: '#666', marginBottom: '10px' }}>
+          <p style={{ color: '#475569', marginBottom: '10px' }}>
             📞 {business.phone}
           </p>
         )}
         {business.address && (
-          <p style={{ color: '#666', marginBottom: '20px' }}>
+          <p style={{ color: '#475569', marginBottom: '20px' }}>
             📍 {business.address}
           </p>
         )}
@@ -112,7 +112,7 @@ function BusinessBookingPage() {
       
       {services.length === 0 ? (
         <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-          <p style={{ color: '#666' }}>No services available at the moment.</p>
+          <p style={{ color: '#475569' }}>No services available at the moment.</p>
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
@@ -148,25 +148,25 @@ function BusinessBookingPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: '#6c757d'
+                  color: '#E2E8F0'
                 }}>
                   No Image
                 </div>
               )}
               <h3>{service.title}</h3>
               {service.category && (
-                <p style={{ color: '#007bff', fontSize: '14px', marginBottom: '10px' }}>
+                <p style={{ color: '#2563EB', fontSize: '14px', marginBottom: '10px' }}>
                   {service.category}
                 </p>
               )}
-              <p style={{ color: '#666', marginBottom: '10px', minHeight: '50px' }}>
+              <p style={{ color: '#475569', marginBottom: '10px', minHeight: '50px' }}>
                 {service.description}
               </p>
-              <p style={{ fontWeight: 'bold', fontSize: '24px', color: '#007bff', marginBottom: '10px' }}>
+              <p style={{ fontWeight: 'bold', fontSize: '24px', color: '#2563EB', marginBottom: '10px' }}>
                 ${parseFloat(service.price).toFixed(2)}
               </p>
               {service.duration_minutes && (
-                <p style={{ color: '#666', fontSize: '14px', marginBottom: '10px' }}>
+                <p style={{ color: '#475569', fontSize: '14px', marginBottom: '10px' }}>
                   ⏱️ {service.duration_minutes} minutes
                 </p>
               )}
@@ -204,7 +204,7 @@ function BusinessBookingPage() {
                     <div>
                       <strong>{testimonial.customer_name}</strong>
                       {testimonial.service_title && (
-                        <div style={{ fontSize: '12px', color: '#666' }}>
+                        <div style={{ fontSize: '12px', color: '#475569' }}>
                           {testimonial.service_title}
                         </div>
                       )}
@@ -212,7 +212,7 @@ function BusinessBookingPage() {
                   </div>
                 </div>
                 {testimonial.comment && (
-                  <p style={{ color: '#333', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
+                  <p style={{ color: '#0F172A', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
                     "{testimonial.comment}"
                   </p>
                 )}

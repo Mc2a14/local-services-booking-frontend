@@ -23,9 +23,9 @@ function Home() {
         alignItems: 'center', 
         marginBottom: '40px',
         paddingBottom: '20px',
-        borderBottom: '2px solid #007bff'
+        borderBottom: '2px solid #2563EB'
       }}>
-        <h1 style={{ margin: 0, color: '#007bff' }}>BookingPro</h1>
+        <h1 style={{ margin: 0, color: '#2563EB' }}>BookingPro</h1>
         <div style={{ display: 'flex', gap: '10px' }}>
           {token ? (
             <>
@@ -60,10 +60,10 @@ function Home() {
         backgroundColor: '#f8f9fa',
         borderRadius: '10px'
       }}>
-        <h1 style={{ fontSize: '3rem', marginBottom: '20px', color: '#007bff' }}>
+        <h1 style={{ fontSize: '3rem', marginBottom: '20px', color: '#2563EB' }}>
           Your Booking Page + AI Receptionist
         </h1>
-        <p style={{ fontSize: '1.3rem', color: '#666', maxWidth: '700px', margin: '0 auto 30px' }}>
+        <p style={{ fontSize: '1.3rem', color: '#475569', maxWidth: '700px', margin: '0 auto 30px' }}>
           Give your customers a simple way to book your services online. 
           Include an AI assistant to answer common questions 24/7.
         </p>
@@ -95,28 +95,28 @@ function Home() {
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>📅</div>
           <h3>Easy Booking</h3>
-          <p style={{ color: '#666' }}>
+          <p style={{ color: '#475569' }}>
             Customers can book your services instantly, no account needed
           </p>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>🤖</div>
           <h3>AI Receptionist</h3>
-          <p style={{ color: '#666' }}>
+          <p style={{ color: '#475569' }}>
             AI-powered chat handles common questions automatically
           </p>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>📧</div>
           <h3>Email Confirmations</h3>
-          <p style={{ color: '#666' }}>
+          <p style={{ color: '#475569' }}>
             Automatic email confirmations sent from your business email
           </p>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>🔗</div>
           <h3>Your Own Link</h3>
-          <p style={{ color: '#666' }}>
+          <p style={{ color: '#475569' }}>
             Share your unique booking page link with customers
           </p>
         </div>
@@ -125,7 +125,7 @@ function Home() {
       {/* For Customers Section */}
       <div className="card" style={{ padding: '40px', textAlign: 'center' }}>
         <h2 style={{ marginBottom: '20px' }}>Have a Booking Link?</h2>
-        <p style={{ color: '#666', marginBottom: '30px' }}>
+        <p style={{ color: '#475569', marginBottom: '30px' }}>
           Enter your business booking link below to view available services
         </p>
         <form onSubmit={handleBusinessSlugSubmit} style={{ maxWidth: '500px', margin: '0 auto' }}>
@@ -139,7 +139,7 @@ function Home() {
                 flex: 1,
                 padding: '12px',
                 fontSize: '16px',
-                border: '1px solid #ddd',
+                border: '1px solid #E5E7EB',
                 borderRadius: '5px'
               }}
             />
@@ -147,7 +147,7 @@ function Home() {
               Go to Booking Page
             </button>
           </div>
-          <small style={{ display: 'block', marginTop: '10px', color: '#666' }}>
+          <small style={{ display: 'block', marginTop: '10px', color: '#475569' }}>
             Example: If your link is bookingpro.com/joe-plumbing, enter "joe-plumbing"
           </small>
         </form>

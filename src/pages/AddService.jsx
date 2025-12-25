@@ -217,7 +217,7 @@ function AddService({ user }) {
               onChange={handleChange}
               placeholder="https://example.com/image.jpg"
             />
-            <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+            <small style={{ display: 'block', color: '#475569', marginTop: '5px' }}>
               Upload an image file or paste a URL. Recommended: 800x600px or larger. Max file size: 2MB (images will be automatically compressed).
             </small>
             {formData.image_url && (
@@ -229,7 +229,7 @@ function AddService({ user }) {
                     maxWidth: '200px', 
                     maxHeight: '200px', 
                     borderRadius: '8px',
-                    border: '2px solid #ddd'
+                    border: '2px solid #E5E7EB'
                   }}
                   onError={(e) => {
                     e.target.style.display = 'none'
@@ -246,7 +246,7 @@ function AddService({ user }) {
                     marginTop: '10px',
                     padding: '5px 10px',
                     fontSize: '12px',
-                    backgroundColor: '#dc3545',
+                    backgroundColor: '#DC2626',
                     color: 'white',
                     border: 'none',
                     borderRadius: '4px',

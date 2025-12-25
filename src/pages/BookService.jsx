@@ -103,8 +103,8 @@ function BookService({ user }) {
         
         <div style={{ marginBottom: '30px' }}>
           <h2>{service.title}</h2>
-          <p style={{ color: '#666', marginBottom: '10px' }}>{service.description}</p>
-          <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
+          <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
+          <p style={{ fontSize: '24px', fontWeight: 'bold', color: '#2563EB' }}>
             ${service.price}
           </p>
           {service.average_rating && (

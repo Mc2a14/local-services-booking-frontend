@@ -135,7 +135,7 @@ function ManageFAQs() {
           </button>
         </div>
 
-        <p style={{ color: '#666', marginBottom: '30px' }}>
+        <p style={{ color: '#475569', marginBottom: '30px' }}>
           Add frequently asked questions and answers that will help the AI customer service assist your customers better. 
           The AI will use these FAQs to provide accurate and consistent answers.
         </p>
@@ -154,7 +154,7 @@ function ManageFAQs() {
                   required
                   rows="2"
                   placeholder="e.g., What are your business hours?"
-                  style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
               </div>
 
@@ -166,7 +166,7 @@ function ManageFAQs() {
                   required
                   rows="4"
                   placeholder="e.g., We are open Monday through Friday from 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM."
-                  style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ddd' }}
+                  style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
               </div>
 
@@ -178,9 +178,9 @@ function ManageFAQs() {
                   onChange={(e) => setFormData({ ...formData, display_order: parseInt(e.target.value) || 0 })}
                   min="0"
                   placeholder="0"
-                  style={{ width: '100px', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
+                  style={{ width: '100px', padding: '8px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
-                <small style={{ display: 'block', color: '#666', marginTop: '5px' }}>
+                <small style={{ display: 'block', color: '#475569', marginTop: '5px' }}>
                   Lower numbers appear first. Use this to control the order of FAQs.
                 </small>
               </div>
@@ -210,10 +210,10 @@ function ManageFAQs() {
 
         {faqs.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-            <p style={{ color: '#666', marginBottom: '20px' }}>
+            <p style={{ color: '#475569', marginBottom: '20px' }}>
               No FAQs yet. Click "Add FAQ" to get started!
             </p>
-            <p style={{ color: '#666', fontSize: '14px' }}>
+            <p style={{ color: '#475569', fontSize: '14px' }}>
               FAQs help the AI customer service answer common questions accurately and consistently.
             </p>
           </div>
@@ -229,7 +229,7 @@ function ManageFAQs() {
                   style={{
                     marginBottom: '15px',
                     opacity: faq.is_active ? 1 : 0.6,
-                    borderLeft: `4px solid ${faq.is_active ? '#007bff' : '#ccc'}`
+                    borderLeft: `4px solid ${faq.is_active ? '#2563EB' : '#ccc'}`
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
@@ -247,8 +247,8 @@ function ManageFAQs() {
                           INACTIVE
                         </span>
                       )}
-                      <h3 style={{ marginBottom: '10px', color: '#333' }}>Q: {faq.question}</h3>
-                      <p style={{ color: '#666', marginBottom: '10px', lineHeight: '1.6' }}>
+                      <h3 style={{ marginBottom: '10px', color: '#0F172A' }}>Q: {faq.question}</h3>
+                      <p style={{ color: '#475569', marginBottom: '10px', lineHeight: '1.6' }}>
                         A: {faq.answer}
                       </p>
                       <small style={{ color: '#999' }}>
@@ -269,7 +269,7 @@ function ManageFAQs() {
                         style={{ 
                           fontSize: '14px', 
                           padding: '8px 16px',
-                          backgroundColor: '#dc3545',
+                          backgroundColor: '#DC2626',
                           color: 'white',
                           border: 'none'
                         }}
