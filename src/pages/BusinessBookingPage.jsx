@@ -72,12 +72,14 @@ function BusinessBookingPage() {
             src={business.business_image_url} 
             alt={business.business_name}
             style={{
-              width: '220px',
-              height: '220px',
-              borderRadius: '50%',
+              width: '100%',
+              maxWidth: '400px',
+              height: '250px',
+              borderRadius: '12px',
               objectFit: 'cover',
               marginBottom: '20px',
-              border: '4px solid #007bff'
+              border: '2px solid #007bff',
+              boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
             }}
             onError={(e) => {
               e.target.style.display = 'none'
