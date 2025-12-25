@@ -88,7 +88,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
               padding: '15px 30px',
               fontSize: '18px',
               borderRadius: '8px',
-              backgroundColor: '#2563EB',
+              backgroundColor: '#007bff',
               color: 'white',
               border: 'none',
               cursor: 'pointer',
@@ -104,14 +104,14 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
               e.target.style.transform = 'translateY(-2px)'
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = '#2563EB'
+              e.target.style.backgroundColor = '#007bff'
               e.target.style.transform = 'translateY(0)'
             }}
             aria-label="Open chat"
           >
             💬 Ask {businessName || 'us'} a question
           </button>
-          <p style={{ marginTop: '10px', color: '#666', fontSize: '14px' }}>
+          <p style={{ marginTop: '10px', color: '#475569', fontSize: '14px' }}>
             Get instant answers about our services, hours, and more
           </p>
         </div>
@@ -129,7 +129,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
           width: '60px',
           height: '60px',
           borderRadius: '50%',
-          backgroundColor: '#2563EB',
+          backgroundColor: '#007bff',
           color: 'white',
           border: 'none',
           cursor: 'pointer',
@@ -170,7 +170,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
       {/* Header */}
       <div
         style={{
-          backgroundColor: '#2563EB',
+          backgroundColor: '#007bff',
           color: 'white',
           padding: '16px',
           borderRadius: '12px 12px 0 0',
@@ -228,8 +228,8 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
                 maxWidth: '80%',
                 padding: '10px 14px',
                 borderRadius: '12px',
-                backgroundColor: message.role === 'user' ? '#2563EB' : '#E2E8F0',
-                color: message.role === 'user' ? 'white' : '#333',
+                backgroundColor: message.role === 'user' ? '#007bff' : '#f1f1f1',
+                color: message.role === 'user' ? 'white' : '#0F172A',
                 wordWrap: 'break-word',
                 fontSize: '14px',
                 lineHeight: '1.4'
@@ -251,7 +251,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
                 padding: '10px 14px',
                 borderRadius: '12px',
                 backgroundColor: '#E2E8F0',
-                color: '#666',
+                color: '#475569',
                 fontSize: '14px'
               }}
             >
@@ -267,7 +267,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
         onSubmit={sendMessage}
         style={{
           padding: '12px',
-          borderTop: '1px solid #E5E7EB',
+          borderTop: '1px solid #e0e0e0',
           display: 'flex',
           gap: '8px'
         }}
@@ -293,7 +293,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
           disabled={loading || !input.trim()}
           style={{
             padding: '10px 20px',
-            backgroundColor: '#2563EB',
+            backgroundColor: '#007bff',
             color: 'white',
             border: 'none',
             borderRadius: '20px',
