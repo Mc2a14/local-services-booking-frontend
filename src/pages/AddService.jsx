@@ -28,13 +28,19 @@ function AddService({ user }) {
     setLoading(true)
 
     try {
+      // Prepare data for API - convert empty strings to null and parse numbers
+      const serviceData = {
+        title: formData.title.trim() || null,
+        description: formData.description.trim() || null,
+        category: formData.category.trim() || null,
+        price: formData.price ? parseFloat(formData.price) : null,
+        duration_minutes: formData.duration_minutes ? parseInt(formData.duration_minutes, 10) : null,
+        image_url: formData.image_url.trim() || null
+      }
+
       await apiRequest('/services', {
         method: 'POST',
-        body: JSON.stringify({
-          ...formData,
-          price: parseFloat(formData.price),
-          duration_minutes: parseInt(formData.duration_minutes)
-        })
+        body: JSON.stringify(serviceData)
       })
       navigate('/')
     } catch (err) {
