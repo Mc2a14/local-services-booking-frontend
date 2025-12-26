@@ -77,39 +77,45 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     }
   }, [isOpen])
 
-  // Scroll input into view when focused (so it's visible above keyboard)
+  // Minimal scroll when input is focused - keep chat box visible
   const handleInputFocus = (e) => {
-    // Store current scroll position
+    // Store current scroll position - we want to maintain it as much as possible
     const currentScroll = window.scrollY
     
-    // Wait a bit for keyboard to appear, then minimal scroll
+    // Only do minimal adjustment if absolutely necessary
+    // Let the browser handle most of the positioning naturally
     setTimeout(() => {
       if (inputRef.current) {
-        // Get input position
+        // Get input position relative to viewport
         const inputRect = inputRef.current.getBoundingClientRect()
         
-        // Estimate keyboard height (typically 250-300px on mobile)
-        const keyboardHeight = window.innerHeight * 0.4 // ~40% of screen
+        // Estimate keyboard height
+        const keyboardHeight = window.innerHeight * 0.4
         const visibleHeight = window.innerHeight - keyboardHeight
         
-        // Only scroll if input is actually covered by keyboard
-        // And only scroll a minimal amount - just enough to peek above keyboard
-        if (inputRect.bottom > visibleHeight) {
-          // Calculate how much is actually hidden
-          const hiddenAmount = inputRect.bottom - visibleHeight
+        // Only scroll if input is significantly hidden (more than 50px)
+        // And scroll very minimally - just 10-15% of what's needed
+        if (inputRect.bottom > visibleHeight + 50) {
+          const hiddenAmount = inputRect.bottom - visibleHeight - 50
           
-          // Scroll only a small amount - just enough to see the input slightly
-          // Much less aggressive - only scroll 30% of what's needed
-          const minimalScroll = hiddenAmount * 0.3
+          // Very minimal scroll - only 10% of hidden amount
+          const minimalScroll = hiddenAmount * 0.1
           const targetScroll = currentScroll + minimalScroll
           
           window.scrollTo({
             top: Math.max(0, targetScroll),
             behavior: 'smooth'
           })
+        } else {
+          // If input is mostly visible, don't scroll at all
+          // Keep current position to preserve chat box visibility
+          window.scrollTo({
+            top: currentScroll,
+            behavior: 'instant'
+          })
         }
       }
-    }, 200) // Shorter delay
+    }, 100) // Very short delay
   }
 
   const sendMessage = async (e) => {
