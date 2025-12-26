@@ -11,6 +11,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef(null)
+  const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
 
   const API_URL = import.meta.env.VITE_API_URL || '/api'
@@ -35,12 +36,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
 
   const scrollToBottom = () => {
     // Only scroll within the messages container - never the page
-    if (messagesEndRef.current) {
-      const messagesContainer = messagesEndRef.current.closest('.chat-messages-container')
-      if (messagesContainer) {
-        // Scroll only the container internally
-        messagesContainer.scrollTop = messagesContainer.scrollHeight
-      }
+    if (messagesContainerRef.current) {
+      // Scroll only the container internally
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight
     }
   }
 
