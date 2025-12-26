@@ -137,54 +137,48 @@ function BusinessBookingPage() {
             <ThemeToggle />
           </div>
 
-          {/* Business Image - Rectangle with Round Edges */}
+          {/* Business Image - Rectangle with Round Edges (No Outer Frame) */}
           <div style={{ 
             display: 'flex', 
             justifyContent: 'center', 
-            marginBottom: '20px' 
+            marginBottom: '20px',
+            padding: '0 20px'
           }}>
             {business.business_image_url ? (
-              <div
-                className="card"
+              <img
+                src={business.business_image_url}
+                alt={business.business_name}
                 style={{
-                  borderRadius: '12px',
-                  overflow: 'hidden',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                  backgroundColor: 'var(--bg-primary)',
-                  border: '1px solid var(--border)',
                   width: '100%',
-                  maxWidth: '300px',
-                  aspectRatio: '4/3'
+                  maxWidth: '400px',
+                  height: 'auto',
+                  aspectRatio: '16/9',
+                  objectFit: 'cover',
+                  borderRadius: '12px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
                 }}
-              >
-                <img
-                  src={business.business_image_url}
-                  alt={business.business_name}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
-                  }}
-                  onError={(e) => {
-                    e.target.style.display = 'none'
-                  }}
-                />
-              </div>
-            ) : (
+                onError={(e) => {
+                  e.target.style.display = 'none'
+                  if (e.target.nextSibling) {
+                    e.target.nextSibling.style.display = 'flex'
+                  }
+                }}
+              />
+            ) : null}
+            {!business.business_image_url && (
               <div
-                className="card"
                 style={{
                   borderRadius: '12px',
                   backgroundColor: 'var(--bg-secondary)',
-                  border: '1px solid var(--border)',
                   width: '100%',
-                  maxWidth: '300px',
-                  aspectRatio: '4/3',
+                  maxWidth: '400px',
+                  aspectRatio: '16/9',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   color: 'var(--text-muted)',
-                  fontSize: '48px'
+                  fontSize: '64px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
                 }}
               >
                 🏢
@@ -259,7 +253,7 @@ function BusinessBookingPage() {
       <div className="container" style={{ maxWidth: '900px' }}>
 
         {/* AI Chat Section */}
-        <div style={{ marginTop: '60px', marginBottom: '40px' }}>
+        <div style={{ marginTop: '30px', marginBottom: '40px' }}>
           <div className="card" style={{ padding: '24px' }}>
             <h2 style={{
               fontSize: '24px',
