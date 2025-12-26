@@ -79,31 +79,29 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
 
   // Scroll input into view when focused (so it's visible above keyboard)
   const handleInputFocus = (e) => {
-    // Wait a bit for keyboard to appear, then scroll input into view
+    // Store current scroll position
+    const currentScroll = window.scrollY
+    
+    // Wait a bit for keyboard to appear, then minimal scroll
     setTimeout(() => {
       if (inputRef.current) {
         // Get input position
         const inputRect = inputRef.current.getBoundingClientRect()
-        const inputTop = inputRect.top + window.scrollY
-        const inputHeight = inputRect.height
         
         // Estimate keyboard height (typically 250-300px on mobile)
         const keyboardHeight = window.innerHeight * 0.4 // ~40% of screen
-        const viewportHeight = window.innerHeight
-        const visibleHeight = viewportHeight - keyboardHeight
+        const visibleHeight = window.innerHeight - keyboardHeight
         
-        // Calculate how much to scroll so input is visible above keyboard
-        // Use less aggressive scrolling - only scroll minimum needed
-        const currentScroll = window.scrollY
-        
-        // Only scroll if input is actually hidden by keyboard
+        // Only scroll if input is actually covered by keyboard
+        // And only scroll a minimal amount - just enough to peek above keyboard
         if (inputRect.bottom > visibleHeight) {
-          // Calculate minimum scroll needed - just enough to see input
-          const scrollNeeded = inputRect.bottom - visibleHeight + 20 // Only 20px padding instead of 50px
+          // Calculate how much is actually hidden
+          const hiddenAmount = inputRect.bottom - visibleHeight
           
-          // Limit maximum scroll to prevent moving too far up
-          const maxScroll = currentScroll + scrollNeeded
-          const targetScroll = Math.min(maxScroll, currentScroll + scrollNeeded * 0.5) // Reduce scroll by 50%
+          // Scroll only a small amount - just enough to see the input slightly
+          // Much less aggressive - only scroll 30% of what's needed
+          const minimalScroll = hiddenAmount * 0.3
+          const targetScroll = currentScroll + minimalScroll
           
           window.scrollTo({
             top: Math.max(0, targetScroll),
@@ -111,7 +109,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           })
         }
       }
-    }, 300) // Wait for keyboard animation
+    }, 200) // Shorter delay
   }
 
   const sendMessage = async (e) => {
