@@ -14,6 +14,7 @@
   --btn-primary-hover: #1D4ED8;
   --btn-secondary: #E2E8F0;
   --accent: #2563EB;
+  --price-color: #2563EB;
   --success: #16A34A;
   --warning: #F59E0B;
   --error: #DC2626;
@@ -25,11 +26,12 @@
   --bg-app: #0F172A;
   --bg-primary: #1E293B;
   --text-primary: #F1F5F9;
-  --text-secondary: #CBD5E1;
+  --text-secondary: #E2E8F0;
   --btn-primary: #3B82F6;
   --btn-primary-hover: #2563EB;
   --btn-secondary: #334155;
   --accent: #60A5FA;
+  --price-color: #60A5FA;
   --success: #22C55E;
   --warning: #FBBF24;
   --error: #EF4444;
@@ -262,4 +264,9 @@ hr {
 .theme-toggle svg {
   width: 20px;
   height: 20px;
+}
+
+/* Price Color */
+.price {
+  color: var(--price-color);
 }
