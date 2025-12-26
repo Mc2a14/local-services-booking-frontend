@@ -26,22 +26,26 @@ function BusinessBookingPage() {
   }
 
   useEffect(() => {
-    // Force page to top immediately on load
-    window.scrollTo(0, 0)
+    // Force page to top immediately on load - before anything renders
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
     
-    loadBusiness()
+    // Prevent scroll for first 2 seconds to ensure header is visible
+    const preventScroll = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    }
     
-    // Keep forcing top position for first second
-    const intervals = [50, 100, 200, 500, 1000]
+    const intervals = [10, 50, 100, 200, 500, 1000, 1500, 2000]
     intervals.forEach(delay => {
       setTimeout(() => {
-        window.scrollTo(0, 0)
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
         document.documentElement.scrollTop = 0
         document.body.scrollTop = 0
       }, delay)
     })
+    
+    loadBusiness()
   }, [businessSlug])
 
   const loadBusiness = async () => {
