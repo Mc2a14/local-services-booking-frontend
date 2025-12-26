@@ -77,36 +77,66 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     }
   }, [isOpen])
 
-  // Minimal scroll when input is focused - only if input is off-screen
-  const handleInputFocus = (e) => {
-    // Wait briefly for keyboard to appear, then check if scroll is needed
-    setTimeout(() => {
-      if (inputRef.current) {
-        // Get input position relative to viewport
-        const inputRect = inputRef.current.getBoundingClientRect()
-        const viewportHeight = window.innerHeight
-        
-        // Estimate keyboard height (typically 40% of viewport on mobile)
-        const keyboardHeight = viewportHeight * 0.4
-        const visibleViewportHeight = viewportHeight - keyboardHeight
-        
-        // Only scroll if input bottom is below visible area (hidden by keyboard)
-        if (inputRect.bottom > visibleViewportHeight) {
-          // Calculate how much input is hidden
-          const hiddenAmount = inputRect.bottom - visibleViewportHeight
-          
-          // Scroll minimal amount - just enough to reveal input with small padding
-          const scrollAmount = hiddenAmount + 10 // 10px padding
-          
-          // Use scrollBy to scroll relative to current position (not absolute)
-          window.scrollBy({
-            top: scrollAmount,
-            behavior: 'smooth'
-          })
-        }
-        // If input is already visible, do nothing - don't scroll
+  // Find the nearest scrollable parent container
+  const findScrollableParent = (element) => {
+    if (!element || !element.parentElement) return null
+    
+    let parent = element.parentElement
+    while (parent && parent !== document.body) {
+      const style = window.getComputedStyle(parent)
+      const overflowY = style.overflowY
+      const overflow = style.overflow
+      
+      // Check if this element is scrollable
+      if (
+        (overflowY === 'auto' || overflowY === 'scroll') ||
+        (overflow === 'auto' || overflow === 'scroll')
+      ) {
+        return parent
       }
-    }, 200) // Wait for keyboard animation to start
+      
+      parent = parent.parentElement
+    }
+    return null
+  }
+
+  // Minimal iOS Safari fix - only scroll nearest scrollable container
+  const handleInputFocus = () => {
+    // Wait briefly for keyboard to appear on iOS
+    setTimeout(() => {
+      if (!inputRef.current) return
+      
+      // Get input position relative to viewport
+      const inputRect = inputRef.current.getBoundingClientRect()
+      const viewportHeight = window.innerHeight
+      
+      // Check if input bottom is below viewport (hidden by keyboard)
+      if (inputRect.bottom > viewportHeight) {
+        // Calculate hidden amount
+        const hidden = inputRect.bottom - viewportHeight
+        
+        // Find the nearest scrollable parent (messages container)
+        const scrollableParent = findScrollableParent(inputRef.current)
+        
+        if (scrollableParent) {
+          // Scroll only the container, not the window
+          const scrollAmount = hidden + 12 // 12px padding
+          
+          // Use smooth scrolling if supported
+          if (scrollableParent.scrollTo) {
+            scrollableParent.scrollTo({
+              top: scrollableParent.scrollTop + scrollAmount,
+              behavior: 'smooth'
+            })
+          } else {
+            // Fallback for older browsers
+            scrollableParent.scrollTop += scrollAmount
+          }
+        }
+        // If no scrollable parent found, do nothing (per requirements)
+      }
+      // If input is already fully visible, do nothing
+    }, 200) // Wait for iOS keyboard animation
   }
 
   const sendMessage = async (e) => {
@@ -244,23 +274,26 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     <div
       className={`chat-widget-container ${inline ? 'chat-widget-mobile' : ''}`}
       style={{
-        position: inline ? 'relative' : 'fixed',
-        bottom: inline ? 'auto' : '20px',
-        right: inline ? 'auto' : '20px',
+        position: inline ? 'fixed' : 'fixed', // Always fixed when open for iOS stability
+        bottom: inline ? '0' : '20px', // Fixed to bottom when inline
+        left: inline ? '0' : 'auto',
+        right: inline ? '0' : '20px',
         width: inline ? '100%' : '380px',
         maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
-        height: inline ? '368px' : '458px', // Reduced by 25% from 490px (490px * 0.75 = 368px)
-        maxHeight: inline ? '368px' : 'calc(100vh - 40px)',
+        height: inline ? '100vh' : '458px', // Full height when inline
+        maxHeight: inline ? '100vh' : 'calc(100vh - 40px)',
         backgroundColor: 'var(--bg-primary)',
-        borderRadius: '12px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+        borderRadius: inline ? '0' : '12px', // No border radius when fullscreen
+        boxShadow: inline ? 'none' : '0 8px 32px rgba(0,0,0,0.2)', // No shadow when fullscreen
         display: 'flex',
         flexDirection: 'column',
-        zIndex: 1000,
-        border: '1px solid var(--border)',
-        marginBottom: inline ? '20px' : '0',
+        zIndex: 9999, // Higher z-index to be above everything
+        border: inline ? 'none' : '1px solid var(--border)',
+        marginBottom: '0',
         // Prevent mobile keyboard from pushing container
-        touchAction: 'manipulation'
+        touchAction: 'manipulation',
+        // iOS safe area support
+        paddingBottom: inline ? 'env(safe-area-inset-bottom)' : '0'
       }}
     >
       {/* Header */}
@@ -268,8 +301,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           backgroundColor: 'var(--btn-ai)',
           color: 'var(--btn-ai-text)',
-          padding: '8px 12px', // Reduced header padding
-          borderRadius: '12px 12px 0 0',
+          padding: '8px 12px',
+          paddingTop: inline ? `calc(8px + env(safe-area-inset-top))` : '8px', // iOS safe area
+          borderRadius: inline ? '0' : '12px 12px 0 0', // No border radius when fullscreen
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -301,19 +335,24 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         </button>
       </div>
 
-      {/* Messages */}
+      {/* Messages - Scrollable area */}
       <div
         className="chat-messages-container"
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '10px 12px 6px 12px', // Slightly reduced padding
+          overflowX: 'hidden',
+          padding: '10px 12px 6px 12px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '8px', // Slightly reduced gap
+          gap: '8px',
           minHeight: 0,
-          alignItems: 'flex-start', // Ensure all content aligns left
-          textAlign: 'left' // Force text alignment to left
+          alignItems: 'flex-start',
+          textAlign: 'left',
+          // iOS smooth scrolling
+          WebkitOverflowScrolling: 'touch',
+          // Ensure proper scrolling behavior
+          overscrollBehavior: 'contain'
         }}
       >
         {messages.map((message, index) => (
@@ -389,16 +428,20 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input - Mobile Optimized */}
+      {/* Input - Fixed at bottom */}
       <form
         onSubmit={sendMessage}
         style={{
-          padding: '8px 10px', // Slightly reduced padding
+          padding: '8px 10px',
+          paddingBottom: inline ? `calc(8px + env(safe-area-inset-bottom))` : '8px', // iOS safe area
           borderTop: '1px solid var(--border)',
           display: 'flex',
           gap: '8px',
           flexShrink: 0,
-          backgroundColor: 'var(--bg-primary)'
+          backgroundColor: 'var(--bg-primary)',
+          // Fixed positioning for input bar
+          position: 'relative',
+          zIndex: 1
         }}
       >
         <input
