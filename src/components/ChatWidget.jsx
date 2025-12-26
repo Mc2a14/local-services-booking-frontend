@@ -184,8 +184,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         right: inline ? 'auto' : '20px',
         width: inline ? '100%' : '380px',
         maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
-        height: inline ? '500px' : '500px',
-        maxHeight: inline ? '500px' : 'calc(100vh - 40px)',
+        height: inline ? '400px' : '500px',
+        maxHeight: inline ? '400px' : 'calc(100vh - 40px)',
         backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
@@ -193,7 +193,12 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         flexDirection: 'column',
         zIndex: 1000,
         border: '1px solid var(--border)',
-        marginBottom: inline ? '30px' : '0'
+        marginBottom: inline ? '20px' : '0',
+        '@media (min-width: 768px)': {
+          height: inline ? '500px' : '500px',
+          maxHeight: inline ? '500px' : 'calc(100vh - 40px)',
+          marginBottom: inline ? '30px' : '0'
+        }
       }}
     >
       {/* Header */}
@@ -201,11 +206,12 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           backgroundColor: 'var(--btn-ai)',
           color: 'var(--btn-ai-text)',
-          padding: '16px',
+          padding: '12px 16px',
           borderRadius: '12px 12px 0 0',
           display: 'flex',
           justifyContent: 'space-between',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexShrink: 0
         }}
       >
         <div>
@@ -238,10 +244,11 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '16px',
+          padding: '12px',
           display: 'flex',
           flexDirection: 'column',
-          gap: '12px'
+          gap: '10px',
+          minHeight: 0
         }}
       >
         {messages.map((message, index) => (
@@ -307,14 +314,16 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      {/* Input - Mobile Optimized */}
       <form
         onSubmit={sendMessage}
         style={{
-          padding: '12px',
+          padding: '10px',
           borderTop: '1px solid var(--border)',
           display: 'flex',
-          gap: '8px'
+          gap: '8px',
+          flexShrink: 0,
+          backgroundColor: 'var(--bg-primary)'
         }}
       >
         <input
@@ -326,13 +335,14 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           disabled={loading}
           style={{
             flex: 1,
-            padding: '10px',
+            padding: '12px 16px',
             border: '1px solid var(--border)',
-            borderRadius: '20px',
-            fontSize: '14px',
+            borderRadius: '24px',
+            fontSize: '16px',
             outline: 'none',
             backgroundColor: 'var(--bg-primary)',
-            color: 'var(--text-primary)'
+            color: 'var(--text-primary)',
+            minHeight: '44px'
           }}
         />
         <button
@@ -340,12 +350,15 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           disabled={loading || !input.trim()}
           className="btn btn-primary"
           style={{
-            padding: '10px 20px',
-            borderRadius: '20px',
+            padding: '12px 20px',
+            minHeight: '44px',
+            minWidth: '70px',
+            borderRadius: '24px',
             cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
             opacity: loading || !input.trim() ? 0.5 : 1,
-            fontSize: '14px',
-            fontWeight: 'bold'
+            fontSize: '15px',
+            fontWeight: '600',
+            flexShrink: 0
           }}
         >
           Send

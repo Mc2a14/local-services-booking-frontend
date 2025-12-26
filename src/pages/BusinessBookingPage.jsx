@@ -76,29 +76,42 @@ function BusinessBookingPage() {
   return (
     <>
       <div className="container" style={{ maxWidth: '900px' }}>
-        {/* AI Hero Section */}
+        {/* AI Hero Section - Mobile Optimized */}
         <div className="card" style={{ 
-          marginBottom: '40px', 
+          marginBottom: '24px', 
           textAlign: 'center',
           background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
           border: '2px solid var(--ai-accent)',
-          padding: '50px 30px'
+          padding: '20px 16px',
+          '@media (min-width: 768px)': {
+            padding: '50px 30px'
+          }
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '20px' }}>👋</div>
+          <div style={{ fontSize: '32px', marginBottom: '12px' }}>👋</div>
           <h1 style={{ 
-            marginBottom: '15px', 
+            marginBottom: '10px', 
             color: 'var(--text-primary)',
-            fontSize: '32px',
-            fontWeight: '600'
+            fontSize: '24px',
+            fontWeight: '600',
+            lineHeight: '1.3',
+            '@media (min-width: 768px)': {
+              fontSize: '32px',
+              marginBottom: '15px'
+            }
           }}>
             Hi! I'm {business.business_name}'s AI Assistant
           </h1>
           <p style={{ 
             color: 'var(--text-secondary)', 
-            fontSize: '18px', 
-            marginBottom: '40px',
+            fontSize: '14px', 
+            marginBottom: '24px',
             maxWidth: '600px',
-            margin: '0 auto 40px'
+            margin: '0 auto 24px',
+            lineHeight: '1.5',
+            '@media (min-width: 768px)': {
+              fontSize: '18px',
+              marginBottom: '40px'
+            }
           }}>
             You can ask questions, check availability, or book a session instantly.
           </p>
@@ -117,25 +130,26 @@ function BusinessBookingPage() {
         </div>
 
         {/* Business Info - Collapsible Secondary Section */}
-        <div style={{ marginBottom: '40px' }}>
+        <div style={{ marginBottom: '24px' }}>
           {/* Contact info - Always visible but secondary */}
           {business.phone && (
             <div style={{ 
               textAlign: 'center', 
-              marginBottom: '20px',
-              padding: '15px',
+              marginBottom: '16px',
+              padding: '12px',
               backgroundColor: 'var(--bg-secondary)',
               borderRadius: '8px',
               border: '1px solid var(--border)'
             }}>
               <p style={{ 
                 color: 'var(--text-muted)', 
-                fontSize: '14px', 
+                fontSize: '13px', 
                 margin: 0,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '8px'
+                gap: '8px',
+                flexWrap: 'wrap'
               }}>
                 <span>📞</span>
                 <a 
@@ -262,20 +276,21 @@ function BusinessBookingPage() {
         </div>
 
         {/* Services Section - Secondary CTA */}
-        <div ref={servicesSectionRef} style={{ marginBottom: '40px' }}>
+        <div ref={servicesSectionRef} style={{ marginBottom: '32px' }}>
           {showBookingServices && (
             <div style={{
-              padding: '15px 20px',
-              marginBottom: '20px',
+              padding: '12px 16px',
+              marginBottom: '16px',
               backgroundColor: 'var(--success-soft)',
               border: '1px solid var(--success)',
               borderRadius: '8px',
               color: 'var(--success)',
-              fontSize: '14px',
+              fontSize: '13px',
               display: 'flex',
               alignItems: 'center',
-              gap: '10px',
-              animation: 'fadeIn 0.3s ease-in'
+              gap: '8px',
+              animation: 'fadeIn 0.3s ease-in',
+              lineHeight: '1.4'
             }}>
               <span>💡</span>
               <span>Our AI suggested booking - check out available services below!</span>
@@ -283,15 +298,15 @@ function BusinessBookingPage() {
           )}
           <div style={{ 
             display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center',
-            marginBottom: '25px'
+            flexDirection: 'column',
+            gap: '8px',
+            marginBottom: '20px'
           }}>
-            <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>What would you like to do?</h2>
+            <h2 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '20px' }}>What would you like to do?</h2>
             <p style={{ 
               margin: 0, 
               color: 'var(--text-secondary)', 
-              fontSize: '14px',
+              fontSize: '13px',
               fontStyle: 'italic'
             }}>
               Or ask me above! 👆
@@ -372,10 +387,16 @@ function BusinessBookingPage() {
                       ⭐ {service.average_rating} ({service.review_count} {service.review_count === 1 ? 'review' : 'reviews'})
                     </p>
                   )}
-                  <div style={{ marginTop: '10px' }}>
+                  <div style={{ marginTop: '12px' }}>
                     <button 
                       className="btn btn-secondary"
-                      style={{ width: '100%' }}
+                      style={{ 
+                        width: '100%',
+                        minHeight: '44px',
+                        padding: '12px 20px',
+                        fontSize: '16px',
+                        fontWeight: '600'
+                      }}
                       onClick={(e) => {
                         e.stopPropagation()
                         handleBookService(service.id)
@@ -451,13 +472,13 @@ function BusinessBookingPage() {
 
         {/* Atencio Platform Branding - Subtle Footer */}
         <div style={{
-          marginTop: '60px',
-          paddingTop: '30px',
+          marginTop: '40px',
+          paddingTop: '24px',
           borderTop: '1px solid var(--border)',
           textAlign: 'center'
         }}>
           <p style={{
-            fontSize: '12px',
+            fontSize: '11px',
             color: 'var(--text-muted)',
             margin: 0,
             opacity: 0.7

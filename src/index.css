@@ -87,7 +87,13 @@ code {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 20px;
+  }
 }
 
 /* Cards */
@@ -105,9 +111,9 @@ code {
   background-color: var(--bg-secondary);
 }
 
-/* Buttons */
+/* Buttons - Mobile Optimized */
 .btn {
-  padding: 10px 20px;
+  padding: 12px 20px;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -117,6 +123,8 @@ code {
   text-decoration: none;
   display: inline-block;
   text-align: center;
+  min-height: 44px; /* Thumb-friendly touch target */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn-primary {
