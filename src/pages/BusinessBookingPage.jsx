@@ -49,7 +49,7 @@ function BusinessBookingPage() {
     return (
       <div className="container" style={{ maxWidth: '600px' }}>
         <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-          <h1 style={{ color: '#DC2626' }}>Business Not Found</h1>
+          <h1 style={{ color: 'var(--error)' }}>Business Not Found</h1>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
             The business page you're looking for doesn't exist.
           </p>
@@ -61,183 +61,259 @@ function BusinessBookingPage() {
     )
   }
 
-
   return (
     <>
-      <div className="container" style={{ maxWidth: '800px' }}>
-        {/* Business Header */}
-      <div className="card" style={{ marginBottom: '30px', textAlign: 'center' }}>
-        {business.business_image_url && (
-          <img 
-            src={business.business_image_url} 
-            alt={business.business_name}
-            style={{
-              width: '100%',
-              maxWidth: '400px',
-              height: '250px',
-              borderRadius: '12px',
-              objectFit: 'cover',
-              marginBottom: '20px',
-              border: '2px solid var(--accent)',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
-            }}
-            onError={(e) => {
-              e.target.style.display = 'none'
-            }}
-          />
-        )}
-        <h1 style={{ marginBottom: '10px', color: 'var(--accent)' }}>{business.business_name}</h1>
-        {business.description && (
-          <p style={{ color: 'var(--text-secondary)', fontSize: '18px', marginBottom: '20px' }}>
-            {business.description}
+      <div className="container" style={{ maxWidth: '900px' }}>
+        {/* AI Hero Section */}
+        <div className="card" style={{ 
+          marginBottom: '40px', 
+          textAlign: 'center',
+          background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
+          border: '2px solid var(--ai-accent)',
+          padding: '50px 30px'
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '20px' }}>👋</div>
+          <h1 style={{ 
+            marginBottom: '15px', 
+            color: 'var(--text-primary)',
+            fontSize: '32px',
+            fontWeight: '600'
+          }}>
+            Hi! I'm {business.business_name}'s AI Assistant
+          </h1>
+          <p style={{ 
+            color: 'var(--text-secondary)', 
+            fontSize: '18px', 
+            marginBottom: '40px',
+            maxWidth: '600px',
+            margin: '0 auto 40px'
+          }}>
+            You can ask questions, check availability, or book a session instantly.
           </p>
-        )}
-        {business.phone && (
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '10px' }}>
-            📞 {business.phone}
-          </p>
-        )}
-        {business.address && (
-          <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            📍 {business.address}
-          </p>
-        )}
-      </div>
-
-      {/* AI Chat Widget - Prominent placement */}
-      <ChatWidget businessSlug={businessSlug} businessName={business?.business_name} inline={true} />
-
-      {/* Services */}
-      <h2 style={{ marginBottom: '20px' }}>Available Services</h2>
-      
-      {services.length === 0 ? (
-        <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-          <p style={{ color: 'var(--text-secondary)' }}>No services available at the moment.</p>
+          
+          {/* AI Chat Widget - Open by default as primary CTA */}
+          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+            <ChatWidget 
+              businessSlug={businessSlug} 
+              businessName={business.business_name} 
+              inline={true} 
+              defaultOpen={true}
+            />
+          </div>
         </div>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-          {services.map(service => (
-            <div 
-              key={service.id} 
-              className="card" 
-              style={{ 
-                cursor: 'pointer', 
-                transition: 'transform 0.2s',
-                textAlign: 'left'
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-              onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-              onClick={() => handleBookService(service.id)}
-            >
-              {service.image_url ? (
+
+        {/* Business Info - Secondary Card */}
+        <div className="card" style={{ 
+          marginBottom: '40px',
+          padding: '30px',
+          backgroundColor: 'var(--bg-secondary)'
+        }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px', alignItems: 'center' }}>
+            {business.business_image_url && (
+              <div style={{ textAlign: 'center' }}>
                 <img 
-                  src={service.image_url} 
-                  alt={service.title} 
-                  style={{ width: '100%', height: '200px', objectFit: 'cover', borderRadius: '5px', marginBottom: '15px' }}
+                  src={business.business_image_url} 
+                  alt={business.business_name}
+                  style={{
+                    width: '100%',
+                    maxWidth: '200px',
+                    height: '200px',
+                    borderRadius: '12px',
+                    objectFit: 'cover',
+                    border: '2px solid var(--border)',
+                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                  }}
                   onError={(e) => {
                     e.target.style.display = 'none'
                   }}
                 />
-              ) : (
-                <div style={{ 
-                  width: '100%', 
-                  height: '200px', 
-                  backgroundColor: '#e9ecef', 
-                  borderRadius: '5px', 
-                  marginBottom: '15px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#E2E8F0'
-                }}>
-                  No Image
-                </div>
-              )}
-              <h3>{service.title}</h3>
-              {service.category && (
-                <p style={{ color: 'var(--accent)', fontSize: '14px', marginBottom: '10px' }}>
-                  {service.category}
+              </div>
+            )}
+            <div>
+              <h2 style={{ marginBottom: '15px', color: 'var(--text-primary)', fontSize: '24px' }}>
+                About {business.business_name}
+              </h2>
+              {business.description && (
+                <p style={{ color: 'var(--text-secondary)', fontSize: '16px', marginBottom: '20px', lineHeight: '1.6' }}>
+                  {business.description}
                 </p>
               )}
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '10px', minHeight: '50px' }}>
-                {service.description}
-              </p>
-              <p style={{ fontWeight: 'bold', fontSize: '24px', color: 'var(--price-color)', marginBottom: '10px' }}>
-                ${parseFloat(service.price).toFixed(2)}
-              </p>
-              {service.duration_minutes && (
-                <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '10px' }}>
-                  ⏱️ {service.duration_minutes} minutes
-                </p>
-              )}
-              {service.average_rating && (
-                <p style={{ marginBottom: '15px' }}>
-                  ⭐ {service.average_rating} ({service.review_count} {service.review_count === 1 ? 'review' : 'reviews'})
-                </p>
-              )}
-              <button 
-                className="btn btn-primary"
-                style={{ width: '100%', marginTop: '10px' }}
-              >
-                Book Now
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Testimonials Section */}
-      {testimonials.length > 0 && (
-        <>
-          <h2 style={{ marginTop: '50px', marginBottom: '20px' }}>What Our Customers Say</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-            {testimonials.map(testimonial => (
-              <div key={testimonial.id} className="card" style={{ padding: '20px' }}>
-                <div style={{ marginBottom: '15px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
-                    <div style={{ 
-                      fontSize: '24px',
-                      marginRight: '10px'
-                    }}>
-                      {'⭐'.repeat(testimonial.rating)}
-                    </div>
-                    <div>
-                      <strong>{testimonial.customer_name}</strong>
-                      {testimonial.service_title && (
-                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                          {testimonial.service_title}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                {testimonial.comment && (
-                  <p style={{ color: '#0F172A', lineHeight: '1.6', fontStyle: 'italic', margin: 0 }}>
-                    "{testimonial.comment}"
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {business.phone && (
+                  <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+                    📞 {business.phone}
                   </p>
                 )}
-                <div style={{ 
-                  fontSize: '12px', 
-                  color: '#999', 
-                  marginTop: '15px',
-                  borderTop: '1px solid #eee',
-                  paddingTop: '10px'
-                }}>
-                  {new Date(testimonial.created_at).toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}
-                </div>
+                {business.address && (
+                  <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+                    📍 {business.address}
+                  </p>
+                )}
               </div>
-            ))}
+            </div>
           </div>
-        </>
-      )}
+        </div>
+
+        {/* Services Section - Secondary CTA */}
+        <div style={{ marginBottom: '40px' }}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'space-between', 
+            alignItems: 'center',
+            marginBottom: '25px'
+          }}>
+            <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Available Services</h2>
+            <p style={{ 
+              margin: 0, 
+              color: 'var(--text-secondary)', 
+              fontSize: '14px',
+              fontStyle: 'italic'
+            }}>
+              Or ask me about them above! 👆
+            </p>
+          </div>
+          
+          {services.length === 0 ? (
+            <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+              <p style={{ color: 'var(--text-secondary)' }}>No services available at the moment.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+              {services.map(service => (
+                <div 
+                  key={service.id} 
+                  className="card" 
+                  style={{ 
+                    cursor: 'pointer', 
+                    transition: 'transform 0.2s, box-shadow 0.2s',
+                    textAlign: 'left'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-5px)'
+                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)'
+                  }}
+                  onClick={() => handleBookService(service.id)}
+                >
+                  {service.image_url ? (
+                    <img 
+                      src={service.image_url} 
+                      alt={service.title} 
+                      style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px' }}
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  ) : (
+                    <div style={{ 
+                      width: '100%', 
+                      height: '180px', 
+                      backgroundColor: 'var(--bg-secondary)', 
+                      borderRadius: '8px', 
+                      marginBottom: '15px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--text-muted)',
+                      border: '1px solid var(--border)'
+                    }}>
+                      No Image
+                    </div>
+                  )}
+                  <h3 style={{ marginBottom: '8px', color: 'var(--text-primary)' }}>{service.title}</h3>
+                  {service.category && (
+                    <p style={{ color: 'var(--accent)', fontSize: '13px', marginBottom: '10px', fontWeight: '500' }}>
+                      {service.category}
+                    </p>
+                  )}
+                  <p style={{ color: 'var(--text-secondary)', marginBottom: '12px', minHeight: '40px', fontSize: '14px', lineHeight: '1.5' }}>
+                    {service.description}
+                  </p>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <p style={{ fontWeight: 'bold', fontSize: '22px', color: 'var(--price-color)', margin: 0 }}>
+                      ${parseFloat(service.price).toFixed(2)}
+                    </p>
+                    {service.duration_minutes && (
+                      <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: 0 }}>
+                        ⏱️ {service.duration_minutes} min
+                      </p>
+                    )}
+                  </div>
+                  {service.average_rating && (
+                    <p style={{ marginBottom: '15px', fontSize: '14px', color: 'var(--text-secondary)' }}>
+                      ⭐ {service.average_rating} ({service.review_count} {service.review_count === 1 ? 'review' : 'reviews'})
+                    </p>
+                  )}
+                  <button 
+                    className="btn btn-secondary"
+                    style={{ width: '100%', marginTop: '10px' }}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleBookService(service.id)
+                    }}
+                  >
+                    Book Appointment
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Testimonials Section */}
+        {testimonials.length > 0 && (
+          <div style={{ marginTop: '60px' }}>
+            <h2 style={{ marginBottom: '25px', color: 'var(--text-primary)' }}>What Our Customers Say</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+              {testimonials.map(testimonial => (
+                <div key={testimonial.id} className="card" style={{ padding: '25px', backgroundColor: 'var(--bg-secondary)' }}>
+                  <div style={{ marginBottom: '15px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                      <div style={{ 
+                        fontSize: '20px',
+                        marginRight: '10px'
+                      }}>
+                        {'⭐'.repeat(testimonial.rating)}
+                      </div>
+                      <div>
+                        <strong style={{ color: 'var(--text-primary)' }}>{testimonial.customer_name}</strong>
+                        {testimonial.service_title && (
+                          <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                            {testimonial.service_title}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  {testimonial.comment && (
+                    <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic', margin: '0 0 15px 0' }}>
+                      "{testimonial.comment}"
+                    </p>
+                  )}
+                  <div style={{ 
+                    fontSize: '12px', 
+                    color: 'var(--text-muted)', 
+                    marginTop: '15px',
+                    borderTop: '1px solid var(--border)',
+                    paddingTop: '12px'
+                  }}>
+                    {new Date(testimonial.created_at).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </>
   )
 }
 
 export default BusinessBookingPage
-

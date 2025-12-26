@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 
-function ChatWidget({ businessSlug, businessName, inline = false }) {
-  const [isOpen, setIsOpen] = useState(false)
+function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = false }) {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
