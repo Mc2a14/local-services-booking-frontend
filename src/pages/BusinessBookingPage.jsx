@@ -77,41 +77,25 @@ function BusinessBookingPage() {
     <>
       <div className="container" style={{ maxWidth: '900px' }}>
         {/* AI Hero Section - Mobile Optimized */}
-        <div className="card" style={{ 
+        <div className="card hero-section" style={{ 
           marginBottom: '24px', 
           textAlign: 'center',
           background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-          border: '2px solid var(--ai-accent)',
-          padding: '20px 16px',
-          '@media (min-width: 768px)': {
-            padding: '50px 30px'
-          }
+          border: '2px solid var(--ai-accent)'
         }}>
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>👋</div>
-          <h1 style={{ 
-            marginBottom: '10px', 
+          <div className="hero-emoji">👋</div>
+          <h1 className="hero-title" style={{ 
             color: 'var(--text-primary)',
-            fontSize: '24px',
             fontWeight: '600',
-            lineHeight: '1.3',
-            '@media (min-width: 768px)': {
-              fontSize: '32px',
-              marginBottom: '15px'
-            }
+            lineHeight: '1.3'
           }}>
             Hi! I'm {business.business_name}'s AI Assistant
           </h1>
-          <p style={{ 
+          <p className="hero-subtext" style={{ 
             color: 'var(--text-secondary)', 
-            fontSize: '14px', 
-            marginBottom: '24px',
             maxWidth: '600px',
-            margin: '0 auto 24px',
-            lineHeight: '1.5',
-            '@media (min-width: 768px)': {
-              fontSize: '18px',
-              marginBottom: '40px'
-            }
+            margin: '0 auto',
+            lineHeight: '1.5'
           }}>
             You can ask questions, check availability, or book a session instantly.
           </p>

@@ -178,6 +178,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
 
   return (
     <div
+      className={inline ? 'chat-widget-mobile' : ''}
       style={{
         position: inline ? 'relative' : 'fixed',
         bottom: inline ? 'auto' : '20px',
@@ -193,12 +194,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         flexDirection: 'column',
         zIndex: 1000,
         border: '1px solid var(--border)',
-        marginBottom: inline ? '20px' : '0',
-        '@media (min-width: 768px)': {
-          height: inline ? '500px' : '500px',
-          maxHeight: inline ? '500px' : 'calc(100vh - 40px)',
-          marginBottom: inline ? '30px' : '0'
-        }
+        marginBottom: inline ? '20px' : '0'
       }}
     >
       {/* Header */}

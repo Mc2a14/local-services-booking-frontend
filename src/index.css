@@ -351,3 +351,54 @@ hr {
     transform: translateY(0);
   }
 }
+
+/* Mobile Optimizations */
+.hero-section {
+  padding: 20px 16px;
+}
+
+.hero-emoji {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.hero-subtext {
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.chat-widget-mobile {
+  height: 400px;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding: 50px 30px;
+  }
+
+  .hero-emoji {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .hero-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+  }
+
+  .hero-subtext {
+    font-size: 18px;
+    margin-bottom: 40px;
+  }
+
+  .chat-widget-mobile {
+    height: 500px;
+    margin-bottom: 30px;
+  }
+}
