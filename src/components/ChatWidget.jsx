@@ -304,12 +304,11 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '12px',
+          padding: '12px 12px 4px 12px', // Reduced bottom padding significantly
           display: 'flex',
           flexDirection: 'column',
-          gap: '10px',
-          minHeight: 0,
-          paddingBottom: '8px' // Reduce bottom padding to bring input closer
+          gap: '8px', // Reduced gap between messages
+          minHeight: 0
         }}
       >
         {messages.map((message, index) => (
@@ -379,7 +378,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       <form
         onSubmit={sendMessage}
         style={{
-          padding: '8px 10px', // Reduced padding
+          padding: '6px 10px', // Further reduced padding
           borderTop: '1px solid var(--border)',
           display: 'flex',
           gap: '8px',
