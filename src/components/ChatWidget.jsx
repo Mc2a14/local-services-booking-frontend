@@ -274,26 +274,22 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     <div
       className={`chat-widget-container ${inline ? 'chat-widget-mobile' : ''}`}
       style={{
-        position: inline ? 'fixed' : 'fixed', // Always fixed when open for iOS stability
-        bottom: inline ? '0' : '20px', // Fixed to bottom when inline
-        left: inline ? '0' : 'auto',
-        right: inline ? '0' : '20px',
+        position: inline ? 'relative' : 'fixed',
+        bottom: inline ? 'auto' : '20px',
+        right: inline ? 'auto' : '20px',
         width: inline ? '100%' : '380px',
         maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
-        height: inline ? '100vh' : '458px', // Full height when inline
-        maxHeight: inline ? '100vh' : 'calc(100vh - 40px)',
+        height: inline ? '368px' : '458px',
+        maxHeight: inline ? '368px' : 'calc(100vh - 40px)',
         backgroundColor: 'var(--bg-primary)',
-        borderRadius: inline ? '0' : '12px', // No border radius when fullscreen
-        boxShadow: inline ? 'none' : '0 8px 32px rgba(0,0,0,0.2)', // No shadow when fullscreen
+        borderRadius: '12px',
+        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
         display: 'flex',
         flexDirection: 'column',
-        zIndex: 9999, // Higher z-index to be above everything
-        border: inline ? 'none' : '1px solid var(--border)',
-        marginBottom: '0',
-        // Prevent mobile keyboard from pushing container
-        touchAction: 'manipulation',
-        // iOS safe area support
-        paddingBottom: inline ? 'env(safe-area-inset-bottom)' : '0'
+        zIndex: 1000,
+        border: '1px solid var(--border)',
+        marginBottom: inline ? '20px' : '0',
+        touchAction: 'manipulation'
       }}
     >
       {/* Header */}
@@ -302,8 +298,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           backgroundColor: 'var(--btn-ai)',
           color: 'var(--btn-ai-text)',
           padding: '8px 12px',
-          paddingTop: inline ? `calc(8px + env(safe-area-inset-top))` : '8px', // iOS safe area
-          borderRadius: inline ? '0' : '12px 12px 0 0', // No border radius when fullscreen
+          borderRadius: '12px 12px 0 0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -433,7 +428,6 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         onSubmit={sendMessage}
         style={{
           padding: '8px 10px',
-          paddingBottom: inline ? `calc(8px + env(safe-area-inset-bottom))` : '8px', // iOS safe area
           borderTop: '1px solid var(--border)',
           display: 'flex',
           gap: '8px',
