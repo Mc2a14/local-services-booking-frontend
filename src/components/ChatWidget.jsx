@@ -248,8 +248,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         right: inline ? 'auto' : '20px',
         width: inline ? '100%' : '380px',
         maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
-        height: inline ? '350px' : '450px', // Reduced height to make it more compact
-        maxHeight: inline ? '350px' : 'calc(100vh - 40px)',
+        height: inline ? '280px' : '350px', // Significantly reduced height - much more compact
+        maxHeight: inline ? '280px' : 'calc(100vh - 40px)',
         backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
@@ -304,10 +304,10 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '8px 12px 0px 12px', // Zero bottom padding - maximum compactness
+          padding: '6px 10px 0px 10px', // Reduced all padding
           display: 'flex',
           flexDirection: 'column',
-          gap: '4px', // Minimal gap - 50% tighter
+          gap: '2px', // Minimal gap - very tight
           minHeight: 0
         }}
       >
@@ -324,13 +324,13 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             <div
               style={{
                 maxWidth: '80%',
-                padding: '6px 10px', // Reduced padding - 50% smaller
-                borderRadius: '12px',
+                padding: '5px 8px', // Even smaller padding
+                borderRadius: '10px', // Slightly smaller radius
                 backgroundColor: message.role === 'user' ? 'var(--chat-user-bubble)' : 'var(--chat-ai-bubble)',
                 color: message.role === 'user' ? 'var(--chat-user-text)' : 'var(--chat-ai-text)',
                 wordWrap: 'break-word',
-                fontSize: '14px',
-                lineHeight: '1.3', // Tighter line height
+                fontSize: '13px', // Slightly smaller font
+                lineHeight: '1.25', // Tighter line height
                 border: message.isSuggestion ? '1px solid var(--ai-accent)' : 'none',
                 marginBottom: '0' // No margin
               }}
@@ -379,10 +379,10 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       <form
         onSubmit={sendMessage}
         style={{
-          padding: '2px 10px', // Minimal padding - 50% reduced
+          padding: '4px 8px', // Minimal padding
           borderTop: '1px solid var(--border)',
           display: 'flex',
-          gap: '8px',
+          gap: '6px', // Smaller gap
           flexShrink: 0,
           backgroundColor: 'var(--bg-primary)'
         }}
@@ -397,14 +397,14 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           disabled={loading}
           style={{
             flex: 1,
-            padding: '10px 14px', // Slightly reduced padding
+            padding: '8px 12px', // Reduced padding
             border: '1px solid var(--border)',
-            borderRadius: '24px',
-            fontSize: '16px',
+            borderRadius: '20px', // Slightly smaller radius
+            fontSize: '15px', // Slightly smaller font
             outline: 'none',
             backgroundColor: 'var(--bg-primary)',
             color: 'var(--text-primary)',
-            minHeight: '44px',
+            minHeight: '38px', // Smaller input height
             touchAction: 'manipulation'
           }}
         />
