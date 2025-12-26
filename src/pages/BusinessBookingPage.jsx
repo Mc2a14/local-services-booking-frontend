@@ -302,23 +302,26 @@ function BusinessBookingPage() {
               <p style={{ color: 'var(--text-secondary)' }}>I don't have any services listed at the moment. Feel free to ask me questions above!</p>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
               {services.map(service => (
                 <div 
                   key={service.id} 
                   className="card" 
                   style={{ 
                     cursor: 'pointer', 
-                    transition: 'transform 0.2s, box-shadow 0.2s',
-                    textAlign: 'left'
+                    transition: 'all 0.2s ease',
+                    textAlign: 'left',
+                    border: '1px solid var(--border)'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-5px)'
-                    e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.15)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+                    e.currentTarget.style.borderColor = 'var(--accent)'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)'
                     e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)'
+                    e.currentTarget.style.borderColor = 'var(--border)'
                   }}
                   onClick={() => handleBookService(service.id)}
                 >
@@ -405,25 +408,39 @@ function BusinessBookingPage() {
           )}
         </div>
 
-        {/* Testimonials Section */}
+        {/* Trust Signals - Testimonials */}
         {testimonials.length > 0 && (
-          <div style={{ marginTop: '60px' }}>
-            <h2 style={{ marginBottom: '25px', color: 'var(--text-primary)' }}>What Our Customers Say</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+          <div style={{ marginTop: '48px' }}>
+            <h2 style={{ 
+              marginBottom: '20px', 
+              color: 'var(--text-primary)',
+              fontSize: '18px',
+              fontWeight: '600'
+            }}>
+              Trusted by Our Customers
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
               {testimonials.map(testimonial => (
-                <div key={testimonial.id} className="card" style={{ padding: '25px', backgroundColor: 'var(--bg-secondary)' }}>
-                  <div style={{ marginBottom: '15px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                <div key={testimonial.id} className="card" style={{ 
+                  padding: '20px', 
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)'
+                }}>
+                  <div style={{ marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                       <div style={{ 
-                        fontSize: '20px',
-                        marginRight: '10px'
+                        fontSize: '16px',
+                        lineHeight: '1.2',
+                        flexShrink: 0
                       }}>
                         {'⭐'.repeat(testimonial.rating)}
                       </div>
-                      <div>
-                        <strong style={{ color: 'var(--text-primary)' }}>{testimonial.customer_name}</strong>
+                      <div style={{ flex: 1 }}>
+                        <strong style={{ color: 'var(--text-primary)', fontSize: '14px', display: 'block', marginBottom: '4px' }}>
+                          {testimonial.customer_name}
+                        </strong>
                         {testimonial.service_title && (
-                          <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                          <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
                             {testimonial.service_title}
                           </div>
                         )}
@@ -431,23 +448,15 @@ function BusinessBookingPage() {
                     </div>
                   </div>
                   {testimonial.comment && (
-                    <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', fontStyle: 'italic', margin: '0 0 15px 0' }}>
+                    <p style={{ 
+                      color: 'var(--text-secondary)', 
+                      lineHeight: '1.5', 
+                      fontSize: '13px',
+                      margin: '0 0 12px 0' 
+                    }}>
                       "{testimonial.comment}"
                     </p>
                   )}
-                  <div style={{ 
-                    fontSize: '12px', 
-                    color: 'var(--text-muted)', 
-                    marginTop: '15px',
-                    borderTop: '1px solid var(--border)',
-                    paddingTop: '12px'
-                  }}>
-                    {new Date(testimonial.created_at).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}
-                  </div>
                 </div>
               ))}
             </div>
