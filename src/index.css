@@ -87,7 +87,7 @@ code {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 16px;
+  padding: 8px; /* Reduced top padding for mobile */
 }
 
 @media (min-width: 768px) {
