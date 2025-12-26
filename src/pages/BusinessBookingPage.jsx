@@ -448,6 +448,23 @@ function BusinessBookingPage() {
             </div>
           </div>
         )}
+
+        {/* Atencio Platform Branding - Subtle Footer */}
+        <div style={{
+          marginTop: '60px',
+          paddingTop: '30px',
+          borderTop: '1px solid var(--border)',
+          textAlign: 'center'
+        }}>
+          <p style={{
+            fontSize: '12px',
+            color: 'var(--text-muted)',
+            margin: 0,
+            opacity: 0.7
+          }}>
+            Powered by Atencio
+          </p>
+        </div>
       </div>
     </>
   )
