@@ -104,7 +104,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       const updatedMessages = [...newMessages, { role: 'assistant', content: data.response }]
       setMessages(updatedMessages)
 
-      // Suggest booking if relevant (but don't auto-scroll - let user continue chatting)
+      // Suggest booking if relevant
       if (shouldSuggestBooking(data.response, userMessage)) {
         setTimeout(() => {
           setMessages([
@@ -115,11 +115,10 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
               isSuggestion: true
             }
           ])
-          // Don't auto-scroll to services - let user continue chatting
-          // User can scroll down manually if they want to see services
-          // if (onSuggestBooking) {
-          //   onSuggestBooking()
-          // }
+          // Trigger booking modal via callback
+          if (onSuggestBooking) {
+            onSuggestBooking()
+          }
         }, 1000) // Small delay to feel natural
       }
     } catch (error) {
