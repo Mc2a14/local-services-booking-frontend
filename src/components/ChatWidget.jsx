@@ -34,7 +34,17 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   }
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Only scroll within the messages container, not the entire page
+    if (messagesEndRef.current) {
+      const messagesContainer = messagesEndRef.current.parentElement?.closest('.chat-messages-container')
+      if (messagesContainer) {
+        // Scroll the container, not the page
+        messagesContainer.scrollTop = messagesContainer.scrollHeight
+      } else {
+        // Fallback: use scrollIntoView but with block: 'nearest' to prevent page scroll
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
+      }
+    }
   }
 
   // Track if this is the initial render to prevent scroll on page load
@@ -100,7 +110,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       const updatedMessages = [...newMessages, { role: 'assistant', content: data.response }]
       setMessages(updatedMessages)
 
-      // Suggest booking if relevant
+      // Suggest booking if relevant (but don't auto-scroll - let user continue chatting)
       if (shouldSuggestBooking(data.response, userMessage)) {
         setTimeout(() => {
           setMessages([
@@ -111,9 +121,11 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
               isSuggestion: true
             }
           ])
-          if (onSuggestBooking) {
-            onSuggestBooking()
-          }
+          // Don't auto-scroll to services - let user continue chatting
+          // User can scroll down manually if they want to see services
+          // if (onSuggestBooking) {
+          //   onSuggestBooking()
+          // }
         }, 1000) // Small delay to feel natural
       }
     } catch (error) {
@@ -254,6 +266,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
 
       {/* Messages */}
       <div
+        className="chat-messages-container"
         style={{
           flex: 1,
           overflowY: 'auto',
