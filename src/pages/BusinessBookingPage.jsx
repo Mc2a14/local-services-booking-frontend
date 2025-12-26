@@ -122,7 +122,7 @@ function BusinessBookingPage() {
       <div style={{
         width: '100%',
         background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-        padding: '40px 20px',
+        padding: '40px 20px 16px 20px',
         borderBottom: '1px solid var(--border)',
         position: 'relative'
       }}>
