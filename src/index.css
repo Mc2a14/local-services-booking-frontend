@@ -410,4 +410,13 @@ hr {
     height: 500px;
     margin-bottom: 30px;
   }
+
+  .hero-split-layout {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  .hero-split-layout > div:first-child {
+    text-align: center !important;
+  }
 }

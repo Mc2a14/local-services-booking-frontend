@@ -119,8 +119,7 @@ function BusinessBookingPage() {
       <div style={{
         width: '100%',
         background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-        padding: '80px 20px',
-        textAlign: 'center',
+        padding: '60px 20px',
         borderBottom: '1px solid var(--border)',
         position: 'relative'
       }}>
@@ -135,47 +134,114 @@ function BusinessBookingPage() {
             <ThemeToggle />
           </div>
 
-          {/* Business Name */}
-          <h1 style={{
-            fontSize: 'clamp(32px, 5vw, 48px)',
-            fontWeight: '700',
-            color: 'var(--text-primary)',
-            marginBottom: '16px',
-            lineHeight: '1.2'
-          }}>
-            {business.business_name}
-          </h1>
-
-          {/* Short Description */}
-          {business.description && (
-            <p style={{
-              fontSize: 'clamp(16px, 2vw, 20px)',
-              color: 'var(--text-secondary)',
-              marginBottom: '32px',
-              maxWidth: '700px',
-              marginLeft: 'auto',
-              marginRight: 'auto',
-              lineHeight: '1.5'
-            }}>
-              {business.description.split('\n')[0].substring(0, 150)}
-              {business.description.split('\n')[0].length > 150 ? '...' : ''}
-            </p>
-          )}
-
-          {/* Primary CTA Button */}
-          <button
-            onClick={() => setShowBookingModal(true)}
-            className="btn btn-primary"
+          {/* Split Layout: Text Left, Image Right */}
+          <div
             style={{
-              fontSize: '18px',
-              padding: '16px 40px',
-              borderRadius: '8px',
-              fontWeight: '600',
-              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '40px',
+              alignItems: 'center'
             }}
+            className="hero-split-layout"
           >
-            Book a Session
-          </button>
+            {/* Left Side: Text and CTA */}
+            <div style={{
+              textAlign: 'left'
+            }}>
+              {/* Business Name */}
+              <h1 style={{
+                fontSize: 'clamp(32px, 5vw, 48px)',
+                fontWeight: '700',
+                color: 'var(--text-primary)',
+                marginBottom: '16px',
+                lineHeight: '1.2'
+              }}>
+                {business.business_name}
+              </h1>
+
+              {/* Short Description */}
+              {business.description && (
+                <p style={{
+                  fontSize: 'clamp(16px, 2vw, 20px)',
+                  color: 'var(--text-secondary)',
+                  marginBottom: '32px',
+                  lineHeight: '1.5'
+                }}>
+                  {business.description.split('\n')[0].substring(0, 150)}
+                  {business.description.split('\n')[0].length > 150 ? '...' : ''}
+                </p>
+              )}
+
+              {/* Primary CTA Button */}
+              <button
+                onClick={() => setShowBookingModal(true)}
+                className="btn btn-primary"
+                style={{
+                  fontSize: '18px',
+                  padding: '16px 40px',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+                }}
+              >
+                Book a Session
+              </button>
+            </div>
+
+            {/* Right Side: Business Image */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <div
+                className="card"
+                style={{
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  backgroundColor: 'var(--bg-primary)',
+                  border: '1px solid var(--border)',
+                  width: '100%',
+                  maxWidth: '400px',
+                  aspectRatio: '4/3'
+                }}
+              >
+                {business.business_image_url ? (
+                  <img
+                    src={business.business_image_url}
+                    alt={business.business_name}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover'
+                    }}
+                    onError={(e) => {
+                      // Show placeholder if image fails to load
+                      e.target.style.display = 'none'
+                      if (e.target.nextSibling) {
+                        e.target.nextSibling.style.display = 'flex'
+                      }
+                    }}
+                  />
+                ) : null}
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    display: business.business_image_url ? 'none' : 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: 'var(--bg-secondary)',
+                    color: 'var(--text-muted)',
+                    fontSize: '48px'
+                  }}
+                >
+                  🏢
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
