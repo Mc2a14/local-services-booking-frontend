@@ -248,8 +248,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         right: inline ? 'auto' : '20px',
         width: inline ? '100%' : '380px',
         maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
-        height: inline ? '280px' : '350px', // Significantly reduced height - much more compact
-        maxHeight: inline ? '280px' : 'calc(100vh - 40px)',
+        height: inline ? '490px' : '610px', // Increased by 75% - much bigger conversation area (280px * 1.75 = 490px)
+        maxHeight: inline ? '490px' : 'calc(100vh - 40px)',
         backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
         boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
@@ -324,15 +324,15 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             <div
               style={{
                 maxWidth: '80%',
-                padding: '5px 8px', // Even smaller padding
-                borderRadius: '10px', // Slightly smaller radius
+                padding: '10px 14px', // Increased padding for better readability
+                borderRadius: '12px', // Larger radius
                 backgroundColor: message.role === 'user' ? 'var(--chat-user-bubble)' : 'var(--chat-ai-bubble)',
                 color: message.role === 'user' ? 'var(--chat-user-text)' : 'var(--chat-ai-text)',
                 wordWrap: 'break-word',
                 fontSize: '15px', // Increased by 2px from 13px
-                lineHeight: '1.25', // Tighter line height
+                lineHeight: '1.4', // Better line height for readability
                 border: message.isSuggestion ? '1px solid var(--ai-accent)' : 'none',
-                marginBottom: '0' // No margin
+                marginBottom: '0'
               }}
             >
               {message.content}
@@ -379,10 +379,10 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       <form
         onSubmit={sendMessage}
         style={{
-          padding: '4px 8px', // Minimal padding
+          padding: '10px 12px', // Increased padding for better spacing
           borderTop: '1px solid var(--border)',
           display: 'flex',
-          gap: '6px', // Smaller gap
+          gap: '8px',
           flexShrink: 0,
           backgroundColor: 'var(--bg-primary)'
         }}
