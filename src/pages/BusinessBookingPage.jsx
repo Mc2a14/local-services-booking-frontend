@@ -119,15 +119,67 @@ function BusinessBookingPage() {
   return (
     <>
       <div className="container" style={{ maxWidth: '900px' }}>
-        {/* Header with Theme Toggle */}
+        {/* Header with Business Logo and Theme Toggle */}
         <header style={{ 
           display: 'flex', 
-          justifyContent: 'flex-end', 
+          justifyContent: 'space-between', 
           alignItems: 'center', 
-          padding: '12px 0', // Reduced padding
-          marginBottom: '12px' // Reduced margin
+          padding: '12px 0',
+          marginBottom: '16px',
+          gap: '16px'
         }}>
-          <ThemeToggle />
+          {/* Business Logo/Image */}
+          {business.business_image_url && (
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              flex: 1
+            }}>
+              <img
+                src={business.business_image_url}
+                alt={business.business_name}
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  borderRadius: '12px',
+                  objectFit: 'cover',
+                  border: '2px solid var(--border)',
+                  backgroundColor: 'var(--bg-primary)'
+                }}
+              />
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+              }}>
+                <h2 style={{
+                  margin: 0,
+                  fontSize: '18px',
+                  fontWeight: '600',
+                  color: 'var(--text-primary)',
+                  lineHeight: '1.2'
+                }}>
+                  {business.business_name}
+                </h2>
+                {business.phone && (
+                  <p style={{
+                    margin: '4px 0 0 0',
+                    fontSize: '13px',
+                    color: 'var(--text-secondary)',
+                    lineHeight: '1.2'
+                  }}>
+                    {business.phone}
+                  </p>
+                )}
+              </div>
+            </div>
+          )}
+          
+          {/* Theme Toggle on Right */}
+          <div style={{ flexShrink: 0 }}>
+            <ThemeToggle />
+          </div>
         </header>
 
         {/* AI Hero Section - Mobile Optimized */}
