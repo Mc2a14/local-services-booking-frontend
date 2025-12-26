@@ -10,6 +10,7 @@ function BusinessBookingPage() {
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [isBusinessInfoExpanded, setIsBusinessInfoExpanded] = useState(false)
   const API_URL = import.meta.env.VITE_API_URL || '/api'
 
   useEffect(() => {
@@ -102,55 +103,148 @@ function BusinessBookingPage() {
           </div>
         </div>
 
-        {/* Business Info - Secondary Card */}
-        <div className="card" style={{ 
-          marginBottom: '40px',
-          padding: '30px',
-          backgroundColor: 'var(--bg-secondary)'
-        }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '30px', alignItems: 'center' }}>
-            {business.business_image_url && (
-              <div style={{ textAlign: 'center' }}>
-                <img 
-                  src={business.business_image_url} 
-                  alt={business.business_name}
-                  style={{
-                    width: '100%',
-                    maxWidth: '200px',
-                    height: '200px',
-                    borderRadius: '12px',
-                    objectFit: 'cover',
-                    border: '2px solid var(--border)',
-                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+        {/* Business Info - Collapsible Secondary Section */}
+        <div style={{ marginBottom: '40px' }}>
+          {/* Contact info - Always visible but secondary */}
+          {business.phone && (
+            <div style={{ 
+              textAlign: 'center', 
+              marginBottom: '20px',
+              padding: '15px',
+              backgroundColor: 'var(--bg-secondary)',
+              borderRadius: '8px',
+              border: '1px solid var(--border)'
+            }}>
+              <p style={{ 
+                color: 'var(--text-muted)', 
+                fontSize: '14px', 
+                margin: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px'
+              }}>
+                <span>📞</span>
+                <a 
+                  href={`tel:${business.phone}`} 
+                  style={{ 
+                    color: 'var(--text-secondary)', 
+                    textDecoration: 'none' 
                   }}
-                  onError={(e) => {
-                    e.target.style.display = 'none'
-                  }}
-                />
+                  onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+                >
+                  {business.phone}
+                </a>
+              </p>
+            </div>
+          )}
+
+          {/* Collapsible About Section */}
+          <div style={{
+            border: '1px solid var(--border)',
+            borderRadius: '8px',
+            backgroundColor: 'var(--bg-secondary)',
+            overflow: 'hidden'
+          }}>
+            <button
+              onClick={() => setIsBusinessInfoExpanded(!isBusinessInfoExpanded)}
+              style={{
+                width: '100%',
+                padding: '16px 20px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                textAlign: 'left',
+                color: 'var(--text-secondary)',
+                fontSize: '14px',
+                fontWeight: '500',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'var(--bg-primary)'}
+              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              aria-expanded={isBusinessInfoExpanded}
+            >
+              <span>About this business</span>
+              <span style={{
+                fontSize: '18px',
+                transition: 'transform 0.2s',
+                transform: isBusinessInfoExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+              }}>
+                ▼
+              </span>
+            </button>
+
+            {isBusinessInfoExpanded && (
+              <div style={{
+                padding: '20px',
+                borderTop: '1px solid var(--border)',
+                backgroundColor: 'var(--bg-primary)'
+              }}>
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: business.business_image_url ? 'repeat(auto-fit, minmax(250px, 1fr))' : '1fr',
+                  gap: '30px', 
+                  alignItems: 'start' 
+                }}>
+                  {business.business_image_url && (
+                    <div style={{ textAlign: 'center' }}>
+                      <img 
+                        src={business.business_image_url} 
+                        alt={business.business_name}
+                        style={{
+                          width: '100%',
+                          maxWidth: '200px',
+                          height: '200px',
+                          borderRadius: '8px',
+                          objectFit: 'cover',
+                          border: '1px solid var(--border)'
+                        }}
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                        }}
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <h3 style={{ 
+                      marginBottom: '12px', 
+                      color: 'var(--text-primary)', 
+                      fontSize: '18px',
+                      fontWeight: '600'
+                    }}>
+                      {business.business_name}
+                    </h3>
+                    {business.description && (
+                      <p style={{ 
+                        color: 'var(--text-secondary)', 
+                        fontSize: '15px', 
+                        marginBottom: '20px', 
+                        lineHeight: '1.6' 
+                      }}>
+                        {business.description}
+                      </p>
+                    )}
+                    {business.address && (
+                      <p style={{ 
+                        color: 'var(--text-secondary)', 
+                        margin: 0,
+                        fontSize: '14px',
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '8px'
+                      }}>
+                        <span>📍</span>
+                        <span>{business.address}</span>
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
-            <div>
-              <h2 style={{ marginBottom: '15px', color: 'var(--text-primary)', fontSize: '24px' }}>
-                About {business.business_name}
-              </h2>
-              {business.description && (
-                <p style={{ color: 'var(--text-secondary)', fontSize: '16px', marginBottom: '20px', lineHeight: '1.6' }}>
-                  {business.description}
-                </p>
-              )}
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {business.phone && (
-                  <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
-                    📞 {business.phone}
-                  </p>
-                )}
-                {business.address && (
-                  <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
-                    📍 {business.address}
-                  </p>
-                )}
-              </div>
-            </div>
           </div>
         </div>
 
