@@ -111,7 +111,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
           >
             💬 Ask {businessName || 'us'} a question
           </button>
-          <p style={{ marginTop: '10px', color: '#475569', fontSize: '14px' }}>
+          <p style={{ marginTop: '10px', color: '#666', fontSize: '14px' }}>
             Get instant answers about our services, hours, and more
           </p>
         </div>
@@ -251,7 +251,7 @@ function ChatWidget({ businessSlug, businessName, inline = false }) {
                 padding: '10px 14px',
                 borderRadius: '12px',
                 backgroundColor: '#E2E8F0',
-                color: '#475569',
+                color: '#666',
                 fontSize: '14px'
               }}
             >

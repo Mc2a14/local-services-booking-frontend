@@ -15,6 +15,7 @@ import EditService from './pages/EditService'
 import ProviderProfile from './pages/ProviderProfile'
 import Availability from './pages/Availability'
 import ManageFAQs from './pages/ManageFAQs'
+import ThemeToggle from './components/ThemeToggle'
 import { getToken, apiRequest } from './utils/auth'
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
 
   return (
     <Router>
+      <ThemeToggle />
       <Routes>
         {/* Public routes - exact paths first */}
         <Route path="/" element={<Home />} />
