@@ -77,6 +77,17 @@ function BusinessBookingPage() {
   return (
     <>
       <div className="container" style={{ maxWidth: '900px' }}>
+        {/* Header with Theme Toggle */}
+        <header style={{ 
+          display: 'flex', 
+          justifyContent: 'flex-end', 
+          alignItems: 'center', 
+          padding: '16px 0',
+          marginBottom: '20px'
+        }}>
+          <ThemeToggle />
+        </header>
+
         {/* AI Hero Section - Mobile Optimized */}
         <div className="card hero-section" style={{ 
           marginBottom: '24px', 
@@ -84,10 +95,7 @@ function BusinessBookingPage() {
           background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
           border: '2px solid var(--ai-accent)'
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '12px' }}>
-            <div className="hero-emoji">👋</div>
-            <ThemeToggle />
-          </div>
+          <div className="hero-emoji" style={{ marginBottom: '12px' }}>👋</div>
           <h1 className="hero-title" style={{ 
             color: 'var(--text-primary)',
             fontWeight: '600',
