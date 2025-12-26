@@ -42,8 +42,13 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   }, [messages])
 
   useEffect(() => {
+    // Only auto-focus if chat was opened by user interaction, not on initial page load
+    // Delay focus to prevent page scroll on initial render
     if (isOpen && inputRef.current) {
-      inputRef.current.focus()
+      const timer = setTimeout(() => {
+        inputRef.current?.focus()
+      }, 300) // Small delay to allow page to render at top first
+      return () => clearTimeout(timer)
     }
   }, [isOpen])
 

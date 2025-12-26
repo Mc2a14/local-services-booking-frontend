@@ -26,6 +26,8 @@ function BusinessBookingPage() {
   }
 
   useEffect(() => {
+    // Ensure page loads at the top
+    window.scrollTo(0, 0)
     loadBusiness()
   }, [businessSlug])
 
