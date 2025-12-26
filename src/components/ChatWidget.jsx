@@ -265,7 +265,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           backgroundColor: 'var(--btn-ai)',
           color: 'var(--btn-ai-text)',
-          padding: '12px 16px',
+          padding: '8px 12px', // Reduced header padding
           borderRadius: '12px 12px 0 0',
           display: 'flex',
           justifyContent: 'space-between',
