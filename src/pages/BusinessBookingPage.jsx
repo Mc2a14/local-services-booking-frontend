@@ -253,7 +253,7 @@ function BusinessBookingPage() {
       <div className="container" style={{ maxWidth: '900px' }}>
 
         {/* AI Chat Section */}
-        <div style={{ marginTop: '40px', marginBottom: '40px' }}>
+        <div style={{ marginTop: '30px', marginBottom: '40px' }}>
           <div className="card" style={{ padding: '24px' }}>
             <h2 style={{
               fontSize: '24px',
