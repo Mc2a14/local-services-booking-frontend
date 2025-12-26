@@ -244,7 +244,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
 
   return (
     <div
-      className={inline ? 'chat-widget-mobile' : ''}
+      className={`chat-widget-container ${inline ? 'chat-widget-mobile' : ''}`}
       style={{
         position: inline ? 'relative' : 'fixed',
         bottom: inline ? 'auto' : '20px',
