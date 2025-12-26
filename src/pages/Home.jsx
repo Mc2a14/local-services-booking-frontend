@@ -23,9 +23,10 @@ function Home() {
         alignItems: 'center', 
         marginBottom: '40px',
         paddingBottom: '20px',
+        paddingLeft: '70px',
         borderBottom: '2px solid #2563EB'
       }}>
-        <h1 style={{ margin: 0, color: '#2563EB' }}>BookingPro</h1>
+        <h1 style={{ margin: 0, color: 'var(--accent)' }}>BookingPro</h1>
         <div style={{ display: 'flex', gap: '10px' }}>
           {token ? (
             <>
