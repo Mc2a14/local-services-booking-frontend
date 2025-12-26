@@ -5,7 +5,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Hi! I'm here to help you with questions about ${businessName || 'this business'}. How can I assist you today?`
+      content: `Hi! Need help booking or have a question?`
     }
   ])
   const [input, setInput] = useState('')
