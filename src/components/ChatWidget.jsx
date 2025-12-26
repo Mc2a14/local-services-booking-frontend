@@ -261,6 +261,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
 
       {/* Messages - Scrollable area */}
       <div
+        ref={messagesContainerRef}
         className="chat-messages-container"
         style={{
           flex: 1,
