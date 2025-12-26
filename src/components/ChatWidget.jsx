@@ -64,7 +64,10 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     // Only focus when user explicitly interacts with chat
     if (isOpen && inputRef.current && !isInitialRender.current) {
       const timer = setTimeout(() => {
-        inputRef.current?.focus()
+        // Focus without scrolling
+        if (inputRef.current) {
+          inputRef.current.focus({ preventScroll: true })
+        }
       }, 100)
       return () => clearTimeout(timer)
     }
@@ -75,36 +78,86 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   }, [isOpen])
 
   // Prevent page scroll when input is focused (mobile keyboard issue)
-  const handleInputFocus = () => {
-    // Store current scroll position
-    const scrollY = window.scrollY || document.documentElement.scrollTop
-    const scrollX = window.scrollX || document.documentElement.scrollLeft
+  const handleInputFocus = (e) => {
+    // Prevent default scroll-into-view behavior
+    e.preventDefault()
     
-    // Prevent scroll while input is focused
-    const preventScroll = (e) => {
-      e.preventDefault()
+    // Store current scroll position BEFORE any browser adjustments
+    const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0
+    const scrollX = window.scrollX || window.pageXOffset || document.documentElement.scrollLeft || document.body.scrollLeft || 0
+    
+    // Force focus without scrolling
+    if (inputRef.current) {
+      inputRef.current.focus({ preventScroll: true })
+    }
+    
+    // Lock scroll position aggressively
+    const lockScroll = () => {
       window.scrollTo(scrollX, scrollY)
       document.documentElement.scrollTop = scrollY
       document.body.scrollTop = scrollY
+      if (window.pageYOffset !== scrollY) {
+        window.pageYOffset = scrollY
+      }
+    }
+    
+    // Prevent scroll events
+    const preventScroll = (e) => {
+      e.preventDefault()
+      e.stopPropagation()
+      lockScroll()
+      return false
     }
     
     // Prevent touchmove events that cause scrolling
     const preventTouchMove = (e) => {
-      // Allow touch events within the chat widget
-      if (e.target.closest('.chat-widget-container') || e.target.closest('.chat-messages-container')) {
-        return
+      // Allow touch events within the chat widget itself
+      if (e.target.closest('.chat-widget-container') || 
+          e.target.closest('.chat-messages-container') ||
+          e.target.closest('input') ||
+          e.target.closest('button')) {
+        return true
       }
       e.preventDefault()
+      e.stopPropagation()
+      lockScroll()
+      return false
     }
     
-    // Add scroll prevention
+    // Prevent wheel events
+    const preventWheel = (e) => {
+      if (e.target.closest('.chat-widget-container') || 
+          e.target.closest('.chat-messages-container')) {
+        return true
+      }
+      e.preventDefault()
+      e.stopPropagation()
+      lockScroll()
+      return false
+    }
+    
+    // Lock scroll position immediately and repeatedly
+    lockScroll()
+    const lockInterval = setInterval(lockScroll, 10)
+    
+    // Add event listeners with capture to catch early
     window.addEventListener('scroll', preventScroll, { passive: false, capture: true })
-    document.addEventListener('touchmove', preventTouchMove, { passive: false })
+    document.addEventListener('touchmove', preventTouchMove, { passive: false, capture: true })
+    document.addEventListener('wheel', preventWheel, { passive: false, capture: true })
+    
+    // Also lock on resize (keyboard appearing causes resize)
+    const handleResize = () => {
+      lockScroll()
+    }
+    window.addEventListener('resize', handleResize, { passive: false })
     
     // Remove scroll prevention when input loses focus
     const handleBlur = () => {
+      clearInterval(lockInterval)
       window.removeEventListener('scroll', preventScroll, { capture: true })
-      document.removeEventListener('touchmove', preventTouchMove)
+      document.removeEventListener('touchmove', preventTouchMove, { capture: true })
+      document.removeEventListener('wheel', preventWheel, { capture: true })
+      window.removeEventListener('resize', handleResize)
       inputRef.current?.removeEventListener('blur', handleBlur)
     }
     
@@ -395,6 +448,13 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onFocus={handleInputFocus}
+          onTouchStart={(e) => {
+            // Prevent scroll when touching input
+            const scrollY = window.scrollY
+            setTimeout(() => {
+              window.scrollTo(0, scrollY)
+            }, 0)
+          }}
           placeholder="Type your message..."
           disabled={loading}
           style={{
@@ -406,7 +466,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             outline: 'none',
             backgroundColor: 'var(--bg-primary)',
             color: 'var(--text-primary)',
-            minHeight: '44px'
+            minHeight: '44px',
+            touchAction: 'manipulation'
           }}
         />
         <button
