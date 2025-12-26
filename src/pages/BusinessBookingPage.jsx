@@ -26,26 +26,49 @@ function BusinessBookingPage() {
   }
 
   useEffect(() => {
-    // Force page to top immediately on load - before anything renders
-    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
-    
-    // Prevent scroll for first 2 seconds to ensure header is visible
-    const preventScroll = () => {
+    // Immediately force scroll to absolute top before anything renders
+    const forceTop = () => {
+      window.scrollTo(0, 0)
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      document.documentElement.scrollLeft = 0
+      document.body.scrollLeft = 0
+      
+      // Also try scrollIntoView on body/html
+      if (document.body) {
+        document.body.scrollIntoView({ behavior: 'instant', block: 'start' })
+      }
+      if (document.documentElement) {
+        document.documentElement.scrollIntoView({ behavior: 'instant', block: 'start' })
+      }
     }
     
-    const intervals = [10, 50, 100, 200, 500, 1000, 1500, 2000]
+    // Force immediately multiple times
+    forceTop()
+    
+    // Use requestAnimationFrame to ensure it happens after render
+    requestAnimationFrame(() => {
+      forceTop()
+      requestAnimationFrame(() => {
+        forceTop()
+      })
+    })
+    
+    // Also force on load
+    window.addEventListener('load', forceTop, { once: true })
+    
+    // Keep forcing top position aggressively for first 3 seconds
+    const intervals = [0, 10, 20, 50, 100, 200, 300, 500, 750, 1000, 1500, 2000, 2500, 3000]
     intervals.forEach(delay => {
-      setTimeout(() => {
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
-        document.documentElement.scrollTop = 0
-        document.body.scrollTop = 0
-      }, delay)
+      setTimeout(forceTop, delay)
     })
     
     loadBusiness()
+    
+    return () => {
+      window.removeEventListener('load', forceTop)
+    }
   }, [businessSlug])
 
   const loadBusiness = async () => {
