@@ -104,7 +104,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             }}
             aria-label="Open chat"
           >
-            💬 Ask {businessName || 'us'} a question
+            💬 Chat with our AI assistant
           </button>
           <p style={{ marginTop: '10px', color: 'var(--text-secondary)', fontSize: '14px' }}>
             Get instant answers about our services, hours, and more
@@ -173,8 +173,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         }}
       >
         <div>
-          <div style={{ fontWeight: 'bold', fontSize: '16px' }}>Chat with {businessName}</div>
-          <div style={{ fontSize: '12px', opacity: 0.9 }}>AI Assistant</div>
+          <div style={{ fontWeight: 'bold', fontSize: '16px' }}>Chat with our AI assistant</div>
+          <div style={{ fontSize: '12px', opacity: 0.9 }}>{businessName}</div>
         </div>
         <button
           onClick={() => setIsOpen(false)}

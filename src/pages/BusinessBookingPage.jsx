@@ -162,20 +162,20 @@ function BusinessBookingPage() {
             alignItems: 'center',
             marginBottom: '25px'
           }}>
-            <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>Available Services</h2>
+            <h2 style={{ margin: 0, color: 'var(--text-primary)' }}>What would you like to do?</h2>
             <p style={{ 
               margin: 0, 
               color: 'var(--text-secondary)', 
               fontSize: '14px',
               fontStyle: 'italic'
             }}>
-              Or ask me about them above! 👆
+              Or ask me above! 👆
             </p>
           </div>
           
           {services.length === 0 ? (
             <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-              <p style={{ color: 'var(--text-secondary)' }}>No services available at the moment.</p>
+              <p style={{ color: 'var(--text-secondary)' }}>I don't have any services listed at the moment. Feel free to ask me questions above!</p>
             </div>
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
@@ -255,7 +255,7 @@ function BusinessBookingPage() {
                       handleBookService(service.id)
                     }}
                   >
-                    Book Appointment
+                    Book a Session
                   </button>
                 </div>
               ))}
