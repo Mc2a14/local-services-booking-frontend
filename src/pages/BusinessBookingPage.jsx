@@ -26,9 +26,22 @@ function BusinessBookingPage() {
   }
 
   useEffect(() => {
-    // Ensure page loads at the top
+    // Force page to top immediately on load
     window.scrollTo(0, 0)
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    
     loadBusiness()
+    
+    // Keep forcing top position for first second
+    const intervals = [50, 100, 200, 500, 1000]
+    intervals.forEach(delay => {
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+        document.documentElement.scrollTop = 0
+        document.body.scrollTop = 0
+      }, delay)
+    })
   }, [businessSlug])
 
   const loadBusiness = async () => {

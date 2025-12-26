@@ -37,18 +37,30 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  // Track if this is the initial render to prevent scroll on page load
+  const isInitialRender = useRef(true)
+
   useEffect(() => {
+    // Don't scroll on initial render to prevent page jump
+    if (isInitialRender.current) {
+      isInitialRender.current = false
+      return
+    }
     scrollToBottom()
   }, [messages])
 
   useEffect(() => {
-    // Only auto-focus if chat was opened by user interaction, not on initial page load
-    // Delay focus to prevent page scroll on initial render
-    if (isOpen && inputRef.current) {
+    // Don't auto-focus on initial page load to prevent scroll
+    // Only focus when user explicitly interacts with chat
+    if (isOpen && inputRef.current && !isInitialRender.current) {
       const timer = setTimeout(() => {
         inputRef.current?.focus()
-      }, 300) // Small delay to allow page to render at top first
+      }, 100)
       return () => clearTimeout(timer)
+    }
+    // Mark initial render as complete after first render
+    if (isInitialRender.current) {
+      isInitialRender.current = false
     }
   }, [isOpen])
 
