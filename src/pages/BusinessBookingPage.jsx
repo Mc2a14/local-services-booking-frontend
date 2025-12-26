@@ -12,17 +12,12 @@ function BusinessBookingPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [isBusinessInfoExpanded, setIsBusinessInfoExpanded] = useState(false)
-  const [showBookingServices, setShowBookingServices] = useState(false)
-  const servicesSectionRef = useRef(null)
+  const [showBookingModal, setShowBookingModal] = useState(false)
   const API_URL = import.meta.env.VITE_API_URL || '/api'
 
   // Handle booking suggestion from chat
   const handleBookingSuggestion = () => {
-    setShowBookingServices(true)
-    // Scroll to services section after a brief delay
-    setTimeout(() => {
-      servicesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }, 500)
+    setShowBookingModal(true)
   }
 
   useEffect(() => {
@@ -167,13 +162,7 @@ function BusinessBookingPage() {
 
           {/* Primary CTA Button */}
           <button
-            onClick={() => {
-              if (services.length > 0) {
-                handleBookService(services[0].id)
-              } else if (servicesSectionRef.current) {
-                servicesSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }
-            }}
+            onClick={() => setShowBookingModal(true)}
             className="btn btn-primary"
             style={{
               fontSize: '18px',
@@ -190,71 +179,6 @@ function BusinessBookingPage() {
 
       {/* Main Content Container */}
       <div className="container" style={{ maxWidth: '900px' }}>
-
-        {/* Services Section */}
-        <div ref={servicesSectionRef} style={{ marginTop: '60px', marginBottom: '40px' }}>
-          <h2 style={{
-            fontSize: '28px',
-            fontWeight: '600',
-            color: 'var(--text-primary)',
-            marginBottom: '24px',
-            textAlign: 'center'
-          }}>
-            What would you like to do?
-          </h2>
-          
-          {services.length === 0 ? (
-            <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-              <p style={{ color: 'var(--text-secondary)' }}>
-                No services available at this time. Please check back later.
-              </p>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-              {services.map(service => (
-                <div key={service.id} className="card" style={{ cursor: 'pointer' }} onClick={() => handleBookService(service.id)}>
-                  {service.image_url && (
-                    <img
-                      src={service.image_url}
-                      alt={service.title}
-                      style={{
-                        width: '100%',
-                        height: '200px',
-                        objectFit: 'cover',
-                        borderRadius: '8px 8px 0 0',
-                        marginBottom: '16px'
-                      }}
-                      onError={(e) => {
-                        e.target.style.display = 'none'
-                      }}
-                    />
-                  )}
-                  <h3 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>{service.title}</h3>
-                  {service.description && (
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '12px', fontSize: '14px' }}>
-                      {service.description.length > 100 ? service.description.substring(0, 100) + '...' : service.description}
-                    </p>
-                  )}
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-                    <div>
-                      <span style={{ fontSize: '24px', fontWeight: '600', color: 'var(--price-color)' }}>
-                        {service.price === 0 ? 'Free' : `$${service.price}`}
-                      </span>
-                      {service.duration_minutes && (
-                        <span style={{ color: 'var(--text-secondary)', marginLeft: '8px', fontSize: '14px' }}>
-                          • {service.duration_minutes} min
-                        </span>
-                      )}
-                    </div>
-                    <button className="btn btn-primary">
-                      Book a Session
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
 
         {/* AI Chat Section */}
         <div style={{ marginTop: '60px', marginBottom: '40px' }}>
@@ -506,6 +430,194 @@ function BusinessBookingPage() {
           </p>
         </div>
       </div>
+
+      {/* Booking Modal - Only shown when triggered */}
+      {showBookingModal && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 10000,
+            padding: '20px',
+            overflowY: 'auto'
+          }}
+          onClick={(e) => {
+            // Close modal if clicking backdrop
+            if (e.target === e.currentTarget) {
+              setShowBookingModal(false)
+            }
+          }}
+        >
+          <div
+            className="card"
+            style={{
+              backgroundColor: 'var(--bg-primary)',
+              borderRadius: '12px',
+              padding: '32px',
+              maxWidth: '600px',
+              width: '100%',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              position: 'relative',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.3)'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setShowBookingModal(false)}
+              style={{
+                position: 'absolute',
+                top: '16px',
+                right: '16px',
+                background: 'none',
+                border: 'none',
+                fontSize: '28px',
+                color: 'var(--text-secondary)',
+                cursor: 'pointer',
+                width: '32px',
+                height: '32px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '50%',
+                transition: 'background-color 0.2s'
+              }}
+              onMouseEnter={(e) => e.target.style.backgroundColor = 'var(--bg-secondary)'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
+              aria-label="Close"
+            >
+              ×
+            </button>
+
+            {/* Modal Header */}
+            <h2 style={{
+              fontSize: '24px',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              marginBottom: '8px',
+              paddingRight: '40px'
+            }}>
+              Book a Session
+            </h2>
+            <p style={{
+              color: 'var(--text-secondary)',
+              marginBottom: '24px',
+              fontSize: '14px'
+            }}>
+              Select a service to continue
+            </p>
+
+            {/* Services List */}
+            {services.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px' }}>
+                <p style={{ color: 'var(--text-secondary)' }}>
+                  No services available at this time. Please check back later.
+                </p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {services.map(service => (
+                  <div
+                    key={service.id}
+                    className="card"
+                    style={{
+                      cursor: 'pointer',
+                      border: '2px solid var(--border)',
+                      transition: 'all 0.2s',
+                      padding: '20px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'var(--accent)'
+                      e.currentTarget.style.transform = 'translateY(-2px)'
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'var(--border)'
+                      e.currentTarget.style.transform = 'translateY(0)'
+                      e.currentTarget.style.boxShadow = 'none'
+                    }}
+                    onClick={() => {
+                      setShowBookingModal(false)
+                      handleBookService(service.id)
+                    }}
+                  >
+                    {service.image_url && (
+                      <img
+                        src={service.image_url}
+                        alt={service.title}
+                        style={{
+                          width: '100%',
+                          height: '180px',
+                          objectFit: 'cover',
+                          borderRadius: '8px',
+                          marginBottom: '16px'
+                        }}
+                        onError={(e) => {
+                          e.target.style.display = 'none'
+                        }}
+                      />
+                    )}
+                    <h3 style={{
+                      marginBottom: '8px',
+                      color: 'var(--text-primary)',
+                      fontSize: '20px',
+                      fontWeight: '600'
+                    }}>
+                      {service.title}
+                    </h3>
+                    {service.description && (
+                      <p style={{
+                        color: 'var(--text-secondary)',
+                        marginBottom: '12px',
+                        fontSize: '14px',
+                        lineHeight: '1.5'
+                      }}>
+                        {service.description}
+                      </p>
+                    )}
+                    <div style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginTop: '16px'
+                    }}>
+                      <div>
+                        <span style={{
+                          fontSize: '24px',
+                          fontWeight: '600',
+                          color: 'var(--price-color)'
+                        }}>
+                          {service.price === 0 ? 'Free' : `$${service.price}`}
+                        </span>
+                        {service.duration_minutes && (
+                          <span style={{
+                            color: 'var(--text-secondary)',
+                            marginLeft: '8px',
+                            fontSize: '14px'
+                          }}>
+                            • {service.duration_minutes} min
+                          </span>
+                        )}
+                      </div>
+                      <button className="btn btn-primary">
+                        Select
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </>
   )
 }
