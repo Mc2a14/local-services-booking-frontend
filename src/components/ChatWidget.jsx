@@ -77,45 +77,38 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     }
   }, [isOpen])
 
-  // Prevent page scroll when input is focused - keep chat box fully visible
+  // Moderate scroll when input is focused - show input but keep chat visible
   const handleInputFocus = (e) => {
-    // Store current scroll position and lock it
+    // Store current scroll position
     const currentScroll = window.scrollY
     
-    // Prevent any scrolling - maintain current position
-    // The chat widget is already positioned correctly, we don't need page scroll
-    const lockScroll = () => {
-      if (Math.abs(window.scrollY - currentScroll) > 5) {
-        window.scrollTo({
-          top: currentScroll,
-          behavior: 'instant'
-        })
-      }
-    }
-    
-    // Lock scroll position for a short time after keyboard appears
-    const intervals = [50, 100, 200, 300, 400, 500]
-    intervals.forEach(delay => {
-      setTimeout(lockScroll, delay)
-    })
-    
-    // Also prevent scroll events briefly
-    const preventScroll = (e) => {
-      if (Math.abs(window.scrollY - currentScroll) > 10) {
-        e.preventDefault()
-        window.scrollTo({
-          top: currentScroll,
-          behavior: 'instant'
-        })
-      }
-    }
-    
-    window.addEventListener('scroll', preventScroll, { passive: false, once: false })
-    
-    // Remove scroll prevention after keyboard has settled
+    // Wait for keyboard to appear, then scroll moderately
     setTimeout(() => {
-      window.removeEventListener('scroll', preventScroll)
-    }, 600)
+      if (inputRef.current) {
+        // Get input position
+        const inputRect = inputRef.current.getBoundingClientRect()
+        
+        // Estimate keyboard height
+        const keyboardHeight = window.innerHeight * 0.4
+        const visibleHeight = window.innerHeight - keyboardHeight
+        
+        // Only scroll if input is hidden by keyboard
+        if (inputRect.bottom > visibleHeight) {
+          // Calculate how much is hidden
+          const hiddenAmount = inputRect.bottom - visibleHeight
+          
+          // Scroll moderately - about 40-50% of what's needed
+          // This shows the input but doesn't scroll too far up
+          const moderateScroll = hiddenAmount * 0.45
+          const targetScroll = currentScroll + moderateScroll
+          
+          window.scrollTo({
+            top: Math.max(0, targetScroll),
+            behavior: 'smooth'
+          })
+        }
+      }
+    }, 250) // Wait for keyboard animation
   }
 
   const sendMessage = async (e) => {
