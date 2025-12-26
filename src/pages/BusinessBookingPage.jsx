@@ -97,32 +97,35 @@ function BusinessBookingPage() {
           display: 'flex', 
           justifyContent: 'flex-end', 
           alignItems: 'center', 
-          padding: '16px 0',
-          marginBottom: '20px'
+          padding: '12px 0', // Reduced padding
+          marginBottom: '12px' // Reduced margin
         }}>
           <ThemeToggle />
         </header>
 
         {/* AI Hero Section - Mobile Optimized */}
         <div className="card hero-section" style={{ 
-          marginBottom: '24px', 
+          marginBottom: '20px', // Reduced margin
           textAlign: 'center',
           background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-          border: '2px solid var(--ai-accent)'
+          border: '2px solid var(--ai-accent)',
+          padding: '16px' // Reduced padding
         }}>
-          <div className="hero-emoji" style={{ marginBottom: '12px' }}>👋</div>
+          <div className="hero-emoji" style={{ marginBottom: '8px', fontSize: '48px' }}>👋</div>
           <h1 className="hero-title" style={{ 
             color: 'var(--text-primary)',
             fontWeight: '600',
-            lineHeight: '1.3'
+            lineHeight: '1.3',
+            marginBottom: '8px' // Reduced margin
           }}>
             Hi! I'm {business.business_name}'s AI Assistant
           </h1>
           <p className="hero-subtext" style={{ 
             color: 'var(--text-secondary)', 
             maxWidth: '600px',
-            margin: '0 auto',
-            lineHeight: '1.5'
+            margin: '0 auto 16px auto', // Reduced bottom margin
+            lineHeight: '1.4',
+            fontSize: '14px' // Slightly smaller
           }}>
             You can ask questions, check availability, or book a session instantly.
           </p>
