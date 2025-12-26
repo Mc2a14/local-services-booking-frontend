@@ -329,7 +329,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 backgroundColor: message.role === 'user' ? 'var(--chat-user-bubble)' : 'var(--chat-ai-bubble)',
                 color: message.role === 'user' ? 'var(--chat-user-text)' : 'var(--chat-ai-text)',
                 wordWrap: 'break-word',
-                fontSize: '13px', // Slightly smaller font
+                fontSize: '15px', // Increased by 2px from 13px
                 lineHeight: '1.25', // Tighter line height
                 border: message.isSuggestion ? '1px solid var(--ai-accent)' : 'none',
                 marginBottom: '0' // No margin
@@ -365,7 +365,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 borderRadius: '12px',
                 backgroundColor: 'var(--chat-ai-bubble)',
                 color: 'var(--text-secondary)',
-                fontSize: '14px'
+                fontSize: '16px' // Increased by 2px from 14px
               }}
             >
               Thinking...
