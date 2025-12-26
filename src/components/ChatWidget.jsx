@@ -317,13 +317,14 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             style={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: message.role === 'user' ? 'flex-end' : 'flex-start',
-              gap: message.isSuggestion ? '8px' : '0'
+              alignItems: 'flex-start', // Always align to left
+              gap: message.isSuggestion ? '8px' : '0',
+              width: '100%'
             }}
           >
             <div
               style={{
-                maxWidth: '80%',
+                maxWidth: '85%',
                 padding: '8px 12px', // Slightly reduced padding
                 borderRadius: '12px',
                 backgroundColor: message.role === 'user' ? 'var(--chat-user-bubble)' : 'var(--chat-ai-bubble)',
@@ -332,7 +333,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 fontSize: '15px',
                 lineHeight: '1.35', // Slightly tighter line height
                 border: message.isSuggestion ? '1px solid var(--ai-accent)' : 'none',
-                marginBottom: '0'
+                marginBottom: '0',
+                marginLeft: '0', // Ensure left alignment
+                marginRight: 'auto' // Push to left
               }}
             >
               {message.content}
@@ -365,7 +368,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 borderRadius: '12px',
                 backgroundColor: 'var(--chat-ai-bubble)',
                 color: 'var(--text-secondary)',
-                fontSize: '16px' // Increased by 2px from 14px
+                fontSize: '16px', // Increased by 2px from 14px
+                marginLeft: '0',
+                marginRight: 'auto' // Push to left
               }}
             >
               Thinking...
