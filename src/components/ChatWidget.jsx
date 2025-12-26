@@ -77,38 +77,36 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     }
   }, [isOpen])
 
-  // Moderate scroll when input is focused - show input but keep chat visible
+  // Minimal scroll when input is focused - only if input is off-screen
   const handleInputFocus = (e) => {
-    // Store current scroll position
-    const currentScroll = window.scrollY
-    
-    // Wait for keyboard to appear, then scroll moderately
+    // Wait briefly for keyboard to appear, then check if scroll is needed
     setTimeout(() => {
       if (inputRef.current) {
-        // Get input position
+        // Get input position relative to viewport
         const inputRect = inputRef.current.getBoundingClientRect()
+        const viewportHeight = window.innerHeight
         
-        // Estimate keyboard height
-        const keyboardHeight = window.innerHeight * 0.4
-        const visibleHeight = window.innerHeight - keyboardHeight
+        // Estimate keyboard height (typically 40% of viewport on mobile)
+        const keyboardHeight = viewportHeight * 0.4
+        const visibleViewportHeight = viewportHeight - keyboardHeight
         
-        // Only scroll if input is hidden by keyboard
-        if (inputRect.bottom > visibleHeight) {
-          // Calculate how much is hidden
-          const hiddenAmount = inputRect.bottom - visibleHeight
+        // Only scroll if input bottom is below visible area (hidden by keyboard)
+        if (inputRect.bottom > visibleViewportHeight) {
+          // Calculate how much input is hidden
+          const hiddenAmount = inputRect.bottom - visibleViewportHeight
           
-          // Scroll moderately - about 40-50% of what's needed
-          // This shows the input but doesn't scroll too far up
-          const moderateScroll = hiddenAmount * 0.45
-          const targetScroll = currentScroll + moderateScroll
+          // Scroll minimal amount - just enough to reveal input with small padding
+          const scrollAmount = hiddenAmount + 10 // 10px padding
           
-          window.scrollTo({
-            top: Math.max(0, targetScroll),
+          // Use scrollBy to scroll relative to current position (not absolute)
+          window.scrollBy({
+            top: scrollAmount,
             behavior: 'smooth'
           })
         }
+        // If input is already visible, do nothing - don't scroll
       }
-    }, 250) // Wait for keyboard animation
+    }, 200) // Wait for keyboard animation to start
   }
 
   const sendMessage = async (e) => {
@@ -260,7 +258,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         flexDirection: 'column',
         zIndex: 1000,
         border: '1px solid var(--border)',
-        marginBottom: inline ? '20px' : '0'
+        marginBottom: inline ? '20px' : '0',
+        // Prevent mobile keyboard from pushing container
+        touchAction: 'manipulation'
       }}
     >
       {/* Header */}
