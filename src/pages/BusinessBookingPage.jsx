@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ChatWidget from '../components/ChatWidget'
 
@@ -11,7 +11,18 @@ function BusinessBookingPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [isBusinessInfoExpanded, setIsBusinessInfoExpanded] = useState(false)
+  const [showBookingServices, setShowBookingServices] = useState(false)
+  const servicesSectionRef = useRef(null)
   const API_URL = import.meta.env.VITE_API_URL || '/api'
+
+  // Handle booking suggestion from chat
+  const handleBookingSuggestion = () => {
+    setShowBookingServices(true)
+    // Scroll to services section after a brief delay
+    setTimeout(() => {
+      servicesSectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 500)
+  }
 
   useEffect(() => {
     loadBusiness()
@@ -99,6 +110,8 @@ function BusinessBookingPage() {
               businessName={business.business_name} 
               inline={true} 
               defaultOpen={true}
+              onSuggestBooking={handleBookingSuggestion}
+              services={services}
             />
           </div>
         </div>
@@ -249,7 +262,25 @@ function BusinessBookingPage() {
         </div>
 
         {/* Services Section - Secondary CTA */}
-        <div style={{ marginBottom: '40px' }}>
+        <div ref={servicesSectionRef} style={{ marginBottom: '40px' }}>
+          {showBookingServices && (
+            <div style={{
+              padding: '15px 20px',
+              marginBottom: '20px',
+              backgroundColor: 'var(--success-soft)',
+              border: '1px solid var(--success)',
+              borderRadius: '8px',
+              color: 'var(--success)',
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              animation: 'fadeIn 0.3s ease-in'
+            }}>
+              <span>💡</span>
+              <span>Our AI suggested booking - check out available services below!</span>
+            </div>
+          )}
           <div style={{ 
             display: 'flex', 
             justifyContent: 'space-between', 
@@ -341,16 +372,28 @@ function BusinessBookingPage() {
                       ⭐ {service.average_rating} ({service.review_count} {service.review_count === 1 ? 'review' : 'reviews'})
                     </p>
                   )}
-                  <button 
-                    className="btn btn-secondary"
-                    style={{ width: '100%', marginTop: '10px' }}
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      handleBookService(service.id)
-                    }}
-                  >
-                    Book a Session
-                  </button>
+                  <div style={{ marginTop: '10px' }}>
+                    <button 
+                      className="btn btn-secondary"
+                      style={{ width: '100%' }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleBookService(service.id)
+                      }}
+                    >
+                      Book a Session
+                    </button>
+                    <p style={{
+                      marginTop: '8px',
+                      fontSize: '11px',
+                      color: 'var(--text-muted)',
+                      textAlign: 'center',
+                      fontStyle: 'italic',
+                      lineHeight: '1.4'
+                    }}>
+                      Our AI will guide you through availability and confirmation.
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>

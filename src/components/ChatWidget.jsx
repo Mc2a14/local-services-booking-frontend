@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = false }) {
+function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = false, onSuggestBooking, services = [] }) {
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const [messages, setMessages] = useState([
     {
@@ -14,6 +14,24 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   const inputRef = useRef(null)
 
   const API_URL = import.meta.env.VITE_API_URL || '/api'
+
+  // Detect if AI response suggests booking would be relevant
+  const shouldSuggestBooking = (aiResponse, userMessage) => {
+    const bookingKeywords = ['book', 'appointment', 'schedule', 'available', 'availability', 'session', 'time slot', 'reserve']
+    const responseLower = aiResponse.toLowerCase()
+    const userLower = userMessage.toLowerCase()
+    
+    // Check if user asked about booking/availability or AI mentioned it
+    const mentionsBooking = bookingKeywords.some(keyword => 
+      responseLower.includes(keyword) || userLower.includes(keyword)
+    )
+    
+    // Check if response mentions services or scheduling
+    const mentionsServices = responseLower.includes('service') || responseLower.includes('tutoring') || 
+                            responseLower.includes('session') || responseLower.includes('class')
+    
+    return mentionsBooking || (mentionsServices && services.length > 0)
+  }
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -62,7 +80,25 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       const data = await response.json()
       
       // Add AI response
-      setMessages([...newMessages, { role: 'assistant', content: data.response }])
+      const updatedMessages = [...newMessages, { role: 'assistant', content: data.response }]
+      setMessages(updatedMessages)
+
+      // Suggest booking if relevant
+      if (shouldSuggestBooking(data.response, userMessage)) {
+        setTimeout(() => {
+          setMessages([
+            ...updatedMessages,
+            {
+              role: 'assistant',
+              content: 'Would you like me to book this for you? I can guide you through availability and help you schedule a session.',
+              isSuggestion: true
+            }
+          ])
+          if (onSuggestBooking) {
+            onSuggestBooking()
+          }
+        }, 1000) // Small delay to feel natural
+      }
     } catch (error) {
       console.error('Chat error:', error)
       setMessages([
@@ -213,7 +249,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             key={index}
             style={{
               display: 'flex',
-              justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start'
+              flexDirection: 'column',
+              alignItems: message.role === 'user' ? 'flex-end' : 'flex-start',
+              gap: message.isSuggestion ? '8px' : '0'
             }}
           >
             <div
@@ -225,11 +263,25 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 color: message.role === 'user' ? 'var(--chat-user-text)' : 'var(--chat-ai-text)',
                 wordWrap: 'break-word',
                 fontSize: '14px',
-                lineHeight: '1.4'
+                lineHeight: '1.4',
+                border: message.isSuggestion ? '1px solid var(--ai-accent)' : 'none'
               }}
             >
               {message.content}
             </div>
+            {message.isSuggestion && (
+              <div style={{
+                maxWidth: '80%',
+                padding: '8px 12px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: '8px',
+                fontSize: '12px',
+                color: 'var(--text-secondary)',
+                fontStyle: 'italic'
+              }}>
+                💡 Scroll down to see available services below
+              </div>
+            )}
           </div>
         ))}
         {loading && (
