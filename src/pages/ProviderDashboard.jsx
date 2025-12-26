@@ -77,10 +77,69 @@ function ProviderDashboard({ user }) {
 
   return (
     <div className="container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-        <h1>Provider Dashboard - {user.full_name}</h1>
-        <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
-      </div>
+      {/* Header with Business Image, Name, and Logout */}
+      <header style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginBottom: '30px',
+        gap: '20px'
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          flex: 1
+        }}>
+          {/* Business Image */}
+          {provider?.business_image_url && (
+            <img
+              src={provider.business_image_url}
+              alt={provider.business_name || 'Business'}
+              style={{
+                width: '60px',
+                height: '60px',
+                borderRadius: '12px',
+                objectFit: 'cover',
+                border: '2px solid var(--border)',
+                backgroundColor: 'var(--bg-primary)',
+                flexShrink: 0
+              }}
+              onError={(e) => {
+                e.target.style.display = 'none'
+              }}
+            />
+          )}
+          
+          {/* Company Name - Dashboard */}
+          <div>
+            <h1 style={{ 
+              margin: 0, 
+              fontSize: '24px',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              lineHeight: '1.2'
+            }}>
+              {provider?.business_name || user.full_name} - Dashboard
+            </h1>
+            {provider?.business_name && (
+              <p style={{
+                margin: '4px 0 0 0',
+                fontSize: '14px',
+                color: 'var(--text-secondary)',
+                lineHeight: '1.2'
+              }}>
+                {user.full_name}
+              </p>
+            )}
+          </div>
+        </div>
+        
+        {/* Logout Button */}
+        <button onClick={handleLogout} className="btn btn-secondary" style={{ flexShrink: 0 }}>
+          Logout
+        </button>
+      </header>
 
       {/* Theme Toggle - Center between header and booking link */}
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
