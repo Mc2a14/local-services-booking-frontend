@@ -342,13 +342,15 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             </div>
             {message.isSuggestion && (
               <div style={{
-                maxWidth: '80%',
+                maxWidth: '85%',
                 padding: '8px 12px',
                 backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '8px',
                 fontSize: '12px',
                 color: 'var(--text-secondary)',
-                fontStyle: 'italic'
+                fontStyle: 'italic',
+                marginLeft: '0',
+                marginRight: 'auto'
               }}>
                 💡 Scroll down to see available services below
               </div>
