@@ -18,19 +18,21 @@ export const ThemeProvider = ({ children }) => {
     return hour >= 18 || hour < 6
   }
 
-  // Check localStorage first, then check if it's after sunset
+  // Check localStorage first, default to dark mode (modern trustworthy design)
   const getInitialTheme = () => {
     const saved = localStorage.getItem('theme')
     if (saved === 'dark' || saved === 'light') {
       return saved
     }
     
+    // Default to dark mode for modern trustworthy design
     // If no saved preference, check if it's after sunset
     if (shouldBeDarkMode()) {
       return 'dark'
     }
     
-    return 'light'
+    // Default to dark mode as primary theme
+    return 'dark'
   }
 
   const [theme, setTheme] = useState(getInitialTheme)
