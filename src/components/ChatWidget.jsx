@@ -269,8 +269,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           backgroundColor: 'var(--btn-ai)',
           color: 'var(--btn-ai-text)',
-          padding: '8px 12px', // Reduced header padding
-          borderRadius: '12px 12px 0 0',
+          padding: '8px 12px',
+          paddingTop: inline ? `calc(8px + env(safe-area-inset-top))` : '8px', // iOS safe area
+          borderRadius: inline ? '0' : '12px 12px 0 0', // No border radius when fullscreen
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
