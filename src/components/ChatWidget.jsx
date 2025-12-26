@@ -93,12 +93,18 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         const visibleHeight = viewportHeight - keyboardHeight
         
         // Calculate how much to scroll so input is visible above keyboard
+        // Use less aggressive scrolling - only scroll minimum needed
         const currentScroll = window.scrollY
-        const inputBottom = inputTop + inputHeight
-        const targetScroll = inputBottom - visibleHeight + 50 // 50px padding
         
-        // Only scroll if input would be hidden by keyboard
+        // Only scroll if input is actually hidden by keyboard
         if (inputRect.bottom > visibleHeight) {
+          // Calculate minimum scroll needed - just enough to see input
+          const scrollNeeded = inputRect.bottom - visibleHeight + 20 // Only 20px padding instead of 50px
+          
+          // Limit maximum scroll to prevent moving too far up
+          const maxScroll = currentScroll + scrollNeeded
+          const targetScroll = Math.min(maxScroll, currentScroll + scrollNeeded * 0.5) // Reduce scroll by 50%
+          
           window.scrollTo({
             top: Math.max(0, targetScroll),
             behavior: 'smooth'
