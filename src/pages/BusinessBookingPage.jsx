@@ -289,7 +289,112 @@ function BusinessBookingPage() {
           </div>
         </div>
 
-
+        {/* Services Section - Always Visible */}
+        <div className="services-section" style={{ marginTop: '40px', marginBottom: '40px' }}>
+          <h2 style={{
+            fontSize: '28px',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            marginBottom: '24px',
+            textAlign: 'center'
+          }}>
+            Available Services
+          </h2>
+          
+          {services.length === 0 ? (
+            <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                No services available at this time. Please check back later.
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+              {services.map(service => (
+                <div 
+                  key={service.id} 
+                  className="card" 
+                  style={{ 
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = 'none'
+                  }}
+                  onClick={() => handleBookService(service.id)}
+                >
+                  {service.image_url && (
+                    <img
+                      src={service.image_url}
+                      alt={service.title}
+                      style={{
+                        width: '100%',
+                        height: '200px',
+                        objectFit: 'cover',
+                        borderRadius: '8px 8px 0 0',
+                        marginBottom: '16px'
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  )}
+                  <h3 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>
+                    {service.title}
+                  </h3>
+                  {service.description && (
+                    <p style={{ 
+                      color: 'var(--text-secondary)', 
+                      marginBottom: '12px', 
+                      fontSize: '14px',
+                      lineHeight: '1.5'
+                    }}>
+                      {service.description.length > 100 ? service.description.substring(0, 100) + '...' : service.description}
+                    </p>
+                  )}
+                  <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    alignItems: 'center', 
+                    marginTop: '16px' 
+                  }}>
+                    <div>
+                      <span style={{ 
+                        fontSize: '24px', 
+                        fontWeight: '600', 
+                        color: 'var(--price-color)' 
+                      }}>
+                        {service.price === 0 ? 'Free' : `$${service.price}`}
+                      </span>
+                      {service.duration_minutes && (
+                        <span style={{ 
+                          color: 'var(--text-secondary)', 
+                          marginLeft: '8px', 
+                          fontSize: '14px' 
+                        }}>
+                          • {service.duration_minutes} min
+                        </span>
+                      )}
+                    </div>
+                    <button 
+                      className="btn btn-primary"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleBookService(service.id)
+                      }}
+                    >
+                      Book a Session
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
 
         {/* Trust Signals - Testimonials */}
         {testimonials.length > 0 && (
