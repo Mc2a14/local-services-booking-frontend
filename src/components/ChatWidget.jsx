@@ -77,45 +77,45 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     }
   }, [isOpen])
 
-  // Minimal scroll when input is focused - keep chat box visible
+  // Prevent page scroll when input is focused - keep chat box fully visible
   const handleInputFocus = (e) => {
-    // Store current scroll position - we want to maintain it as much as possible
+    // Store current scroll position and lock it
     const currentScroll = window.scrollY
     
-    // Only do minimal adjustment if absolutely necessary
-    // Let the browser handle most of the positioning naturally
-    setTimeout(() => {
-      if (inputRef.current) {
-        // Get input position relative to viewport
-        const inputRect = inputRef.current.getBoundingClientRect()
-        
-        // Estimate keyboard height
-        const keyboardHeight = window.innerHeight * 0.4
-        const visibleHeight = window.innerHeight - keyboardHeight
-        
-        // Only scroll if input is significantly hidden (more than 50px)
-        // And scroll very minimally - just 10-15% of what's needed
-        if (inputRect.bottom > visibleHeight + 50) {
-          const hiddenAmount = inputRect.bottom - visibleHeight - 50
-          
-          // Very minimal scroll - only 10% of hidden amount
-          const minimalScroll = hiddenAmount * 0.1
-          const targetScroll = currentScroll + minimalScroll
-          
-          window.scrollTo({
-            top: Math.max(0, targetScroll),
-            behavior: 'smooth'
-          })
-        } else {
-          // If input is mostly visible, don't scroll at all
-          // Keep current position to preserve chat box visibility
-          window.scrollTo({
-            top: currentScroll,
-            behavior: 'instant'
-          })
-        }
+    // Prevent any scrolling - maintain current position
+    // The chat widget is already positioned correctly, we don't need page scroll
+    const lockScroll = () => {
+      if (Math.abs(window.scrollY - currentScroll) > 5) {
+        window.scrollTo({
+          top: currentScroll,
+          behavior: 'instant'
+        })
       }
-    }, 100) // Very short delay
+    }
+    
+    // Lock scroll position for a short time after keyboard appears
+    const intervals = [50, 100, 200, 300, 400, 500]
+    intervals.forEach(delay => {
+      setTimeout(lockScroll, delay)
+    })
+    
+    // Also prevent scroll events briefly
+    const preventScroll = (e) => {
+      if (Math.abs(window.scrollY - currentScroll) > 10) {
+        e.preventDefault()
+        window.scrollTo({
+          top: currentScroll,
+          behavior: 'instant'
+        })
+      }
+    }
+    
+    window.addEventListener('scroll', preventScroll, { passive: false, once: false })
+    
+    // Remove scroll prevention after keyboard has settled
+    setTimeout(() => {
+      window.removeEventListener('scroll', preventScroll)
+    }, 600)
   }
 
   const sendMessage = async (e) => {
