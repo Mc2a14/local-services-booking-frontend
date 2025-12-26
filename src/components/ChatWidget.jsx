@@ -34,15 +34,12 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   }
 
   const scrollToBottom = () => {
-    // Only scroll within the messages container, not the entire page
+    // Only scroll within the messages container - never the page
     if (messagesEndRef.current) {
-      const messagesContainer = messagesEndRef.current.parentElement?.closest('.chat-messages-container')
+      const messagesContainer = messagesEndRef.current.closest('.chat-messages-container')
       if (messagesContainer) {
-        // Scroll the container, not the page
+        // Scroll only the container internally
         messagesContainer.scrollTop = messagesContainer.scrollHeight
-      } else {
-        // Fallback: use scrollIntoView but with block: 'nearest' to prevent page scroll
-        messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' })
       }
     }
   }
@@ -59,84 +56,18 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     scrollToBottom()
   }, [messages])
 
+  // Don't auto-focus input - let user focus manually
+  // This prevents any page scrolling or jumping
   useEffect(() => {
-    // Don't auto-focus on initial page load to prevent scroll
-    // Only focus when user explicitly interacts with chat
-    if (isOpen && inputRef.current && !isInitialRender.current) {
-      const timer = setTimeout(() => {
-        // Focus without scrolling
-        if (inputRef.current) {
-          inputRef.current.focus({ preventScroll: true })
-        }
-      }, 100)
-      return () => clearTimeout(timer)
-    }
-    // Mark initial render as complete after first render
     if (isInitialRender.current) {
       isInitialRender.current = false
     }
-  }, [isOpen])
+  }, [])
 
-  // Find the nearest scrollable parent container
-  const findScrollableParent = (element) => {
-    if (!element || !element.parentElement) return null
-    
-    let parent = element.parentElement
-    while (parent && parent !== document.body) {
-      const style = window.getComputedStyle(parent)
-      const overflowY = style.overflowY
-      const overflow = style.overflow
-      
-      // Check if this element is scrollable
-      if (
-        (overflowY === 'auto' || overflowY === 'scroll') ||
-        (overflow === 'auto' || overflow === 'scroll')
-      ) {
-        return parent
-      }
-      
-      parent = parent.parentElement
-    }
-    return null
-  }
-
-  // Minimal iOS Safari fix - only scroll nearest scrollable container
+  // No input focus scrolling - input stays visible in container
   const handleInputFocus = () => {
-    // Wait briefly for keyboard to appear on iOS
-    setTimeout(() => {
-      if (!inputRef.current) return
-      
-      // Get input position relative to viewport
-      const inputRect = inputRef.current.getBoundingClientRect()
-      const viewportHeight = window.innerHeight
-      
-      // Check if input bottom is below viewport (hidden by keyboard)
-      if (inputRect.bottom > viewportHeight) {
-        // Calculate hidden amount
-        const hidden = inputRect.bottom - viewportHeight
-        
-        // Find the nearest scrollable parent (messages container)
-        const scrollableParent = findScrollableParent(inputRef.current)
-        
-        if (scrollableParent) {
-          // Scroll only the container, not the window
-          const scrollAmount = hidden + 12 // 12px padding
-          
-          // Use smooth scrolling if supported
-          if (scrollableParent.scrollTo) {
-            scrollableParent.scrollTo({
-              top: scrollableParent.scrollTop + scrollAmount,
-              behavior: 'smooth'
-            })
-          } else {
-            // Fallback for older browsers
-            scrollableParent.scrollTop += scrollAmount
-          }
-        }
-        // If no scrollable parent found, do nothing (per requirements)
-      }
-      // If input is already fully visible, do nothing
-    }, 200) // Wait for iOS keyboard animation
+    // Do nothing - chat container handles visibility
+    // Input is fixed at bottom of container, always visible
   }
 
   const sendMessage = async (e) => {
@@ -274,21 +205,21 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     <div
       className={`chat-widget-container ${inline ? 'chat-widget-mobile' : ''}`}
       style={{
-        position: inline ? 'relative' : 'fixed',
-        bottom: inline ? 'auto' : '20px',
-        right: inline ? 'auto' : '20px',
-        width: inline ? '100%' : '380px',
-        maxWidth: inline ? '100%' : 'calc(100vw - 40px)',
-        height: inline ? '368px' : '458px',
-        maxHeight: inline ? '368px' : 'calc(100vh - 40px)',
+        position: 'relative', // Always relative - no floating
+        width: '100%',
+        maxWidth: inline ? '100%' : '380px',
+        height: inline ? '500px' : '500px', // Fixed height for stability
+        maxHeight: '70vh', // Limit max height to viewport
         backgroundColor: 'var(--bg-primary)',
         borderRadius: '12px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
         display: 'flex',
         flexDirection: 'column',
-        zIndex: 1000,
         border: '1px solid var(--border)',
         marginBottom: inline ? '20px' : '0',
+        // Prevent page scroll interference
+        overflow: 'hidden',
+        // iOS safe area
         touchAction: 'manipulation'
       }}
     >
@@ -423,17 +354,17 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input - Fixed at bottom */}
+      {/* Input - Always visible at bottom of container */}
       <form
         onSubmit={sendMessage}
         style={{
-          padding: '8px 10px',
+          padding: '12px 16px',
           borderTop: '1px solid var(--border)',
           display: 'flex',
-          gap: '8px',
+          gap: '10px',
           flexShrink: 0,
           backgroundColor: 'var(--bg-primary)',
-          // Fixed positioning for input bar
+          // Always at bottom - never moves
           position: 'relative',
           zIndex: 1
         }}
@@ -448,14 +379,15 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           disabled={loading}
           style={{
             flex: 1,
-            padding: '8px 12px', // Reduced padding
+            padding: '12px 16px',
             border: '1px solid var(--border)',
-            borderRadius: '20px', // Slightly smaller radius
-            fontSize: '15px', // Slightly smaller font
+            borderRadius: '24px',
+            fontSize: '16px',
             outline: 'none',
             backgroundColor: 'var(--bg-primary)',
             color: 'var(--text-primary)',
-            minHeight: '38px', // Smaller input height
+            minHeight: '44px',
+            // Prevent any browser scroll behavior
             touchAction: 'manipulation'
           }}
         />
