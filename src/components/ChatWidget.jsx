@@ -308,7 +308,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           display: 'flex',
           flexDirection: 'column',
           gap: '8px', // Slightly reduced gap
-          minHeight: 0
+          minHeight: 0,
+          alignItems: 'flex-start', // Ensure all content aligns left
+          textAlign: 'left' // Force text alignment to left
         }}
       >
         {messages.map((message, index) => (
@@ -335,7 +337,9 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 border: message.isSuggestion ? '1px solid var(--ai-accent)' : 'none',
                 marginBottom: '0',
                 marginLeft: '0', // Ensure left alignment
-                marginRight: 'auto' // Push to left
+                marginRight: 'auto', // Push to left
+                textAlign: 'left', // Force text alignment to left
+                alignSelf: 'flex-start' // Force container to align left
               }}
             >
               {message.content}
