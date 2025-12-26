@@ -304,10 +304,10 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         style={{
           flex: 1,
           overflowY: 'auto',
-          padding: '6px 10px 0px 10px', // Reduced all padding
+          padding: '12px 14px 8px 14px', // Increased padding for breathing room
           display: 'flex',
           flexDirection: 'column',
-          gap: '2px', // Minimal gap - very tight
+          gap: '10px', // Increased gap between messages for readability
           minHeight: 0
         }}
       >
