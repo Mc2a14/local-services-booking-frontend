@@ -324,7 +324,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             <div
               style={{
                 maxWidth: '80%',
-                padding: '10px 14px',
+                padding: '8px 12px',
                 borderRadius: '12px',
                 backgroundColor: message.role === 'user' ? 'var(--chat-user-bubble)' : 'var(--chat-ai-bubble)',
                 color: message.role === 'user' ? 'var(--chat-user-text)' : 'var(--chat-ai-text)',
