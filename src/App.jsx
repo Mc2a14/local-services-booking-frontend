@@ -15,6 +15,8 @@ import EditService from './pages/EditService'
 import ProviderProfile from './pages/ProviderProfile'
 import Availability from './pages/Availability'
 import ManageFAQs from './pages/ManageFAQs'
+import ManageServices from './pages/ManageServices'
+import Requests from './pages/Requests'
 import ThemeToggle from './components/ThemeToggle'
 import { getToken, apiRequest } from './utils/auth'
 
@@ -71,6 +73,8 @@ function App() {
         <Route path="/provider-profile" element={user && user.user_type === 'provider' ? <ProviderProfile user={user} /> : <Navigate to="/login" />} />
         <Route path="/availability" element={user && user.user_type === 'provider' ? <Availability user={user} /> : <Navigate to="/login" />} />
         <Route path="/manage-faqs" element={user && user.user_type === 'provider' ? <ManageFAQs user={user} /> : <Navigate to="/login" />} />
+        <Route path="/manage-services" element={user && user.user_type === 'provider' ? <ManageServices user={user} /> : <Navigate to="/login" />} />
+        <Route path="/requests" element={user && user.user_type === 'provider' ? <Requests user={user} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   )

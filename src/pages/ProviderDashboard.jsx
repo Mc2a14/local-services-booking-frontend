@@ -25,7 +25,7 @@ function ProviderDashboard({ user }) {
         setHasProfile(true)
         setProfileError('')
         
-        // Load services and bookings only if profile exists
+        // Load services count and bookings only if profile exists
         try {
           const [servicesData, bookingsData] = await Promise.all([
             apiRequest('/services'),
@@ -154,12 +154,13 @@ function ProviderDashboard({ user }) {
         </div>
       )}
 
-      <nav style={{ display: 'flex', gap: '20px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid #E5E7EB', flexWrap: 'wrap' }}>
+      <nav style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
         <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
-        <button onClick={() => navigate('/bookings')} className="btn btn-primary">Bookings</button>
+        <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">My Profile</button>
+        <button onClick={() => navigate('/manage-services')} className="btn btn-primary">My Services</button>
         <button onClick={() => navigate('/availability')} className="btn btn-primary">Set Availability</button>
         <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 Manage FAQs</button>
-        <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">My Profile</button>
+        <button onClick={() => navigate('/requests')} className="btn btn-primary">📥 Requests</button>
       </nav>
 
       {profileError && (
@@ -173,88 +174,38 @@ function ProviderDashboard({ user }) {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-        <div>
-          <h2>My Services</h2>
-          <button 
-            onClick={() => navigate('/add-service')} 
-            className="btn btn-primary" 
-            style={{ marginBottom: '20px' }}
-            disabled={!hasProfile}
-            title={!hasProfile ? 'Create your provider profile first' : ''}
-          >
-            Add New Service
+      {/* Quick Access Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+        <div className="card" style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => navigate('/manage-services')}>
+          <h2 style={{ fontSize: '48px', margin: '10px 0' }}>📦</h2>
+          <h3 style={{ marginBottom: '5px' }}>My Services</h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '10px' }}>
+            {services.length} {services.length === 1 ? 'service' : 'services'}
+          </p>
+          <button className="btn btn-primary" style={{ width: '100%' }}>
+            Manage Services →
           </button>
-          {services.length === 0 ? (
-            <div className="card">No services yet. Add your first service!</div>
-          ) : (
-            services.map(service => (
-              <div key={service.id} className="card">
-                {service.image_url ? (
-                  <img 
-                    src={service.image_url} 
-                    alt={service.title} 
-                    style={{ width: '100%', height: '150px', objectFit: 'cover', borderRadius: '5px', marginBottom: '15px' }}
-                    onError={(e) => {
-                      e.target.style.display = 'none'
-                    }}
-                  />
-                ) : (
-                  <div style={{ 
-                    width: '100%', 
-                    height: '150px', 
-                    backgroundColor: '#e9ecef', 
-                    borderRadius: '5px', 
-                    marginBottom: '15px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#E2E8F0',
-                    fontSize: '14px'
-                  }}>
-                    No Image
-                  </div>
-                )}
-                <h3>{service.title}</h3>
-                <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
-                <p style={{ fontWeight: 'bold', fontSize: '18px', color: '#2563EB', marginBottom: '10px' }}>
-                  ${service.price}
-                </p>
-                <p>Duration: {service.duration_minutes} minutes</p>
-                <p>Category: {service.category}</p>
-                <p style={{ marginTop: '10px' }}>
-                  Status: <span style={{ 
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    backgroundColor: service.is_active ? '#d4edda' : '#f8d7da',
-                    color: service.is_active ? '#155724' : '#721c24'
-                  }}>
-                    {service.is_active ? 'Active' : 'Inactive'}
-                  </span>
-                </p>
-                {service.average_rating && (
-                  <p style={{ marginTop: '10px' }}>⭐ {service.average_rating} ({service.review_count} reviews)</p>
-                )}
-                <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
-                  <button
-                    onClick={() => navigate(`/edit-service/${service.id}`)}
-                    className="btn btn-primary"
-                    style={{ flex: 1 }}
-                  >
-                    ✏️ Edit Service
-                  </button>
-                </div>
-              </div>
-            ))
-          )}
         </div>
+      </div>
 
-        <div>
-          <h2>Bookings</h2>
-          {bookings.length === 0 ? (
-            <div className="card">No bookings yet.</div>
-          ) : (
-            bookings.map(booking => (
+      {/* Bookings Section */}
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+          <h2>Recent Bookings</h2>
+          <button onClick={() => navigate('/bookings')} className="btn btn-secondary">
+            View All Bookings →
+          </button>
+        </div>
+        {bookings.length === 0 ? (
+          <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+            <h3>No bookings yet</h3>
+            <p style={{ color: 'var(--text-secondary)' }}>
+              Your bookings will appear here once customers start booking your services.
+            </p>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gap: '20px' }}>
+            {bookings.slice(0, 10).map(booking => (
               <div key={booking.id} className="card">
                 <h3>{booking.service_title}</h3>
                 <p><strong>Customer:</strong> {booking.customer_name}</p>
@@ -300,9 +251,16 @@ function ProviderDashboard({ user }) {
                   </div>
                 )}
               </div>
-            ))
-          )}
-        </div>
+            ))}
+            {bookings.length > 10 && (
+              <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                <button onClick={() => navigate('/bookings')} className="btn btn-primary">
+                  View All {bookings.length} Bookings →
+                </button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
