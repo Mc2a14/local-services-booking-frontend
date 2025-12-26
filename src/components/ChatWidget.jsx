@@ -74,6 +74,43 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     }
   }, [isOpen])
 
+  // Prevent page scroll when input is focused (mobile keyboard issue)
+  const handleInputFocus = () => {
+    // Store current scroll position
+    const scrollY = window.scrollY || document.documentElement.scrollTop
+    const scrollX = window.scrollX || document.documentElement.scrollLeft
+    
+    // Prevent scroll while input is focused
+    const preventScroll = (e) => {
+      e.preventDefault()
+      window.scrollTo(scrollX, scrollY)
+      document.documentElement.scrollTop = scrollY
+      document.body.scrollTop = scrollY
+    }
+    
+    // Prevent touchmove events that cause scrolling
+    const preventTouchMove = (e) => {
+      // Allow touch events within the chat widget
+      if (e.target.closest('.chat-widget-container') || e.target.closest('.chat-messages-container')) {
+        return
+      }
+      e.preventDefault()
+    }
+    
+    // Add scroll prevention
+    window.addEventListener('scroll', preventScroll, { passive: false, capture: true })
+    document.addEventListener('touchmove', preventTouchMove, { passive: false })
+    
+    // Remove scroll prevention when input loses focus
+    const handleBlur = () => {
+      window.removeEventListener('scroll', preventScroll, { capture: true })
+      document.removeEventListener('touchmove', preventTouchMove)
+      inputRef.current?.removeEventListener('blur', handleBlur)
+    }
+    
+    inputRef.current?.addEventListener('blur', handleBlur, { once: true })
+  }
+
   const sendMessage = async (e) => {
     e?.preventDefault()
     
@@ -357,6 +394,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onFocus={handleInputFocus}
           placeholder="Type your message..."
           disabled={loading}
           style={{
