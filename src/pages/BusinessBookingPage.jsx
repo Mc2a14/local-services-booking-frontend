@@ -118,104 +118,169 @@ function BusinessBookingPage() {
 
   return (
     <>
-      <div className="container" style={{ maxWidth: '900px' }}>
-        {/* Header with Business Logo and Theme Toggle */}
-        <header style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between', 
-          alignItems: 'center', 
-          padding: '12px 0',
-          marginBottom: '16px',
-          gap: '16px'
-        }}>
-          {/* Business Logo/Image */}
-          {business.business_image_url && (
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              flex: 1
-            }}>
-              <img
-                src={business.business_image_url}
-                alt={business.business_name}
-                style={{
-                  width: '60px',
-                  height: '60px',
-                  borderRadius: '12px',
-                  objectFit: 'cover',
-                  border: '2px solid var(--border)',
-                  backgroundColor: 'var(--bg-primary)'
-                }}
-              />
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center'
-              }}>
-                <h2 style={{
-                  margin: 0,
-                  fontSize: '18px',
-                  fontWeight: '600',
-                  color: 'var(--text-primary)',
-                  lineHeight: '1.2'
-                }}>
-                  {business.business_name}
-                </h2>
-                {business.phone && (
-                  <p style={{
-                    margin: '4px 0 0 0',
-                    fontSize: '13px',
-                    color: 'var(--text-secondary)',
-                    lineHeight: '1.2'
-                  }}>
-                    {business.phone}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
-          
-          {/* Theme Toggle on Right */}
-          <div style={{ flexShrink: 0 }}>
+      {/* Business Hero Section - Full Width at Top */}
+      <div style={{
+        width: '100%',
+        background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
+        padding: '80px 20px',
+        textAlign: 'center',
+        borderBottom: '1px solid var(--border)',
+        position: 'relative'
+      }}>
+        <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
+          {/* Theme Toggle - Top Right */}
+          <div style={{ 
+            position: 'absolute',
+            top: '20px',
+            right: '20px',
+            zIndex: 10
+          }}>
             <ThemeToggle />
           </div>
-        </header>
 
-        {/* AI Hero Section - Mobile Optimized */}
-        <div className="card hero-section" style={{ 
-          marginBottom: '20px', // Reduced margin
-          textAlign: 'center',
-          background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
-          border: '2px solid var(--ai-accent)',
-          padding: '16px' // Reduced padding
-        }}>
-          <div className="hero-emoji" style={{ marginBottom: '8px', fontSize: '48px' }}>👋</div>
-          <h1 className="hero-title" style={{ 
+          {/* Business Name */}
+          <h1 style={{
+            fontSize: 'clamp(32px, 5vw, 48px)',
+            fontWeight: '700',
             color: 'var(--text-primary)',
-            fontWeight: '600',
-            lineHeight: '1.3',
-            marginBottom: '8px' // Reduced margin
+            marginBottom: '16px',
+            lineHeight: '1.2'
           }}>
-            Hi! I'm {business.business_name}'s AI Assistant
+            {business.business_name}
           </h1>
-          <p className="hero-subtext" style={{ 
-            color: 'var(--text-secondary)', 
-            maxWidth: '600px',
-            margin: '0 auto 16px auto', // Reduced bottom margin
-            lineHeight: '1.4',
-            fontSize: '14px' // Slightly smaller
+
+          {/* Short Description */}
+          {business.description && (
+            <p style={{
+              fontSize: 'clamp(16px, 2vw, 20px)',
+              color: 'var(--text-secondary)',
+              marginBottom: '32px',
+              maxWidth: '700px',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              lineHeight: '1.5'
+            }}>
+              {business.description.split('\n')[0].substring(0, 150)}
+              {business.description.split('\n')[0].length > 150 ? '...' : ''}
+            </p>
+          )}
+
+          {/* Primary CTA Button */}
+          <button
+            onClick={() => {
+              if (services.length > 0) {
+                handleBookService(services[0].id)
+              } else if (servicesSectionRef.current) {
+                servicesSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }
+            }}
+            className="btn btn-primary"
+            style={{
+              fontSize: '18px',
+              padding: '16px 40px',
+              borderRadius: '8px',
+              fontWeight: '600',
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+            }}
+          >
+            Book a Session
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content Container */}
+      <div className="container" style={{ maxWidth: '900px' }}>
+
+        {/* Services Section */}
+        <div ref={servicesSectionRef} style={{ marginTop: '60px', marginBottom: '40px' }}>
+          <h2 style={{
+            fontSize: '28px',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            marginBottom: '24px',
+            textAlign: 'center'
           }}>
-            You can ask questions, check availability, or book a session instantly.
-          </p>
+            What would you like to do?
+          </h2>
           
-          {/* AI Chat Widget - Open by default as primary CTA */}
-          <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+          {services.length === 0 ? (
+            <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                No services available at this time. Please check back later.
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+              {services.map(service => (
+                <div key={service.id} className="card" style={{ cursor: 'pointer' }} onClick={() => handleBookService(service.id)}>
+                  {service.image_url && (
+                    <img
+                      src={service.image_url}
+                      alt={service.title}
+                      style={{
+                        width: '100%',
+                        height: '200px',
+                        objectFit: 'cover',
+                        borderRadius: '8px 8px 0 0',
+                        marginBottom: '16px'
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  )}
+                  <h3 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>{service.title}</h3>
+                  {service.description && (
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '12px', fontSize: '14px' }}>
+                      {service.description.length > 100 ? service.description.substring(0, 100) + '...' : service.description}
+                    </p>
+                  )}
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
+                    <div>
+                      <span style={{ fontSize: '24px', fontWeight: '600', color: 'var(--price-color)' }}>
+                        {service.price === 0 ? 'Free' : `$${service.price}`}
+                      </span>
+                      {service.duration_minutes && (
+                        <span style={{ color: 'var(--text-secondary)', marginLeft: '8px', fontSize: '14px' }}>
+                          • {service.duration_minutes} min
+                        </span>
+                      )}
+                    </div>
+                    <button className="btn btn-primary">
+                      Book a Session
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* AI Chat Section */}
+        <div style={{ marginTop: '60px', marginBottom: '40px' }}>
+          <div className="card" style={{ padding: '24px' }}>
+            <h2 style={{
+              fontSize: '24px',
+              fontWeight: '600',
+              color: 'var(--text-primary)',
+              marginBottom: '16px',
+              textAlign: 'center'
+            }}>
+              Chat with our AI assistant
+            </h2>
+            <p style={{
+              color: 'var(--text-secondary)',
+              marginBottom: '20px',
+              textAlign: 'center',
+              fontSize: '14px'
+            }}>
+              Get instant answers about our services, hours, and more
+            </p>
             <ChatWidget 
               businessSlug={businessSlug} 
               businessName={business.business_name} 
               inline={true} 
-              defaultOpen={true}
+              defaultOpen={false}
               onSuggestBooking={handleBookingSuggestion}
               services={services}
             />
@@ -224,7 +289,7 @@ function BusinessBookingPage() {
 
         {/* Business Info - Collapsible Secondary Section */}
         <div style={{ marginBottom: '24px' }}>
-          {/* Contact info - Always visible but secondary */}
+          {/* Contact info */}
           {business.phone && (
             <div style={{ 
               textAlign: 'center', 
@@ -368,154 +433,6 @@ function BusinessBookingPage() {
           </div>
         </div>
 
-        {/* Services Section - Secondary CTA */}
-        <div ref={servicesSectionRef} style={{ marginBottom: '32px' }}>
-          {showBookingServices && (
-            <div style={{
-              padding: '12px 16px',
-              marginBottom: '16px',
-              backgroundColor: 'var(--success-soft)',
-              border: '1px solid var(--success)',
-              borderRadius: '8px',
-              color: 'var(--success)',
-              fontSize: '13px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              animation: 'fadeIn 0.3s ease-in',
-              lineHeight: '1.4'
-            }}>
-              <span>💡</span>
-              <span>Our AI suggested booking - check out available services below!</span>
-            </div>
-          )}
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column',
-            gap: '8px',
-            marginBottom: '20px'
-          }}>
-            <h2 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '20px' }}>What would you like to do?</h2>
-            <p style={{ 
-              margin: 0, 
-              color: 'var(--text-secondary)', 
-              fontSize: '13px',
-              fontStyle: 'italic'
-            }}>
-              Or ask me above! 👆
-            </p>
-          </div>
-          
-          {services.length === 0 ? (
-            <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-              <p style={{ color: 'var(--text-secondary)' }}>I don't have any services listed at the moment. Feel free to ask me questions above!</p>
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
-              {services.map(service => (
-                <div 
-                  key={service.id} 
-                  className="card" 
-                  style={{ 
-                    cursor: 'pointer', 
-                    transition: 'all 0.2s ease',
-                    textAlign: 'left',
-                    border: '1px solid var(--border)'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)'
-                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
-                    e.currentTarget.style.borderColor = 'var(--accent)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'translateY(0)'
-                    e.currentTarget.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)'
-                    e.currentTarget.style.borderColor = 'var(--border)'
-                  }}
-                  onClick={() => handleBookService(service.id)}
-                >
-                  {service.image_url ? (
-                    <img 
-                      src={service.image_url} 
-                      alt={service.title} 
-                      style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', marginBottom: '15px' }}
-                      onError={(e) => {
-                        e.target.style.display = 'none'
-                      }}
-                    />
-                  ) : (
-                    <div style={{ 
-                      width: '100%', 
-                      height: '180px', 
-                      backgroundColor: 'var(--bg-secondary)', 
-                      borderRadius: '8px', 
-                      marginBottom: '15px',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'var(--text-muted)',
-                      border: '1px solid var(--border)'
-                    }}>
-                      No Image
-                    </div>
-                  )}
-                  <h3 style={{ marginBottom: '8px', color: 'var(--text-primary)' }}>{service.title}</h3>
-                  {service.category && (
-                    <p style={{ color: 'var(--accent)', fontSize: '13px', marginBottom: '10px', fontWeight: '500' }}>
-                      {service.category}
-                    </p>
-                  )}
-                  <p style={{ color: 'var(--text-secondary)', marginBottom: '12px', minHeight: '40px', fontSize: '14px', lineHeight: '1.5' }}>
-                    {service.description}
-                  </p>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                    <p style={{ fontWeight: 'bold', fontSize: '22px', color: 'var(--price-color)', margin: 0 }}>
-                      ${parseFloat(service.price).toFixed(2)}
-                    </p>
-                    {service.duration_minutes && (
-                      <p style={{ color: 'var(--text-muted)', fontSize: '13px', margin: 0 }}>
-                        ⏱️ {service.duration_minutes} min
-                      </p>
-                    )}
-                  </div>
-                  {service.average_rating && (
-                    <p style={{ marginBottom: '15px', fontSize: '14px', color: 'var(--text-secondary)' }}>
-                      ⭐ {service.average_rating} ({service.review_count} {service.review_count === 1 ? 'review' : 'reviews'})
-                    </p>
-                  )}
-                  <div style={{ marginTop: '12px' }}>
-                    <button 
-                      className="btn btn-secondary"
-                      style={{ 
-                        width: '100%',
-                        minHeight: '44px',
-                        padding: '12px 20px',
-                        fontSize: '16px',
-                        fontWeight: '600'
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleBookService(service.id)
-                      }}
-                    >
-                      Book a Session
-                    </button>
-                    <p style={{
-                      marginTop: '8px',
-                      fontSize: '11px',
-                      color: 'var(--text-muted)',
-                      textAlign: 'center',
-                      fontStyle: 'italic',
-                      lineHeight: '1.4'
-                    }}>
-                      Our AI will guide you through availability and confirmation.
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
 
         {/* Trust Signals - Testimonials */}
         {testimonials.length > 0 && (
