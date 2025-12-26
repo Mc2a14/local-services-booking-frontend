@@ -47,7 +47,6 @@ function App() {
 
   return (
     <Router>
-      <ThemeToggle />
       <Routes>
         {/* Public routes - exact paths first */}
         <Route path="/" element={<Home />} />

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ChatWidget from '../components/ChatWidget'
+import ThemeToggle from '../components/ThemeToggle'
 
 function BusinessBookingPage() {
   const { businessSlug } = useParams()
@@ -83,7 +84,10 @@ function BusinessBookingPage() {
           background: 'linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%)',
           border: '2px solid var(--ai-accent)'
         }}>
-          <div className="hero-emoji">👋</div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginBottom: '12px' }}>
+            <div className="hero-emoji">👋</div>
+            <ThemeToggle />
+          </div>
           <h1 className="hero-title" style={{ 
             color: 'var(--text-primary)',
             fontWeight: '600',

@@ -301,12 +301,8 @@ hr {
   margin: 24px 0;
 }
 
-/* Theme Toggle Button */
+/* Theme Toggle Button - Static (not fixed) */
 .theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 999;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -319,6 +315,7 @@ hr {
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -337,8 +334,6 @@ hr {
 
 @media (max-width: 768px) {
   .theme-toggle {
-    top: 16px;
-    right: 16px;
     width: 40px;
     height: 40px;
   }

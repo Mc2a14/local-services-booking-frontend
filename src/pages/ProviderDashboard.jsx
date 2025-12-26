@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest, removeToken } from '../utils/auth'
+import ThemeToggle from '../components/ThemeToggle'
 
 function ProviderDashboard({ user }) {
   const [services, setServices] = useState([])
@@ -79,6 +80,11 @@ function ProviderDashboard({ user }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <h1>Provider Dashboard - {user.full_name}</h1>
         <button onClick={handleLogout} className="btn btn-secondary">Logout</button>
+      </div>
+
+      {/* Theme Toggle - Center between header and booking link */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+        <ThemeToggle />
       </div>
 
       {/* Business Booking Link - Prominently Displayed */}
