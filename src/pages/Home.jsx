@@ -25,7 +25,7 @@ function Home() {
         paddingBottom: '20px',
         borderBottom: '2px solid var(--accent)'
       }}>
-        <h1 style={{ margin: 0, color: 'var(--accent)' }}>BookingPro</h1>
+        <h1 style={{ margin: 0, color: 'var(--accent)' }}>Atencio</h1>
         <div style={{ display: 'flex', gap: '10px' }}>
           {token ? (
             <>
@@ -148,7 +148,7 @@ function Home() {
             </button>
           </div>
           <small style={{ display: 'block', marginTop: '10px', color: '#475569' }}>
-            Example: If your link is bookingpro.com/joe-plumbing, enter "joe-plumbing"
+            Example: If your link is atencio.app/joe-plumbing, enter "joe-plumbing"
           </small>
         </form>
       </div>
