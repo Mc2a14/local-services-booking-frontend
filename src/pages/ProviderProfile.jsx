@@ -16,6 +16,7 @@ function ProviderProfile({ user }) {
     business_image_url: ''
   })
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
   const [checking, setChecking] = useState(true)
   const [hasProfile, setHasProfile] = useState(false)
@@ -60,6 +61,7 @@ function ProviderProfile({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    setSuccess('')
     setLoading(true)
 
     try {
@@ -72,10 +74,12 @@ function ProviderProfile({ user }) {
       })
       
       // Show success message
-      alert(hasProfile ? 'Profile updated successfully! ✅' : 'Profile created successfully! ✅')
+      setSuccess(hasProfile ? 'Profile updated successfully! ✅' : 'Profile created successfully! ✅')
       
-      // Navigate to dashboard
-      navigate('/dashboard')
+      // Redirect to dashboard after 1.5 seconds
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 1500)
     } catch (err) {
       setError(err.message || 'Failed to save profile')
     } finally {
