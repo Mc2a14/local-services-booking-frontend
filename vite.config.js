@@ -17,7 +17,9 @@ export default defineConfig({
     host: true,
     allowedHosts: [
       'local-services-booking-frontend-production.up.railway.app',
-      '.up.railway.app' // Allow all Railway subdomains
+      '.up.railway.app', // Allow all Railway subdomains
+      'atencio.app',
+      'www.atencio.app'
     ]
   }
 })
