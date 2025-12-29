@@ -1,74 +1,168 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
 
 function ForgotPassword() {
-  const [email, setEmail] = useState('')
+  const navigate = useNavigate()
+  const [step, setStep] = useState(1) // 1 = verify, 2 = reset password
+  const [formData, setFormData] = useState({
+    email: '',
+    phone: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  const handleSubmit = async (e) => {
+  const handleVerify = async (e) => {
     e.preventDefault()
     setError('')
-    setSuccess(false)
     setLoading(true)
 
     try {
-      await apiRequest('/auth/forgot-password', {
+      await apiRequest('/auth/verify-for-reset', {
         method: 'POST',
-        body: JSON.stringify({ email })
+        body: JSON.stringify({ 
+          email: formData.email, 
+          phone: formData.phone 
+        })
       })
 
-      setSuccess(true)
-      setEmail('')
+      // Verification successful, move to password reset step
+      setStep(2)
     } catch (err) {
-      setError(err.message || 'Failed to send reset email')
+      setError(err.message || 'Verification failed. Please check your email and phone number.')
     } finally {
       setLoading(false)
     }
   }
 
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
+    setError('')
+
+    if (formData.newPassword !== formData.confirmPassword) {
+      setError('Passwords do not match')
+      return
+    }
+
+    if (formData.newPassword.length < 6) {
+      setError('Password must be at least 6 characters')
+      return
+    }
+
+    setLoading(true)
+
+    try {
+      await apiRequest('/auth/reset-password-verified', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: formData.email,
+          phone: formData.phone,
+          newPassword: formData.newPassword,
+          confirmPassword: formData.confirmPassword
+        })
+      })
+
+      // Success - redirect to login
+      alert('Password reset successfully! Please login with your new password.')
+      navigate('/login')
+    } catch (err) {
+      setError(err.message || 'Failed to reset password. Please try again.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    })
+    setError('')
+  }
+
   return (
     <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
       <div className="card">
-        <h1 style={{ marginBottom: '20px' }}>Forgot Password</h1>
+        <h1 style={{ marginBottom: '20px' }}>Reset Password</h1>
         
         {error && <div className="error">{error}</div>}
         
-        {success ? (
-          <div style={{
-            backgroundColor: '#d1fae5',
-            border: '1px solid #10b981',
-            color: '#065f46',
-            padding: '15px',
-            borderRadius: '5px',
-            marginBottom: '20px'
-          }}>
-            <strong>✓ Email sent!</strong>
-            <p style={{ margin: '10px 0 0 0' }}>
-              If an account with that email exists, a password reset link has been sent. 
-              Please check your email and follow the instructions to reset your password.
-            </p>
-            <p style={{ margin: '10px 0 0 0', fontSize: '14px' }}>
-              <strong>Note:</strong> The reset link will expire in 1 hour.
-            </p>
-          </div>
-        ) : (
+        {step === 1 ? (
           <>
             <p style={{ color: '#475569', marginBottom: '30px' }}>
-              Enter your email address and we'll send you a link to reset your password.
+              Verify your email and phone number to reset your password.
             </p>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleVerify}>
               <div className="form-group">
                 <label>Email</label>
                 <input
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                   placeholder="your.email@example.com"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="555-123-4567"
+                  style={{ marginBottom: '5px' }}
+                />
+                <small style={{ color: '#475569', fontSize: '12px', display: 'block' }}>
+                  Enter the phone number associated with your account (if you provided one)
+                </small>
+              </div>
+
+              <button 
+                type="submit" 
+                className="btn btn-primary" 
+                disabled={loading} 
+                style={{ width: '100%' }}
+              >
+                {loading ? 'Verifying...' : 'Verify & Continue'}
+              </button>
+            </form>
+          </>
+        ) : (
+          <>
+            <p style={{ color: '#475569', marginBottom: '30px' }}>
+              Verification successful! Please enter your new password.
+            </p>
+
+            <form onSubmit={handleResetPassword}>
+              <div className="form-group">
+                <label>New Password</label>
+                <input
+                  type="password"
+                  name="newPassword"
+                  value={formData.newPassword}
+                  onChange={handleChange}
+                  required
+                  minLength={6}
+                  placeholder="At least 6 characters"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Confirm New Password</label>
+                <input
+                  type="password"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required
+                  minLength={6}
+                  placeholder="Re-enter your password"
                 />
               </div>
 
@@ -78,7 +172,17 @@ function ForgotPassword() {
                 disabled={loading} 
                 style={{ width: '100%' }}
               >
-                {loading ? 'Sending...' : 'Send Reset Link'}
+                {loading ? 'Resetting...' : 'Reset Password'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setStep(1)}
+                className="btn btn-secondary"
+                disabled={loading}
+                style={{ width: '100%', marginTop: '10px' }}
+              >
+                Back
               </button>
             </form>
           </>
