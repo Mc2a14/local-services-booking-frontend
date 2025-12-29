@@ -70,7 +70,12 @@ function ProviderProfile({ user }) {
         method: method,
         body: JSON.stringify(formData)
       })
-      navigate('/')
+      
+      // Show success message
+      alert(hasProfile ? 'Profile updated successfully! ✅' : 'Profile created successfully! ✅')
+      
+      // Navigate to dashboard
+      navigate('/dashboard')
     } catch (err) {
       setError(err.message || 'Failed to save profile')
     } finally {
