@@ -103,6 +103,19 @@ function ProviderProfile({ user }) {
         </p>
         
         {error && <div className="error">{error}</div>}
+        
+        {success && (
+          <div style={{
+            backgroundColor: '#d1fae5',
+            border: '1px solid #10b981',
+            color: '#065f46',
+            padding: '15px',
+            borderRadius: '5px',
+            marginBottom: '20px'
+          }}>
+            {success}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
