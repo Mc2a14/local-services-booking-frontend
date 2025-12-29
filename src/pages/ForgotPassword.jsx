@@ -115,11 +115,13 @@ function ForgotPassword() {
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="555-123-4567"
+                  placeholder="+1 5551234567 or 5551234567"
                   style={{ marginBottom: '5px' }}
+                  inputMode="tel"
                 />
                 <small style={{ color: '#475569', fontSize: '12px', display: 'block' }}>
-                  Enter the phone number associated with your account (if you provided one)
+                  Enter the phone number associated with your account (if you provided one).
+                  <br />Format: You can include country code (+1), spaces, dashes, or parentheses - all formats work.
                 </small>
               </div>
 
