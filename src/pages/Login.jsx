@@ -58,7 +58,19 @@ function Login({ setUser }) {
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
+              <label style={{ marginBottom: 0 }}>Password</label>
+              <Link 
+                to="/forgot-password" 
+                style={{ 
+                  fontSize: '14px', 
+                  color: '#2563EB', 
+                  textDecoration: 'none' 
+                }}
+              >
+                Forgot Password?
+              </Link>
+            </div>
             <input
               type="password"
               value={password}

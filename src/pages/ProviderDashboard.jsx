@@ -220,6 +220,7 @@ function ProviderDashboard({ user }) {
         <button onClick={() => navigate('/availability')} className="btn btn-primary">Set Availability</button>
         <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 Manage FAQs</button>
         <button onClick={() => navigate('/requests')} className="btn btn-primary">📥 Requests</button>
+        <button onClick={() => navigate('/change-credentials')} className="btn btn-secondary">Change Credentials</button>
       </nav>
 
       {profileError && (

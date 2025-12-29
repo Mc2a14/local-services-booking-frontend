@@ -124,3 +124,4 @@ Once deployed, you'll have:
 - Both are free for personal/small projects
 - Environment variables need to be set in both platforms
 
+

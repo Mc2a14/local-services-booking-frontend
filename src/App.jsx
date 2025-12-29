@@ -17,6 +17,9 @@ import Availability from './pages/Availability'
 import ManageFAQs from './pages/ManageFAQs'
 import ManageServices from './pages/ManageServices'
 import Requests from './pages/Requests'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
+import ChangeCredentials from './pages/ChangeCredentials'
 import ThemeToggle from './components/ThemeToggle'
 import { getToken, apiRequest } from './utils/auth'
 
@@ -54,6 +57,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={!user ? <Login setUser={setUser} /> : <Navigate to="/dashboard" />} />
         <Route path="/register" element={!user ? <Register setUser={setUser} /> : <Navigate to="/dashboard" />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         
         {/* Public business booking page - MUST come after exact routes */}
         <Route path="/:businessSlug" element={<BusinessBookingPage />} />
@@ -75,6 +80,7 @@ function App() {
         <Route path="/manage-faqs" element={user && user.user_type === 'provider' ? <ManageFAQs user={user} /> : <Navigate to="/login" />} />
         <Route path="/manage-services" element={user && user.user_type === 'provider' ? <ManageServices user={user} /> : <Navigate to="/login" />} />
         <Route path="/requests" element={user && user.user_type === 'provider' ? <Requests user={user} /> : <Navigate to="/login" />} />
+        <Route path="/change-credentials" element={user ? <ChangeCredentials user={user} setUser={setUser} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   )
