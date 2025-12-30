@@ -137,7 +137,8 @@ function BookServiceGuest() {
         customer_email: data.booking.customer_email || customerEmail.trim(),
         customer_phone: data.booking.customer_phone || customerPhone.trim() || null,
         service_title: data.booking.service_title || service.title,
-        business_name: data.booking.business_name || service.business_name || null
+        business_name: data.booking.business_name || service.business_name || null,
+        business_slug: data.booking.business_slug || null
       })
       setSuccess(true)
     } catch (err) {
@@ -325,7 +326,17 @@ function BookServiceGuest() {
           </div>
 
           <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
-            <button onClick={() => navigate('/')} className="btn btn-primary" style={{ padding: '12px 30px' }}>
+            <button 
+              onClick={() => {
+                if (bookingDetails.business_slug) {
+                  navigate(`/${bookingDetails.business_slug}`)
+                } else {
+                  navigate('/')
+                }
+              }} 
+              className="btn btn-primary" 
+              style={{ padding: '12px 30px' }}
+            >
               Back to Home
             </button>
             {bookingDetails.customer_phone && (
