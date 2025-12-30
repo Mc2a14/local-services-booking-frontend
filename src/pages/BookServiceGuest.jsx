@@ -328,8 +328,10 @@ function BookServiceGuest() {
           <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
             <button 
               onClick={() => {
-                if (bookingDetails.business_slug) {
-                  navigate(`/${bookingDetails.business_slug}`)
+                // Navigate back to the business booking page using business_slug
+                const businessSlug = bookingDetails.business_slug || service?.business_slug;
+                if (businessSlug) {
+                  navigate(`/${businessSlug}`)
                 } else {
                   navigate('/')
                 }
