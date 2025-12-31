@@ -8,7 +8,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 function BusinessBookingPage() {
   const { businessSlug } = useParams()
   const navigate = useNavigate()
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [business, setBusiness] = useState(null)
   const [services, setServices] = useState([])
   const [testimonials, setTestimonials] = useState([])
