@@ -128,30 +128,50 @@ function Home() {
       {/* For Customers Section */}
       <div className="card" style={{ padding: '40px', textAlign: 'center' }}>
         <h2 style={{ marginBottom: '20px' }}>{t('home.findBusiness')}</h2>
-        <p style={{ color: '#475569', marginBottom: '30px' }}>
-          {t('home.description')}
+        <p style={{ color: '#475569', marginBottom: '20px', fontSize: '16px' }}>
+          Enter your business booking page URL to access services and make appointments.
+        </p>
+        <p style={{ color: '#6b7280', marginBottom: '30px', fontSize: '14px' }}>
+          <strong>Tip:</strong> You can find your business URL in your business owner dashboard under "My Profile" → "Your Booking Page"
         </p>
         <form onSubmit={handleBusinessSlugSubmit} style={{ maxWidth: '500px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', gap: '10px' }}>
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
+            <div style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              padding: '0 12px',
+              backgroundColor: '#f3f4f6',
+              border: '1px solid #E5E7EB',
+              borderRight: 'none',
+              borderRadius: '5px 0 0 5px',
+              fontSize: '14px',
+              color: '#6b7280',
+              whiteSpace: 'nowrap'
+            }}>
+              atencio.app/
+            </div>
             <input
               type="text"
               value={businessSlug}
               onChange={(e) => setBusinessSlug(e.target.value)}
-              placeholder={t('home.enterBusinessSlug')}
+              placeholder="business-slug-here"
               style={{
                 flex: 1,
                 padding: '12px',
                 fontSize: '16px',
                 border: '1px solid #E5E7EB',
-                borderRadius: '5px'
+                borderLeft: 'none',
+                borderRight: 'none',
+                borderRadius: '0',
+                fontFamily: 'monospace'
               }}
             />
-            <button type="submit" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary" style={{ borderRadius: '0 5px 5px 0' }}>
               {t('home.search')}
             </button>
           </div>
-          <small style={{ display: 'block', marginTop: '10px', color: '#475569' }}>
-            {t('home.example')}
+          <small style={{ display: 'block', marginTop: '10px', color: '#6b7280', fontSize: '13px' }}>
+            Example: If your booking page is <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '3px' }}>atencio.app/joes-plumbing</code>, enter <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '3px' }}>joes-plumbing</code>
           </small>
         </form>
       </div>
