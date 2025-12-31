@@ -25,7 +25,11 @@ function Home() {
       }
     }, 300)
 
-    return () => clearTimeout(timer)
+    // Cleanup: Clear timer on unmount or when searchQuery changes
+    return () => {
+      clearTimeout(timer)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery])
 
   const searchBusinesses = async (query) => {
@@ -298,7 +302,7 @@ function Home() {
               borderRadius: '8px',
               border: '1px solid #e5e7eb'
             }}>
-              No businesses found matching "{searchQuery}". Try a different search term.
+              No businesses found matching &quot;{searchQuery}&quot;. Try a different search term.
             </div>
           )}
 
