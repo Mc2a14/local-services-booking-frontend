@@ -148,9 +148,10 @@ function ProviderDashboard({ user }) {
         </button>
       </header>
 
-      {/* Theme Toggle - Center between header and booking link */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+      {/* Theme Toggle and Language Toggle - Center between header and booking link */}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
         <ThemeToggle />
+        <LanguageToggle />
       </div>
 
       {/* Business Booking Link - Prominently Displayed */}
@@ -221,7 +222,6 @@ function ProviderDashboard({ user }) {
       )}
 
       <nav style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap', alignItems: 'center' }}>
-        <LanguageToggle />
         <button onClick={() => navigate('/dashboard')} className="btn btn-primary">{t('common.dashboard')}</button>
         <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">{t('providerDashboard.myProfile')}</button>
         <button onClick={() => navigate('/manage-services')} className="btn btn-primary">{t('providerDashboard.myServices')}</button>
