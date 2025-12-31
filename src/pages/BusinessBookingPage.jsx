@@ -130,20 +130,6 @@ function BusinessBookingPage() {
         position: 'relative'
       }}>
         <div className="container" style={{ maxWidth: '900px', margin: '0 auto' }}>
-          {/* Theme Toggle - Top Right */}
-          <div style={{ 
-            position: 'absolute',
-            top: '20px',
-            right: '20px',
-            zIndex: 10,
-            display: 'flex',
-            gap: '10px',
-            alignItems: 'center'
-          }}>
-            <LanguageToggle />
-            <ThemeToggle />
-          </div>
-
           {/* Business Image - Rectangle with Round Edges (No Outer Frame) */}
           <div style={{ 
             display: 'flex', 
@@ -231,7 +217,7 @@ function BusinessBookingPage() {
           <div style={{ 
             display: 'flex', 
             justifyContent: 'center', 
-            marginBottom: '24px' 
+            marginBottom: '16px' 
           }}>
             <button
               onClick={() => {
@@ -252,6 +238,18 @@ function BusinessBookingPage() {
             >
               {t('businessBooking.bookService')}
             </button>
+          </div>
+
+          {/* Theme Toggle and Language Toggle - Below Book Service Button */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            gap: '10px',
+            marginBottom: '24px' 
+          }}>
+            <ThemeToggle />
+            <LanguageToggle />
           </div>
         </div>
       </div>
