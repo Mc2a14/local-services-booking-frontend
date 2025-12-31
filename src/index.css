@@ -344,6 +344,18 @@ hr {
   }
 }
 
+/* Language Toggle - Similar styling to theme toggle */
+.language-toggle {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .language-toggle {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}
+
 /* Price Color */
 .price {
   color: var(--price-color);

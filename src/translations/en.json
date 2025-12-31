@@ -1,0 +1,88 @@
+{
+  "common": {
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "getStarted": "Get Started",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close"
+  },
+  "home": {
+    "title": "Atencio",
+    "subtitle": "Booking Page + AI Receptionist for Local Businesses",
+    "description": "Create your free booking page and let AI handle customer inquiries 24/7",
+    "findBusiness": "Find a Business",
+    "enterBusinessSlug": "Enter business name (e.g., joe-plumbing)",
+    "example": "Example: If your link is atencio.app/joe-plumbing, enter \"joe-plumbing\"",
+    "search": "Search"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "forgotPassword": "Forgot Password?",
+    "rememberMe": "Remember me"
+  },
+  "register": {
+    "title": "Create Account",
+    "fullName": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "phone": "Phone Number (Optional)",
+    "userType": "I am a",
+    "customer": "Customer",
+    "provider": "Business Owner",
+    "registerButton": "Create Account",
+    "haveAccount": "Already have an account?",
+    "loginHere": "Login here"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome"
+  },
+  "booking": {
+    "title": "Book Service",
+    "selectDate": "Select Date",
+    "selectTime": "Select Time",
+    "yourInfo": "Your Information",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone (Optional)",
+    "notes": "Additional Notes (Optional)",
+    "bookButton": "Book Now",
+    "bookingConfirmed": "Booking Confirmed",
+    "confirmationMessage": "Your booking has been confirmed! A confirmation email will be sent to your email address.",
+    "backToHome": "Back to Home"
+  },
+  "feedback": {
+    "title": "How was your experience?",
+    "description": "We'd love to hear your feedback about your recent appointment.",
+    "rating": "Rating",
+    "required": "Required",
+    "comment": "Additional Comments (Optional)",
+    "submit": "Submit Feedback",
+    "submitting": "Submitting...",
+    "thankYou": "Thank you! Your feedback helps improve the service.",
+    "alreadySubmitted": "Feedback Already Submitted",
+    "alreadySubmittedMessage": "You have already submitted feedback for this appointment. Thank you!",
+    "poor": "Poor",
+    "fair": "Fair",
+    "good": "Good",
+    "veryGood": "Very Good",
+    "excellent": "Excellent"
+  }
+}
+

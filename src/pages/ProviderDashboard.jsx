@@ -10,6 +10,8 @@ function ProviderDashboard({ user }) {
   const [hasProfile, setHasProfile] = useState(false)
   const [profileError, setProfileError] = useState('')
   const [provider, setProvider] = useState(null)
+  const [feedback, setFeedback] = useState([])
+  const [showFeedback, setShowFeedback] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -25,14 +27,16 @@ function ProviderDashboard({ user }) {
         setHasProfile(true)
         setProfileError('')
         
-        // Load services count and bookings only if profile exists
+        // Load services count, bookings, and feedback only if profile exists
         try {
-          const [servicesData, bookingsData] = await Promise.all([
+          const [servicesData, bookingsData, feedbackData] = await Promise.all([
             apiRequest('/services'),
-            apiRequest('/bookings/provider/my-bookings')
+            apiRequest('/bookings/provider/my-bookings'),
+            apiRequest('/feedback/business').catch(() => ({ feedback: [] })) // Don't fail if no feedback yet
           ])
           setServices(servicesData.services || [])
           setBookings(bookingsData.bookings || [])
+          setFeedback(feedbackData.feedback || [])
         } catch (err) {
           // Silently handle errors loading services/bookings
           console.error('Error loading services/bookings:', err.message)
@@ -221,6 +225,31 @@ function ProviderDashboard({ user }) {
         <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 Manage FAQs</button>
         <button onClick={() => navigate('/requests')} className="btn btn-primary">📥 Requests</button>
         <button onClick={() => navigate('/change-credentials')} className="btn btn-secondary">Change Credentials</button>
+        <button 
+          onClick={() => setShowFeedback(!showFeedback)} 
+          className="btn btn-secondary"
+          style={{ position: 'relative' }}
+        >
+          💬 Feedback {feedback.length > 0 && (
+            <span style={{
+              position: 'absolute',
+              top: '-8px',
+              right: '-8px',
+              backgroundColor: '#FF6B6B',
+              color: 'white',
+              borderRadius: '50%',
+              width: '20px',
+              height: '20px',
+              fontSize: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold'
+            }}>
+              {feedback.length}
+            </span>
+          )}
+        </button>
       </nav>
 
       {profileError && (
@@ -322,6 +351,73 @@ function ProviderDashboard({ user }) {
           </div>
         )}
       </div>
+
+      {/* Feedback Section */}
+      {showFeedback && (
+        <div style={{ marginTop: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h2>Private Customer Feedback</h2>
+            <button onClick={() => setShowFeedback(false)} className="btn btn-secondary">
+              Close
+            </button>
+          </div>
+          {feedback.length === 0 ? (
+            <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+              <h3>No feedback yet</h3>
+              <p style={{ color: 'var(--text-secondary)' }}>
+                Customer feedback will appear here once appointments are completed and customers submit feedback.
+              </p>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gap: '20px' }}>
+              {feedback.map((item) => (
+                <div key={item.id} className="card">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '15px' }}>
+                    <div>
+                      <h3 style={{ margin: '0 0 10px 0' }}>{item.service_title || 'Service'}</h3>
+                      <p style={{ margin: '0', color: 'var(--text-secondary)', fontSize: '14px' }}>
+                        {item.customer_name || 'Customer'} • {new Date(item.booking_date).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <span
+                          key={star}
+                          style={{
+                            fontSize: '20px',
+                            color: star <= item.rating ? '#FFD700' : '#ccc'
+                          }}
+                        >
+                          ⭐
+                        </span>
+                      ))}
+                      <span style={{ marginLeft: '8px', fontWeight: '600' }}>
+                        {item.rating}/5
+                      </span>
+                    </div>
+                  </div>
+                  {item.comment && (
+                    <div style={{
+                      marginTop: '15px',
+                      padding: '15px',
+                      backgroundColor: 'var(--bg-secondary)',
+                      borderRadius: '8px',
+                      borderLeft: '3px solid var(--primary)'
+                    }}>
+                      <p style={{ margin: 0, color: 'var(--text-primary)', fontStyle: 'italic' }}>
+                        "{item.comment}"
+                      </p>
+                    </div>
+                  )}
+                  <p style={{ marginTop: '15px', fontSize: '12px', color: 'var(--text-secondary)' }}>
+                    Submitted: {new Date(item.created_at).toLocaleString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

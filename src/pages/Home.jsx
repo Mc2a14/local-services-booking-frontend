@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getToken } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function Home() {
   const navigate = useNavigate()
   const [businessSlug, setBusinessSlug] = useState('')
   const token = getToken()
+  const { t } = useLanguage()
 
   const handleBusinessSlugSubmit = (e) => {
     e.preventDefault()
@@ -25,27 +28,28 @@ function Home() {
         paddingBottom: '20px',
         borderBottom: '2px solid var(--accent)'
       }}>
-        <h1 style={{ margin: 0, color: 'var(--accent)' }}>Atencio</h1>
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <h1 style={{ margin: 0, color: 'var(--accent)' }}>{t('home.title')}</h1>
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          <LanguageToggle />
           {token ? (
             <>
               <button onClick={() => navigate('/dashboard')} className="btn btn-primary">
-                Dashboard
+                {t('common.dashboard')}
               </button>
               <button onClick={() => {
                 localStorage.removeItem('token')
                 window.location.href = '/'
               }} className="btn btn-secondary">
-                Logout
+                {t('common.logout')}
               </button>
             </>
           ) : (
             <>
               <button onClick={() => navigate('/login')} className="btn btn-secondary">
-                Login
+                {t('common.login')}
               </button>
               <button onClick={() => navigate('/register')} className="btn btn-primary">
-                Get Started
+                {t('common.getStarted')}
               </button>
             </>
           )}
@@ -61,11 +65,10 @@ function Home() {
         borderRadius: '10px'
       }}>
         <h1 style={{ fontSize: '3rem', marginBottom: '20px', color: '#2563EB' }}>
-          Your Booking Page + AI Receptionist
+          {t('home.subtitle')}
         </h1>
         <p style={{ fontSize: '1.3rem', color: '#475569', maxWidth: '700px', margin: '0 auto 30px' }}>
-          Give your customers a simple way to book your services online. 
-          Include an AI assistant to answer common questions 24/7.
+          {t('home.description')}
         </p>
         <div style={{ display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button 
@@ -73,14 +76,14 @@ function Home() {
             className="btn btn-primary"
             style={{ padding: '15px 40px', fontSize: '18px' }}
           >
-            Create Your Booking Page
+            {t('common.getStarted')}
           </button>
           <button 
             onClick={() => navigate('/login')} 
             className="btn btn-secondary"
             style={{ padding: '15px 40px', fontSize: '18px' }}
           >
-            Sign In
+            {t('common.login')}
           </button>
         </div>
       </div>
@@ -124,9 +127,9 @@ function Home() {
 
       {/* For Customers Section */}
       <div className="card" style={{ padding: '40px', textAlign: 'center' }}>
-        <h2 style={{ marginBottom: '20px' }}>Have a Booking Link?</h2>
+        <h2 style={{ marginBottom: '20px' }}>{t('home.findBusiness')}</h2>
         <p style={{ color: '#475569', marginBottom: '30px' }}>
-          Enter your business booking link below to view available services
+          {t('home.description')}
         </p>
         <form onSubmit={handleBusinessSlugSubmit} style={{ maxWidth: '500px', margin: '0 auto' }}>
           <div style={{ display: 'flex', gap: '10px' }}>
@@ -134,7 +137,7 @@ function Home() {
               type="text"
               value={businessSlug}
               onChange={(e) => setBusinessSlug(e.target.value)}
-              placeholder="your-business-name"
+              placeholder={t('home.enterBusinessSlug')}
               style={{
                 flex: 1,
                 padding: '12px',
@@ -144,11 +147,11 @@ function Home() {
               }}
             />
             <button type="submit" className="btn btn-primary">
-              Go to Booking Page
+              {t('home.search')}
             </button>
           </div>
           <small style={{ display: 'block', marginTop: '10px', color: '#475569' }}>
-            Example: If your link is atencio.app/joe-plumbing, enter "joe-plumbing"
+            {t('home.example')}
           </small>
         </form>
       </div>

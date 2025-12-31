@@ -20,6 +20,7 @@ import Requests from './pages/Requests'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import ChangeCredentials from './pages/ChangeCredentials'
+import FeedbackForm from './pages/FeedbackForm'
 import ThemeToggle from './components/ThemeToggle'
 import { getToken, apiRequest } from './utils/auth'
 
@@ -59,6 +60,7 @@ function App() {
         <Route path="/register" element={!user ? <Register setUser={setUser} /> : <Navigate to="/dashboard" />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/feedback/:appointmentId" element={<FeedbackForm />} />
         
         {/* Public business booking page - MUST come after exact routes */}
         <Route path="/:businessSlug" element={<BusinessBookingPage />} />

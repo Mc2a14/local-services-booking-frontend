@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import ChatWidget from '../components/ChatWidget'
 import ThemeToggle from '../components/ThemeToggle'
+import LanguageToggle from '../components/LanguageToggle'
 
 function BusinessBookingPage() {
   const { businessSlug } = useParams()
@@ -132,8 +133,12 @@ function BusinessBookingPage() {
             position: 'absolute',
             top: '20px',
             right: '20px',
-            zIndex: 10
+            zIndex: 10,
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center'
           }}>
+            <LanguageToggle />
             <ThemeToggle />
           </div>
 

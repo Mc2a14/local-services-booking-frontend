@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { apiRequest, setToken } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function Register({ setUser }) {
   const [formData, setFormData] = useState({
@@ -13,6 +15,7 @@ function Register({ setUser }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { t } = useLanguage()
 
   const handleChange = (e) => {
     setFormData({
@@ -44,14 +47,17 @@ function Register({ setUser }) {
 
   return (
     <div className="container" style={{ maxWidth: '400px', marginTop: '50px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <div className="card">
-        <h1 style={{ marginBottom: '20px' }}>Register</h1>
+        <h1 style={{ marginBottom: '20px' }}>{t('register.title')}</h1>
         
         {error && <div className="error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Full Name</label>
+            <label>{t('register.fullName')}</label>
             <input
               type="text"
               name="full_name"
@@ -62,7 +68,7 @@ function Register({ setUser }) {
           </div>
 
           <div className="form-group">
-            <label>Email</label>
+            <label>{t('register.email')}</label>
             <input
               type="email"
               name="email"
@@ -73,7 +79,7 @@ function Register({ setUser }) {
           </div>
 
           <div className="form-group">
-            <label>Password</label>
+            <label>{t('register.password')}</label>
             <input
               type="password"
               name="password"
@@ -85,7 +91,7 @@ function Register({ setUser }) {
           </div>
 
           <div className="form-group">
-            <label>Phone (optional)</label>
+            <label>{t('register.phone')}</label>
             <input
               type="tel"
               name="phone"
@@ -95,25 +101,25 @@ function Register({ setUser }) {
           </div>
 
           <div className="form-group">
-            <label>I am a</label>
+            <label>{t('register.userType')}</label>
             <select
               name="user_type"
               value={formData.user_type}
               onChange={handleChange}
               required
             >
-              <option value="customer">Customer</option>
-              <option value="provider">Service Provider</option>
+              <option value="customer">{t('register.customer')}</option>
+              <option value="provider">{t('register.provider')}</option>
             </select>
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%' }}>
-            {loading ? 'Registering...' : 'Register'}
+            {loading ? t('common.loading') : t('register.registerButton')}
           </button>
         </form>
 
         <p style={{ marginTop: '20px', textAlign: 'center' }}>
-          Already have an account? <Link to="/login">Login</Link>
+          {t('register.haveAccount')} <Link to="/login">{t('register.loginHere')}</Link>
         </p>
       </div>
     </div>

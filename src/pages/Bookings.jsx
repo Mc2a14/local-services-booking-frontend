@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
 
 function Bookings({ user }) {
@@ -63,6 +63,13 @@ function Bookings({ user }) {
               )}
               {booking.notes && (
                 <p><strong>Notes:</strong> {booking.notes}</p>
+              )}
+              {user.user_type === 'customer' && booking.status === 'completed' && (
+                <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid var(--border)' }}>
+                  <Link to={`/feedback/${booking.id}`} className="btn btn-primary">
+                    Leave Feedback
+                  </Link>
+                </div>
               )}
             </div>
           ))}

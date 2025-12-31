@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { apiRequest, setToken } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function Login({ setUser }) {
   const [email, setEmail] = useState('')
@@ -8,6 +10,7 @@ function Login({ setUser }) {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
+  const { t } = useLanguage()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -41,14 +44,17 @@ function Login({ setUser }) {
 
   return (
     <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <div className="card">
-        <h1 style={{ marginBottom: '20px' }}>Login</h1>
+        <h1 style={{ marginBottom: '20px' }}>{t('login.title')}</h1>
         
         {error && <div className="error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email</label>
+            <label>{t('login.email')}</label>
             <input
               type="email"
               value={email}
@@ -59,7 +65,7 @@ function Login({ setUser }) {
 
           <div className="form-group">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
-              <label style={{ marginBottom: 0 }}>Password</label>
+              <label style={{ marginBottom: 0 }}>{t('login.password')}</label>
               <Link 
                 to="/forgot-password" 
                 style={{ 
@@ -68,7 +74,7 @@ function Login({ setUser }) {
                   textDecoration: 'none' 
                 }}
               >
-                Forgot Password?
+                {t('login.forgotPassword')}
               </Link>
             </div>
             <input
@@ -80,12 +86,12 @@ function Login({ setUser }) {
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%' }}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? t('common.loading') : t('login.loginButton')}
           </button>
         </form>
 
         <p style={{ marginTop: '20px', textAlign: 'center' }}>
-          Don't have an account? <Link to="/register">Register</Link>
+          {t('login.noAccount')} <Link to="/register">{t('login.registerHere')}</Link>
         </p>
       </div>
     </div>

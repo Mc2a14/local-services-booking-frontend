@@ -1,0 +1,88 @@
+{
+  "common": {
+    "login": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "register": "Registrarse",
+    "dashboard": "Panel",
+    "getStarted": "Comenzar",
+    "submit": "Enviar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "back": "Atrás",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar"
+  },
+  "home": {
+    "title": "Atencio",
+    "subtitle": "Página de Reservas + Recepcionista IA para Negocios Locales",
+    "description": "Crea tu página de reservas gratis y deja que la IA maneje las consultas de clientes 24/7",
+    "findBusiness": "Buscar un Negocio",
+    "enterBusinessSlug": "Ingresa el nombre del negocio (ej., joe-plumbing)",
+    "example": "Ejemplo: Si tu enlace es atencio.app/joe-plumbing, ingresa \"joe-plumbing\"",
+    "search": "Buscar"
+  },
+  "login": {
+    "title": "Iniciar Sesión",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "loginButton": "Iniciar Sesión",
+    "noAccount": "¿No tienes una cuenta?",
+    "registerHere": "Regístrate aquí",
+    "forgotPassword": "¿Olvidaste tu Contraseña?",
+    "rememberMe": "Recordarme"
+  },
+  "register": {
+    "title": "Crear Cuenta",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "phone": "Número de Teléfono (Opcional)",
+    "userType": "Soy un",
+    "customer": "Cliente",
+    "provider": "Dueño de Negocio",
+    "registerButton": "Crear Cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "loginHere": "Inicia sesión aquí"
+  },
+  "dashboard": {
+    "title": "Panel",
+    "welcome": "Bienvenido"
+  },
+  "booking": {
+    "title": "Reservar Servicio",
+    "selectDate": "Seleccionar Fecha",
+    "selectTime": "Seleccionar Hora",
+    "yourInfo": "Tu Información",
+    "name": "Nombre",
+    "email": "Correo Electrónico",
+    "phone": "Teléfono (Opcional)",
+    "notes": "Notas Adicionales (Opcional)",
+    "bookButton": "Reservar Ahora",
+    "bookingConfirmed": "Reserva Confirmada",
+    "confirmationMessage": "¡Tu reserva ha sido confirmada! Se enviará un correo de confirmación a tu dirección de correo electrónico.",
+    "backToHome": "Volver al Inicio"
+  },
+  "feedback": {
+    "title": "¿Cómo fue tu experiencia?",
+    "description": "Nos encantaría escuchar tus comentarios sobre tu cita reciente.",
+    "rating": "Calificación",
+    "required": "Requerido",
+    "comment": "Comentarios Adicionales (Opcional)",
+    "submit": "Enviar Comentarios",
+    "submitting": "Enviando...",
+    "thankYou": "¡Gracias! Tus comentarios ayudan a mejorar el servicio.",
+    "alreadySubmitted": "Comentarios Ya Enviados",
+    "alreadySubmittedMessage": "Ya has enviado comentarios para esta cita. ¡Gracias!",
+    "poor": "Malo",
+    "fair": "Regular",
+    "good": "Bueno",
+    "veryGood": "Muy Bueno",
+    "excellent": "Excelente"
+  }
+}
+
