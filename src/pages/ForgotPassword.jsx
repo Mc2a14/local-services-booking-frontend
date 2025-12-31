@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function ForgotPassword() {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const [step, setStep] = useState(1) // 1 = verify, 2 = reset password
   const [formData, setFormData] = useState({
     email: '',
@@ -31,7 +34,7 @@ function ForgotPassword() {
       // Verification successful, move to password reset step
       setStep(2)
     } catch (err) {
-      setError(err.message || 'Verification failed. Please check your email and phone number.')
+      setError(err.message || t('errors.generic'))
     } finally {
       setLoading(false)
     }
@@ -42,12 +45,12 @@ function ForgotPassword() {
     setError('')
 
     if (formData.newPassword !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('resetPassword.passwordsDoNotMatch'))
       return
     }
 
     if (formData.newPassword.length < 6) {
-      setError('Password must be at least 6 characters')
+      setError(t('validation.passwordTooShort'))
       return
     }
 
@@ -65,10 +68,10 @@ function ForgotPassword() {
       })
 
       // Success - redirect to login
-      alert('Password reset successfully! Please login with your new password.')
+      alert(t('resetPassword.success'))
       navigate('/login')
     } catch (err) {
-      setError(err.message || 'Failed to reset password. Please try again.')
+      setError(err.message || t('errors.generic'))
     } finally {
       setLoading(false)
     }
@@ -84,45 +87,44 @@ function ForgotPassword() {
 
   return (
     <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <div className="card">
-        <h1 style={{ marginBottom: '20px' }}>Reset Password</h1>
+        <h1 style={{ marginBottom: '20px' }}>{t('forgotPassword.title')}</h1>
         
         {error && <div className="error">{error}</div>}
         
         {step === 1 ? (
           <>
             <p style={{ color: '#475569', marginBottom: '30px' }}>
-              Verify your email and phone number to reset your password.
+              {t('forgotPassword.description')}
             </p>
 
             <form onSubmit={handleVerify}>
               <div className="form-group">
-                <label>Email</label>
+                <label>{t('common.email')}</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="your.email@example.com"
+                  placeholder={t('common.email')}
                 />
               </div>
 
               <div className="form-group">
-                <label>Phone Number</label>
+                <label>{t('common.phone')}</label>
                 <input
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="+1 5551234567 or 5551234567"
+                  placeholder={t('common.phone')}
                   style={{ marginBottom: '5px' }}
                   inputMode="tel"
                 />
-                <small style={{ color: '#475569', fontSize: '12px', display: 'block' }}>
-                  Enter the phone number associated with your account (if you provided one).
-                  <br />Format: You can include country code (+1), spaces, dashes, or parentheses - all formats work.
-                </small>
               </div>
 
               <button 
@@ -131,19 +133,19 @@ function ForgotPassword() {
                 disabled={loading} 
                 style={{ width: '100%' }}
               >
-                {loading ? 'Verifying...' : 'Verify & Continue'}
+                {loading ? t('common.loading') : t('forgotPassword.submit')}
               </button>
             </form>
           </>
         ) : (
           <>
             <p style={{ color: '#475569', marginBottom: '30px' }}>
-              Verification successful! Please enter your new password.
+              {t('resetPassword.title')}
             </p>
 
             <form onSubmit={handleResetPassword}>
               <div className="form-group">
-                <label>New Password</label>
+                <label>{t('resetPassword.newPassword')}</label>
                 <input
                   type="password"
                   name="newPassword"
@@ -151,12 +153,12 @@ function ForgotPassword() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  placeholder="At least 6 characters"
+                  placeholder={t('validation.passwordTooShort')}
                 />
               </div>
 
               <div className="form-group">
-                <label>Confirm New Password</label>
+                <label>{t('resetPassword.confirmPassword')}</label>
                 <input
                   type="password"
                   name="confirmPassword"
@@ -164,7 +166,7 @@ function ForgotPassword() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  placeholder="Re-enter your password"
+                  placeholder={t('resetPassword.confirmPassword')}
                 />
               </div>
 
@@ -174,7 +176,7 @@ function ForgotPassword() {
                 disabled={loading} 
                 style={{ width: '100%' }}
               >
-                {loading ? 'Resetting...' : 'Reset Password'}
+                {loading ? t('common.loading') : t('resetPassword.submit')}
               </button>
 
               <button
@@ -184,14 +186,14 @@ function ForgotPassword() {
                 disabled={loading}
                 style={{ width: '100%', marginTop: '10px' }}
               >
-                Back
+                {t('common.back')}
               </button>
             </form>
           </>
         )}
 
         <p style={{ marginTop: '20px', textAlign: 'center' }}>
-          Remember your password? <Link to="/login">Back to Login</Link>
+          {t('login.noAccount')} <Link to="/login">{t('common.login')}</Link>
         </p>
       </div>
     </div>

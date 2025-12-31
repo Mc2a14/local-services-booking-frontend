@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams, Link } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function ResetPassword() {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const token = searchParams.get('token')
 
   const [formData, setFormData] = useState({
@@ -17,9 +20,9 @@ function ResetPassword() {
 
   useEffect(() => {
     if (!token) {
-      setError('Invalid reset link. Please request a new password reset.')
+      setError(t('errors.notFound'))
     }
-  }, [token])
+  }, [token, t])
 
   const handleChange = (e) => {
     setFormData({
@@ -34,17 +37,17 @@ function ResetPassword() {
     setError('')
 
     if (formData.newPassword !== formData.confirmPassword) {
-      setError('Passwords do not match')
+      setError(t('resetPassword.passwordsDoNotMatch'))
       return
     }
 
     if (formData.newPassword.length < 6) {
-      setError('Password must be at least 6 characters')
+      setError(t('validation.passwordTooShort'))
       return
     }
 
     if (!token) {
-      setError('Invalid reset link')
+      setError(t('errors.notFound'))
       return
     }
 
@@ -66,7 +69,7 @@ function ResetPassword() {
         navigate('/login')
       }, 3000)
     } catch (err) {
-      setError(err.message || 'Failed to reset password. The link may be expired or invalid.')
+      setError(err.message || t('errors.generic'))
     } finally {
       setLoading(false)
     }
@@ -75,13 +78,16 @@ function ResetPassword() {
   if (!token) {
     return (
       <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          <LanguageToggle />
+        </div>
         <div className="card">
-          <h1 style={{ marginBottom: '20px' }}>Invalid Reset Link</h1>
+          <h1 style={{ marginBottom: '20px' }}>{t('errors.notFound')}</h1>
           <div className="error" style={{ marginBottom: '20px' }}>
-            The password reset link is invalid or missing. Please request a new password reset.
+            {t('errors.notFound')}
           </div>
           <Link to="/forgot-password" className="btn btn-primary" style={{ width: '100%' }}>
-            Request New Reset Link
+            {t('forgotPassword.title')}
           </Link>
         </div>
       </div>
@@ -90,8 +96,11 @@ function ResetPassword() {
 
   return (
     <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <div className="card">
-        <h1 style={{ marginBottom: '20px' }}>Reset Password</h1>
+        <h1 style={{ marginBottom: '20px' }}>{t('resetPassword.title')}</h1>
         
         {error && <div className="error">{error}</div>}
         
@@ -104,20 +113,20 @@ function ResetPassword() {
             borderRadius: '5px',
             marginBottom: '20px'
           }}>
-            <strong>✓ Password reset successfully!</strong>
+            <strong>✓ {t('resetPassword.success')}</strong>
             <p style={{ margin: '10px 0 0 0' }}>
-              Your password has been changed. Redirecting to login page...
+              {language === 'es' ? 'Tu contraseña ha sido cambiada. Redirigiendo a la página de inicio de sesión...' : 'Your password has been changed. Redirecting to login page...'}
             </p>
           </div>
         ) : (
           <>
             <p style={{ color: '#475569', marginBottom: '30px' }}>
-              Enter your new password below.
+              {t('resetPassword.title')}
             </p>
 
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>New Password</label>
+                <label>{t('resetPassword.newPassword')}</label>
                 <input
                   type="password"
                   name="newPassword"
@@ -125,12 +134,12 @@ function ResetPassword() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  placeholder="At least 6 characters"
+                  placeholder={t('validation.passwordTooShort')}
                 />
               </div>
 
               <div className="form-group">
-                <label>Confirm New Password</label>
+                <label>{t('resetPassword.confirmPassword')}</label>
                 <input
                   type="password"
                   name="confirmPassword"
@@ -138,7 +147,7 @@ function ResetPassword() {
                   onChange={handleChange}
                   required
                   minLength={6}
-                  placeholder="Re-enter your password"
+                  placeholder={t('resetPassword.confirmPassword')}
                 />
               </div>
 
@@ -148,14 +157,14 @@ function ResetPassword() {
                 disabled={loading} 
                 style={{ width: '100%' }}
               >
-                {loading ? 'Resetting...' : 'Reset Password'}
+                {loading ? t('common.loading') : t('resetPassword.submit')}
               </button>
             </form>
           </>
         )}
 
         <p style={{ marginTop: '20px', textAlign: 'center' }}>
-          <Link to="/login">Back to Login</Link>
+          <Link to="/login">{t('common.back')} {t('common.login')}</Link>
         </p>
       </div>
     </div>

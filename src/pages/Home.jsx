@@ -97,30 +97,30 @@ function Home() {
       }}>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>📅</div>
-          <h3>Easy Booking</h3>
+          <h3>{t('home.easyBooking')}</h3>
           <p style={{ color: '#475569' }}>
-            Customers can book your services instantly, no account needed
+            {t('home.easyBookingDesc')}
           </p>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>🤖</div>
-          <h3>AI Receptionist</h3>
+          <h3>{t('home.aiReceptionist')}</h3>
           <p style={{ color: '#475569' }}>
-            AI-powered chat handles common questions automatically
+            {t('home.aiReceptionistDesc')}
           </p>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>📧</div>
-          <h3>Email Confirmations</h3>
+          <h3>{t('home.emailConfirmations')}</h3>
           <p style={{ color: '#475569' }}>
-            Automatic email confirmations sent from your business email
+            {t('home.emailConfirmationsDesc')}
           </p>
         </div>
         <div className="card" style={{ textAlign: 'center', padding: '30px' }}>
           <div style={{ fontSize: '48px', marginBottom: '15px' }}>🔗</div>
-          <h3>Your Own Link</h3>
+          <h3>{t('home.yourOwnLink')}</h3>
           <p style={{ color: '#475569' }}>
-            Share your unique booking page link with customers
+            {t('home.yourOwnLinkDesc')}
           </p>
         </div>
       </div>

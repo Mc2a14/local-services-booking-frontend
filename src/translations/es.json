@@ -128,7 +128,9 @@
     "confirmBooking": "Confirmar",
     "cancelBooking": "Cancelar",
     "markCompleted": "Marcar como Completada",
-    "leaveFeedback": "Dejar Comentarios"
+    "leaveFeedback": "Dejar Comentarios",
+    "notes": "Notas",
+    "yourEmail": "Tu Correo"
   },
   "feedback": {
     "title": "¿Cómo fue tu experiencia?",
@@ -243,5 +245,99 @@
     "noData": "No hay datos disponibles",
     "noResults": "No se encontraron resultados",
     "tryAgain": "Intenta de nuevo más tarde"
+  },
+  "services": {
+    "title": "Mis Servicios",
+    "noServices": "Aún no hay servicios",
+    "addService": "Agregar Servicio",
+    "editService": "Editar Servicio",
+    "deleteService": "Eliminar Servicio",
+    "serviceTitle": "Título del Servicio",
+    "description": "Descripción",
+    "price": "Precio",
+    "duration": "Duración (minutos)",
+    "category": "Categoría",
+    "isActive": "Activo",
+    "image": "Imagen del Servicio",
+    "save": "Guardar Servicio",
+    "update": "Actualizar Servicio",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar este servicio?",
+    "deleted": "Servicio eliminado exitosamente"
+  },
+  "providerProfile": {
+    "title": "Perfil de Proveedor",
+    "businessName": "Nombre del Negocio",
+    "description": "Descripción del Negocio",
+    "phone": "Número de Teléfono",
+    "address": "Dirección",
+    "businessSlug": "Slug de URL del Negocio",
+    "slugHelp": "Esta será la URL de tu página de reservas (ej., atencio.app/tu-slug)",
+    "save": "Guardar Perfil",
+    "saved": "Perfil guardado exitosamente",
+    "required": "El nombre del negocio es requerido"
+  },
+  "availability": {
+    "title": "Configurar Disponibilidad",
+    "day": "Día",
+    "startTime": "Hora de Inicio",
+    "endTime": "Hora de Fin",
+    "isAvailable": "Disponible",
+    "save": "Guardar Disponibilidad",
+    "saved": "Disponibilidad guardada exitosamente"
+  },
+  "faqs": {
+    "title": "Administrar Preguntas Frecuentes",
+    "question": "Pregunta",
+    "answer": "Respuesta",
+    "addFAQ": "Agregar Pregunta Frecuente",
+    "editFAQ": "Editar Pregunta Frecuente",
+    "deleteFAQ": "Eliminar Pregunta Frecuente",
+    "noFAQs": "Aún no hay preguntas frecuentes",
+    "addFirstFAQ": "Agrega tu primera pregunta frecuente",
+    "save": "Guardar Pregunta Frecuente",
+    "deleteConfirm": "¿Estás seguro de que quieres eliminar esta pregunta frecuente?"
+  },
+  "requests": {
+    "title": "Solicitudes de Reserva",
+    "noRequests": "No hay solicitudes de reserva",
+    "pending": "Pendiente",
+    "confirmed": "Confirmada",
+    "completed": "Completada",
+    "cancelled": "Cancelada"
+  },
+  "forgotPassword": {
+    "title": "Olvidé mi Contraseña",
+    "email": "Correo Electrónico",
+    "phone": "Número de Teléfono",
+    "submit": "Verificar",
+    "description": "Ingresa tu correo y número de teléfono para restablecer tu contraseña",
+    "verificationSent": "Verificación enviada"
+  },
+  "resetPassword": {
+    "title": "Restablecer Contraseña",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "submit": "Restablecer Contraseña",
+    "success": "Contraseña restablecida exitosamente",
+    "passwordsDoNotMatch": "Las contraseñas no coinciden"
+  },
+  "changeCredentials": {
+    "title": "Cambiar Credenciales",
+    "changeEmail": "Cambiar Correo",
+    "changePassword": "Cambiar Contraseña",
+    "currentPassword": "Contraseña Actual",
+    "newEmail": "Nuevo Correo",
+    "newPassword": "Nueva Contraseña",
+    "confirmPassword": "Confirmar Nueva Contraseña",
+    "updateEmail": "Actualizar Correo",
+    "updatePassword": "Actualizar Contraseña",
+    "emailUpdated": "Correo actualizado exitosamente",
+    "passwordUpdated": "Contraseña actualizada exitosamente",
+    "success": "Actualizado exitosamente"
+  },
+  "dashboard": {
+    "welcomeBack": "Bienvenido de nuevo",
+    "myServices": "Mis Servicios",
+    "myBookings": "Mis Reservas"
   }
 }

@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom'
 import ChatWidget from '../components/ChatWidget'
 import ThemeToggle from '../components/ThemeToggle'
 import LanguageToggle from '../components/LanguageToggle'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function BusinessBookingPage() {
   const { businessSlug } = useParams()
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const [business, setBusiness] = useState(null)
   const [services, setServices] = useState([])
   const [testimonials, setTestimonials] = useState([])
@@ -76,14 +78,14 @@ function BusinessBookingPage() {
     try {
       const response = await fetch(`${API_URL}/public/b/${businessSlug}`)
       if (!response.ok) {
-        throw new Error('Business not found')
+        throw new Error(t('errors.businessNotFound'))
       }
       const data = await response.json()
       setBusiness(data.business)
       setServices(data.services || [])
       setTestimonials(data.testimonials || [])
     } catch (err) {
-      setError(err.message || 'Business not found')
+      setError(err.message || t('errors.businessNotFound'))
     } finally {
       setLoading(false)
     }
@@ -96,7 +98,7 @@ function BusinessBookingPage() {
   if (loading) {
     return (
       <div className="container" style={{ textAlign: 'center', padding: '40px' }}>
-        <div>Loading...</div>
+        <div>{t('businessBooking.loading')}</div>
       </div>
     )
   }
@@ -105,12 +107,12 @@ function BusinessBookingPage() {
     return (
       <div className="container" style={{ maxWidth: '600px' }}>
         <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-          <h1 style={{ color: 'var(--error)' }}>Business Not Found</h1>
+          <h1 style={{ color: 'var(--error)' }}>{t('businessBooking.businessNotFound')}</h1>
           <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
-            The business page you're looking for doesn't exist.
+            {t('businessBooking.businessNotFoundDesc')}
           </p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
-            Go Home
+            {t('businessBooking.goHome')}
           </button>
         </div>
       </div>
@@ -248,7 +250,7 @@ function BusinessBookingPage() {
                 boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
               }}
             >
-              Book a Session
+              {t('businessBooking.bookService')}
             </button>
           </div>
         </div>
@@ -267,7 +269,7 @@ function BusinessBookingPage() {
               marginBottom: '16px',
               textAlign: 'center'
             }}>
-              Chat with our AI assistant
+              {t('chat.chatWithAI')}
             </h2>
             <p style={{
               color: 'var(--text-secondary)',
@@ -275,7 +277,7 @@ function BusinessBookingPage() {
               textAlign: 'center',
               fontSize: '14px'
             }}>
-              Get instant answers about our services, hours, and more
+              {t('chat.chatDescription')}
             </p>
             <ChatWidget 
               businessSlug={businessSlug} 
@@ -297,13 +299,13 @@ function BusinessBookingPage() {
             marginBottom: '24px',
             textAlign: 'center'
           }}>
-            Available Services
+            {t('businessBooking.services')}
           </h2>
           
           {services.length === 0 ? (
             <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
               <p style={{ color: 'var(--text-secondary)' }}>
-                No services available at this time. Please check back later.
+                {t('businessBooking.noServicesAvailable')}
               </p>
             </div>
           ) : (
@@ -367,7 +369,7 @@ function BusinessBookingPage() {
                         fontWeight: '600', 
                         color: 'var(--price-color)' 
                       }}>
-                        {service.price === 0 ? 'Free' : `$${service.price}`}
+                        {service.price === 0 ? (language === 'es' ? 'Gratis' : 'Free') : `$${service.price}`}
                       </span>
                       {service.duration_minutes && (
                         <span style={{ 
@@ -375,7 +377,7 @@ function BusinessBookingPage() {
                           marginLeft: '8px', 
                           fontSize: '14px' 
                         }}>
-                          • {service.duration_minutes} min
+                          • {service.duration_minutes} {t('common.minutes').substring(0, 3)}
                         </span>
                       )}
                     </div>
@@ -386,7 +388,7 @@ function BusinessBookingPage() {
                         handleBookService(service.id)
                       }}
                     >
-                      Book a Session
+                      {t('businessBooking.bookService')}
                     </button>
                   </div>
                 </div>
@@ -404,7 +406,7 @@ function BusinessBookingPage() {
               fontSize: '18px',
               fontWeight: '600'
             }}>
-              Trusted by Our Customers
+              {t('businessBooking.testimonials')}
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
               {testimonials.map(testimonial => (
@@ -483,7 +485,7 @@ function BusinessBookingPage() {
               >
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span>📞</span>
-                  <span>Phone</span>
+                  <span>{t('businessBooking.phoneNumber')}</span>
                 </span>
                 <span style={{
                   fontSize: '14px',
@@ -548,7 +550,7 @@ function BusinessBookingPage() {
               >
                 <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <span>🕐</span>
-                  <span>Hours</span>
+                  <span>{t('businessBooking.businessHours')}</span>
                 </span>
                 <span style={{
                   fontSize: '14px',
@@ -606,7 +608,7 @@ function BusinessBookingPage() {
             >
               <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span>ℹ️</span>
-                <span>About</span>
+                <span>{t('businessBooking.businessInfo')}</span>
               </span>
               <span style={{
                 fontSize: '14px',
@@ -663,7 +665,7 @@ function BusinessBookingPage() {
             margin: 0,
             opacity: 0.7
           }}>
-            Powered by Atencio
+            {language === 'es' ? 'Impulsado por Atencio' : 'Powered by Atencio'}
           </p>
         </div>
       </div>

@@ -128,7 +128,9 @@
     "confirmBooking": "Confirm",
     "cancelBooking": "Cancel",
     "markCompleted": "Mark as Completed",
-    "leaveFeedback": "Leave Feedback"
+    "leaveFeedback": "Leave Feedback",
+    "notes": "Notes",
+    "yourEmail": "Your Email"
   },
   "feedback": {
     "title": "How was your experience?",
@@ -243,5 +245,99 @@
     "noData": "No data available",
     "noResults": "No results found",
     "tryAgain": "Try again later"
+  },
+  "services": {
+    "title": "My Services",
+    "noServices": "No services yet",
+    "addService": "Add Service",
+    "editService": "Edit Service",
+    "deleteService": "Delete Service",
+    "serviceTitle": "Service Title",
+    "description": "Description",
+    "price": "Price",
+    "duration": "Duration (minutes)",
+    "category": "Category",
+    "isActive": "Active",
+    "image": "Service Image",
+    "save": "Save Service",
+    "update": "Update Service",
+    "deleteConfirm": "Are you sure you want to delete this service?",
+    "deleted": "Service deleted successfully"
+  },
+  "providerProfile": {
+    "title": "Provider Profile",
+    "businessName": "Business Name",
+    "description": "Business Description",
+    "phone": "Phone Number",
+    "address": "Address",
+    "businessSlug": "Business URL Slug",
+    "slugHelp": "This will be your booking page URL (e.g., atencio.app/your-slug)",
+    "save": "Save Profile",
+    "saved": "Profile saved successfully",
+    "required": "Business name is required"
+  },
+  "availability": {
+    "title": "Set Availability",
+    "day": "Day",
+    "startTime": "Start Time",
+    "endTime": "End Time",
+    "isAvailable": "Available",
+    "save": "Save Availability",
+    "saved": "Availability saved successfully"
+  },
+  "faqs": {
+    "title": "Manage FAQs",
+    "question": "Question",
+    "answer": "Answer",
+    "addFAQ": "Add FAQ",
+    "editFAQ": "Edit FAQ",
+    "deleteFAQ": "Delete FAQ",
+    "noFAQs": "No FAQs yet",
+    "addFirstFAQ": "Add your first FAQ",
+    "save": "Save FAQ",
+    "deleteConfirm": "Are you sure you want to delete this FAQ?"
+  },
+  "requests": {
+    "title": "Booking Requests",
+    "noRequests": "No booking requests",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "forgotPassword": {
+    "title": "Forgot Password",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "submit": "Verify",
+    "description": "Enter your email and phone number to reset your password",
+    "verificationSent": "Verification sent"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "submit": "Reset Password",
+    "success": "Password reset successfully",
+    "passwordsDoNotMatch": "Passwords do not match"
+  },
+  "changeCredentials": {
+    "title": "Change Credentials",
+    "changeEmail": "Change Email",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newEmail": "New Email",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password",
+    "updateEmail": "Update Email",
+    "updatePassword": "Update Password",
+    "emailUpdated": "Email updated successfully",
+    "passwordUpdated": "Password updated successfully",
+    "success": "Updated successfully"
+  },
+  "dashboard": {
+    "welcomeBack": "Welcome back",
+    "myServices": "My Services",
+    "myBookings": "My Bookings"
   }
 }

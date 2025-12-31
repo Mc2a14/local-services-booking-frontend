@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest, removeToken } from '../utils/auth'
 import ThemeToggle from '../components/ThemeToggle'
+import LanguageToggle from '../components/LanguageToggle'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function ProviderDashboard({ user }) {
   const [services, setServices] = useState([])
@@ -13,6 +15,7 @@ function ProviderDashboard({ user }) {
   const [feedback, setFeedback] = useState([])
   const [showFeedback, setShowFeedback] = useState(false)
   const navigate = useNavigate()
+  const { t, language } = useLanguage()
 
   useEffect(() => {
     loadData()
@@ -46,7 +49,7 @@ function ProviderDashboard({ user }) {
         setHasProfile(false)
         // Only show user-facing error for "Provider not found" (404)
         if (err.message && (err.message.includes('Provider not found') || err.message.includes('Not Found'))) {
-          setProfileError('You need to create your provider profile first before adding services or viewing bookings.')
+          setProfileError(t('providerDashboard.needProfile'))
         }
         // Don't log 404 errors - they're expected when profile doesn't exist
         if (!err.message || !err.message.includes('Not Found')) {
@@ -159,9 +162,9 @@ function ProviderDashboard({ user }) {
           marginBottom: '30px',
           textAlign: 'center'
         }}>
-          <h2 style={{ marginBottom: '15px', color: '#2563EB' }}>Your Booking Page</h2>
+          <h2 style={{ marginBottom: '15px', color: '#2563EB' }}>{t('providerDashboard.yourBookingPage')}</h2>
           <p style={{ fontSize: '18px', marginBottom: '20px', color: '#0F172A' }}>
-            Share this link with your customers to let them book your services:
+            {t('providerDashboard.shareLink')}
           </p>
           <div style={{ 
             backgroundColor: 'white', 
@@ -185,7 +188,7 @@ function ProviderDashboard({ user }) {
               onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
               onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
             >
-              {provider.business_name || 'View Booking Page'}
+              {provider.business_name || t('providerDashboard.viewBookingPage')}
               <span style={{ fontSize: '16px', marginLeft: '8px' }}>🔗</span>
             </a>
             <div style={{ 
@@ -200,37 +203,38 @@ function ProviderDashboard({ user }) {
               onClick={() => {
                 const link = `${window.location.origin}/${provider.business_slug}`
                 navigator.clipboard.writeText(link)
-                alert('Link copied to clipboard!')
+                alert(language === 'es' ? '¡Enlace copiado al portapapeles!' : 'Link copied to clipboard!')
               }}
               className="btn btn-primary"
               style={{ marginRight: '10px' }}
             >
-              📋 Copy Link
+              📋 {t('providerDashboard.copyLink')}
             </button>
             <button
               onClick={() => window.open(`/${provider.business_slug}`, '_blank')}
               className="btn btn-secondary"
             >
-              👁️ Preview
+              👁️ {t('providerDashboard.preview')}
             </button>
           </div>
         </div>
       )}
 
-      <nav style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap' }}>
-        <button onClick={() => navigate('/dashboard')} className="btn btn-primary">Dashboard</button>
-        <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">My Profile</button>
-        <button onClick={() => navigate('/manage-services')} className="btn btn-primary">My Services</button>
-        <button onClick={() => navigate('/availability')} className="btn btn-primary">Set Availability</button>
-        <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 Manage FAQs</button>
-        <button onClick={() => navigate('/requests')} className="btn btn-primary">📥 Requests</button>
-        <button onClick={() => navigate('/change-credentials')} className="btn btn-secondary">Change Credentials</button>
+      <nav style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap', alignItems: 'center' }}>
+        <LanguageToggle />
+        <button onClick={() => navigate('/dashboard')} className="btn btn-primary">{t('common.dashboard')}</button>
+        <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">{t('providerDashboard.myProfile')}</button>
+        <button onClick={() => navigate('/manage-services')} className="btn btn-primary">{t('providerDashboard.myServices')}</button>
+        <button onClick={() => navigate('/availability')} className="btn btn-primary">{t('providerDashboard.setAvailability')}</button>
+        <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 {t('providerDashboard.manageFAQs')}</button>
+        <button onClick={() => navigate('/requests')} className="btn btn-primary">📥 {t('providerDashboard.requests')}</button>
+        <button onClick={() => navigate('/change-credentials')} className="btn btn-secondary">{t('providerDashboard.changeCredentials')}</button>
         <button 
           onClick={() => setShowFeedback(!showFeedback)} 
           className="btn btn-secondary"
           style={{ position: 'relative' }}
         >
-          💬 Feedback {feedback.length > 0 && (
+          💬 {t('feedback.privateFeedback')} {feedback.length > 0 && (
             <span style={{
               position: 'absolute',
               top: '-8px',
@@ -257,7 +261,7 @@ function ProviderDashboard({ user }) {
           {profileError}
           <div style={{ marginTop: '10px' }}>
             <button onClick={() => navigate('/provider-profile')} className="btn btn-primary">
-              Create Provider Profile
+              {t('providerDashboard.createProfile')}
             </button>
           </div>
         </div>
@@ -267,12 +271,12 @@ function ProviderDashboard({ user }) {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
         <div className="card" style={{ textAlign: 'center', cursor: 'pointer' }} onClick={() => navigate('/manage-services')}>
           <h2 style={{ fontSize: '48px', margin: '10px 0' }}>📦</h2>
-          <h3 style={{ marginBottom: '5px' }}>My Services</h3>
+          <h3 style={{ marginBottom: '5px' }}>{t('providerDashboard.myServices')}</h3>
           <p style={{ color: 'var(--text-secondary)', fontSize: '14px', marginBottom: '10px' }}>
-            {services.length} {services.length === 1 ? 'service' : 'services'}
+            {services.length} {services.length === 1 ? t('providerDashboard.servicesCount') : t('providerDashboard.servicesCountPlural')}
           </p>
           <button className="btn btn-primary" style={{ width: '100%' }}>
-            Manage Services →
+            {t('providerDashboard.manageServices')}
           </button>
         </div>
       </div>
@@ -280,16 +284,16 @@ function ProviderDashboard({ user }) {
       {/* Bookings Section */}
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-          <h2>Recent Bookings</h2>
+          <h2>{t('booking.recentBookings')}</h2>
           <button onClick={() => navigate('/bookings')} className="btn btn-secondary">
-            View All Bookings →
+            {t('booking.viewAllBookings')} →
           </button>
         </div>
         {bookings.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-            <h3>No bookings yet</h3>
+            <h3>{t('booking.noBookingsYet')}</h3>
             <p style={{ color: 'var(--text-secondary)' }}>
-              Your bookings will appear here once customers start booking your services.
+              {t('booking.noBookingsDesc')}
             </p>
           </div>
         ) : (
@@ -297,9 +301,15 @@ function ProviderDashboard({ user }) {
             {bookings.slice(0, 10).map(booking => (
               <div key={booking.id} className="card">
                 <h3>{booking.service_title}</h3>
-                <p><strong>Customer:</strong> {booking.customer_name}</p>
-                <p><strong>Date:</strong> {new Date(booking.booking_date).toLocaleString()}</p>
-                <p><strong>Status:</strong> <span style={{ 
+                <p><strong>{t('booking.customer')}:</strong> {booking.customer_name}</p>
+                <p><strong>{t('common.date')}:</strong> {new Date(booking.booking_date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric',
+                  hour: 'numeric',
+                  minute: '2-digit'
+                })}</p>
+                <p><strong>{t('common.status')}:</strong> <span style={{ 
                   textTransform: 'capitalize',
                   padding: '4px 8px',
                   borderRadius: '4px',
@@ -309,9 +319,9 @@ function ProviderDashboard({ user }) {
                   color: booking.status === 'completed' ? '#155724' : 
                          booking.status === 'confirmed' ? '#004085' : 
                          booking.status === 'cancelled' ? '#721c24' : '#856404'
-                }}>{booking.status}</span></p>
+                }}>{t(`booking.${booking.status}`) || booking.status}</span></p>
                 {booking.notes && (
-                  <p style={{ marginTop: '10px' }}><strong>Notes:</strong> {booking.notes}</p>
+                  <p style={{ marginTop: '10px' }}><strong>{t('booking.notes')}:</strong> {booking.notes}</p>
                 )}
                 {booking.status === 'pending' && (
                   <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
@@ -319,13 +329,13 @@ function ProviderDashboard({ user }) {
                       onClick={() => updateBookingStatus(booking.id, 'confirmed')}
                       className="btn btn-primary"
                     >
-                      Confirm
+                      {t('booking.confirmBooking')}
                     </button>
                     <button 
                       onClick={() => updateBookingStatus(booking.id, 'cancelled')}
                       className="btn btn-secondary"
                     >
-                      Cancel
+                      {t('booking.cancelBooking')}
                     </button>
                   </div>
                 )}
@@ -335,7 +345,7 @@ function ProviderDashboard({ user }) {
                       onClick={() => updateBookingStatus(booking.id, 'completed')}
                       className="btn btn-primary"
                     >
-                      Mark as Completed
+                      {t('booking.markCompleted')}
                     </button>
                   </div>
                 )}
@@ -344,7 +354,7 @@ function ProviderDashboard({ user }) {
             {bookings.length > 10 && (
               <div style={{ textAlign: 'center', marginTop: '20px' }}>
                 <button onClick={() => navigate('/bookings')} className="btn btn-primary">
-                  View All {bookings.length} Bookings →
+                  {t('booking.viewAllBookings')} {bookings.length} →
                 </button>
               </div>
             )}
@@ -356,16 +366,16 @@ function ProviderDashboard({ user }) {
       {showFeedback && (
         <div style={{ marginTop: '40px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h2>Private Customer Feedback</h2>
+            <h2>{t('feedback.privateFeedback')}</h2>
             <button onClick={() => setShowFeedback(false)} className="btn btn-secondary">
-              Close
+              {t('common.close')}
             </button>
           </div>
           {feedback.length === 0 ? (
             <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-              <h3>No feedback yet</h3>
+              <h3>{t('feedback.noFeedbackYet')}</h3>
               <p style={{ color: 'var(--text-secondary)' }}>
-                Customer feedback will appear here once appointments are completed and customers submit feedback.
+                {t('feedback.noFeedbackDesc')}
               </p>
             </div>
           ) : (
@@ -376,7 +386,7 @@ function ProviderDashboard({ user }) {
                     <div>
                       <h3 style={{ margin: '0 0 10px 0' }}>{item.service_title || 'Service'}</h3>
                       <p style={{ margin: '0', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                        {item.customer_name || 'Customer'} • {new Date(item.booking_date).toLocaleDateString()}
+                        {item.customer_name || t('booking.customer')} • {new Date(item.booking_date).toLocaleDateString(language === 'es' ? 'es-ES' : 'en-US')}
                       </p>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -410,7 +420,7 @@ function ProviderDashboard({ user }) {
                     </div>
                   )}
                   <p style={{ marginTop: '15px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                    Submitted: {new Date(item.created_at).toLocaleString()}
+                    {t('feedback.submitted')}: {new Date(item.created_at).toLocaleString(language === 'es' ? 'es-ES' : 'en-US')}
                   </p>
                 </div>
               ))}

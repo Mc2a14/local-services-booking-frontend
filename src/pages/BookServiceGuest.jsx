@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function BookServiceGuest() {
   const { serviceId } = useParams()
   const navigate = useNavigate()
+  const { t, language } = useLanguage()
   const [service, setService] = useState(null)
   const [availableSlots, setAvailableSlots] = useState([])
   const [selectedDate, setSelectedDate] = useState('')
@@ -24,7 +27,7 @@ function BookServiceGuest() {
     if (serviceId) {
       loadService()
     } else {
-      setError('Invalid service ID')
+      setError(t('errors.serviceNotFound'))
       setLoading(false)
     }
   }, [serviceId])
@@ -56,7 +59,7 @@ function BookServiceGuest() {
       setService(data.service)
     } catch (err) {
       console.error('Error loading service:', err)
-      setError(err.message || 'Service not found. Please check if the service ID is correct and try again.')
+      setError(err.message || t('errors.serviceNotFound'))
     } finally {
       setLoading(false)
     }
@@ -80,13 +83,13 @@ function BookServiceGuest() {
 
     // Validation
     if (!customerName.trim()) {
-      setError('Please enter your name')
+      setError(t('validation.required').replace('This field', t('common.name')))
       setSubmitting(false)
       return
     }
 
     if (!customerEmail.trim()) {
-      setError('Please enter your email')
+      setError(t('validation.required').replace('This field', t('common.email')))
       setSubmitting(false)
       return
     }
@@ -94,13 +97,13 @@ function BookServiceGuest() {
     // Simple email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(customerEmail)) {
-      setError('Please enter a valid email address')
+      setError(t('validation.invalidEmail'))
       setSubmitting(false)
       return
     }
 
     if (!selectedDate || !selectedTime) {
-      setError('Please select a date and time')
+      setError(t('validation.mustSelectDate') + ' ' + t('validation.mustSelectTime').toLowerCase())
       setSubmitting(false)
       return
     }
@@ -127,7 +130,7 @@ function BookServiceGuest() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to create booking')
+        throw new Error(data.error || t('errors.bookingFailed'))
       }
 
       // Store booking details for display (use backend response, fallback to form data)
@@ -142,7 +145,7 @@ function BookServiceGuest() {
       })
       setSuccess(true)
     } catch (err) {
-      setError(err.message || 'Failed to create booking. Please try again.')
+      setError(err.message || t('errors.bookingFailed'))
     } finally {
       setSubmitting(false)
     }
@@ -157,7 +160,7 @@ function BookServiceGuest() {
   if (loading) {
     return (
       <div className="container" style={{ maxWidth: '600px', textAlign: 'center', padding: '40px' }}>
-        <div>Loading service...</div>
+        <div>{t('common.loading')}</div>
       </div>
     )
   }
@@ -165,17 +168,20 @@ function BookServiceGuest() {
   if (!service && error) {
     return (
       <div className="container" style={{ maxWidth: '600px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          <LanguageToggle />
+        </div>
         <button onClick={() => navigate('/')} className="btn btn-secondary" style={{ marginBottom: '20px' }}>
-          ← Back to Home
+          ← {t('common.backToHome')}
         </button>
         <div className="card">
-          <h1 style={{ color: '#DC2626' }}>Service Not Found</h1>
+          <h1 style={{ color: '#DC2626' }}>{t('errors.serviceNotFound')}</h1>
           <p style={{ color: '#475569', marginBottom: '20px' }}>{error}</p>
           <p style={{ color: '#475569', marginBottom: '20px' }}>
-            The service you're looking for doesn't exist or is no longer available.
+            {t('errors.serviceNotFound')}
           </p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
-            Browse Services
+            {t('common.backToHome')}
           </button>
         </div>
       </div>
@@ -185,16 +191,19 @@ function BookServiceGuest() {
   if (!service) {
     return (
       <div className="container" style={{ maxWidth: '600px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          <LanguageToggle />
+        </div>
         <button onClick={() => navigate('/')} className="btn btn-secondary" style={{ marginBottom: '20px' }}>
-          ← Back to Home
+          ← {t('common.backToHome')}
         </button>
         <div className="card">
-          <h1 style={{ color: '#DC2626' }}>Service Not Found</h1>
+          <h1 style={{ color: '#DC2626' }}>{t('errors.serviceNotFound')}</h1>
           <p style={{ color: '#475569', marginBottom: '20px' }}>
-            The service you're looking for doesn't exist or is no longer available.
+            {t('errors.serviceNotFound')}
           </p>
           <button onClick={() => navigate('/')} className="btn btn-primary">
-            Browse Services
+            {t('common.backToHome')}
           </button>
         </div>
       </div>
@@ -203,26 +212,34 @@ function BookServiceGuest() {
 
   if (success && bookingDetails) {
     const bookingDate = new Date(bookingDetails.booking_date)
-    const formattedDate = bookingDate.toLocaleDateString('en-US', { 
+    const locale = language === 'es' ? 'es-ES' : 'en-US'
+    const formattedDate = bookingDate.toLocaleDateString(locale, { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
       day: 'numeric' 
     })
-    const formattedTime = bookingDate.toLocaleTimeString('en-US', { 
+    const formattedTime = bookingDate.toLocaleTimeString(locale, { 
       hour: 'numeric', 
       minute: '2-digit',
       hour12: true 
     })
 
+    const getStatusLabel = (status) => {
+      return t(`booking.${status}`) || status
+    }
+
     return (
       <div className="container" style={{ maxWidth: '700px' }}>
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+          <LanguageToggle />
+        </div>
         <div className="card" style={{ padding: '40px' }}>
           <div style={{ textAlign: 'center', marginBottom: '30px' }}>
             <div style={{ fontSize: '60px', marginBottom: '20px' }}>✅</div>
-            <h1 style={{ color: '#16A34A', marginBottom: '10px' }}>Booking Confirmed!</h1>
+            <h1 style={{ color: '#16A34A', marginBottom: '10px' }}>{t('booking.bookingConfirmed')}</h1>
             <p style={{ fontSize: '18px', color: '#475569' }}>
-              Thank you, {bookingDetails.customer_name}!
+              {t('booking.thankYou')}, {bookingDetails.customer_name}!
             </p>
           </div>
 
@@ -232,28 +249,28 @@ function BookServiceGuest() {
             borderRadius: '10px', 
             marginBottom: '30px' 
           }}>
-            <h2 style={{ marginBottom: '20px', color: '#0F172A' }}>Booking Details</h2>
+            <h2 style={{ marginBottom: '20px', color: '#0F172A' }}>{t('booking.bookingDetails')}</h2>
             
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Booking ID:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.bookingId')}:</strong>
               <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#2563EB' }}>#{bookingDetails.id}</span>
             </div>
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Service:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.service')}:</strong>
               <span style={{ fontSize: '18px' }}>{bookingDetails.service_title}</span>
             </div>
 
             {bookingDetails.business_name && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Business:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.business')}:</strong>
                 <span style={{ fontSize: '18px', color: '#2563EB' }}>{bookingDetails.business_name}</span>
               </div>
             )}
 
             {bookingDetails.price && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Price:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('common.price')}:</strong>
                 <span style={{ fontSize: '20px', fontWeight: 'bold', color: '#2563EB' }}>
                   ${parseFloat(bookingDetails.price).toFixed(2)}
                 </span>
@@ -261,21 +278,21 @@ function BookServiceGuest() {
             )}
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Date & Time:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.dateTime')}:</strong>
               <span style={{ fontSize: '18px' }}>
-                {formattedDate} at {formattedTime}
+                {formattedDate} {language === 'es' ? 'a las' : 'at'} {formattedTime}
               </span>
             </div>
 
             {bookingDetails.duration_minutes && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Duration:</strong>
-                <span style={{ fontSize: '18px' }}>{bookingDetails.duration_minutes} minutes</span>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('common.duration')}:</strong>
+                <span style={{ fontSize: '18px' }}>{bookingDetails.duration_minutes} {t('common.minutes')}</span>
               </div>
             )}
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Status:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('common.status')}:</strong>
               <span style={{ 
                 fontSize: '16px', 
                 padding: '5px 15px', 
@@ -285,25 +302,25 @@ function BookServiceGuest() {
                 fontWeight: 'bold',
                 textTransform: 'capitalize'
               }}>
-                {bookingDetails.status}
+                {getStatusLabel(bookingDetails.status)}
               </span>
             </div>
 
             {bookingDetails.customer_phone && (
               <div style={{ marginBottom: '15px' }}>
-                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Your Phone:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.yourPhone')}:</strong>
                 <span style={{ fontSize: '18px' }}>{bookingDetails.customer_phone}</span>
               </div>
             )}
 
             <div style={{ marginBottom: '15px' }}>
-              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Email:</strong>
+              <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.yourEmail')}:</strong>
               <span style={{ fontSize: '18px' }}>{bookingDetails.customer_email}</span>
             </div>
 
             {bookingDetails.notes && (
               <div style={{ marginTop: '20px' }}>
-                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>Notes:</strong>
+                <strong style={{ color: '#475569', display: 'block', marginBottom: '5px' }}>{t('booking.notes')}:</strong>
                 <span style={{ fontSize: '16px', fontStyle: 'italic' }}>{bookingDetails.notes}</span>
               </div>
             )}
@@ -317,11 +334,7 @@ function BookServiceGuest() {
             border: '1px solid #b3d9ff'
           }}>
             <p style={{ margin: 0, color: '#004085' }}>
-              <strong>📧 Email Confirmation:</strong> A confirmation email notification has been logged for <strong>{bookingDetails.customer_email}</strong>.
-            </p>
-            <p style={{ margin: '10px 0 0 0', fontSize: '14px', fontStyle: 'italic', color: '#004085' }}>
-              <strong>Note:</strong> Email sending functionality is configured to log emails to the database. 
-              To enable actual email delivery, integrate with an email service provider (SendGrid, Mailgun, AWS SES, etc.) in the backend settings.
+              <strong>📧 {t('booking.confirmationMessage')}</strong>
             </p>
           </div>
 
@@ -339,17 +352,8 @@ function BookServiceGuest() {
               className="btn btn-primary" 
               style={{ padding: '12px 30px' }}
             >
-              Back to Home
+              {t('booking.backToHome')}
             </button>
-            {bookingDetails.customer_phone && (
-              <button 
-                onClick={() => window.print()} 
-                className="btn btn-secondary" 
-                style={{ padding: '12px 30px' }}
-              >
-                Print Booking
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -358,12 +362,15 @@ function BookServiceGuest() {
 
   return (
     <div className="container" style={{ maxWidth: '600px' }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <button onClick={() => navigate(-1)} className="btn btn-secondary" style={{ marginBottom: '20px' }}>
-        ← Back
+        ← {t('common.back')}
       </button>
 
       <div className="card">
-        <h1>Book Service</h1>
+        <h1>{t('booking.title')}</h1>
         
         <div style={{ marginBottom: '30px' }}>
           <h2>{service.title}</h2>
@@ -382,56 +389,56 @@ function BookServiceGuest() {
         </div>
 
         <p style={{ marginBottom: '20px', color: '#475569' }}>
-          Please fill in your information to complete the booking. No account required!
+          {t('booking.confirmationMessage')}
         </p>
 
         {error && <div className="error">{error}</div>}
 
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '25px', paddingBottom: '25px', borderBottom: '1px solid #E5E7EB' }}>
-            <h3 style={{ marginBottom: '15px' }}>Your Information</h3>
+            <h3 style={{ marginBottom: '15px' }}>{t('booking.yourInfo')}</h3>
             
             <div className="form-group">
-              <label>Full Name *</label>
+              <label>{t('common.name')} *</label>
               <input
                 type="text"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 required
-                placeholder="John Doe"
+                placeholder={t('common.name')}
               />
             </div>
 
             <div className="form-group">
-              <label>Email Address *</label>
+              <label>{t('common.email')} *</label>
               <input
                 type="email"
                 value={customerEmail}
                 onChange={(e) => setCustomerEmail(e.target.value)}
                 required
-                placeholder="john@example.com"
+                placeholder={t('common.email')}
               />
               <small style={{ color: '#475569', marginTop: '5px', display: 'block' }}>
-                A confirmation email will be sent to this address
+                {t('booking.confirmationMessage')}
               </small>
             </div>
 
             <div className="form-group">
-              <label>Phone Number (Optional)</label>
+              <label>{t('booking.phone')}</label>
               <input
                 type="tel"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
-                placeholder="555-1234"
+                placeholder={t('common.phone')}
               />
             </div>
           </div>
 
           <div style={{ marginBottom: '25px' }}>
-            <h3 style={{ marginBottom: '15px' }}>Booking Details</h3>
+            <h3 style={{ marginBottom: '15px' }}>{t('booking.bookingDetails')}</h3>
             
             <div className="form-group">
-              <label>Select Date *</label>
+              <label>{t('booking.selectDate')} *</label>
               <input
                 type="date"
                 value={selectedDate}
@@ -447,13 +454,13 @@ function BookServiceGuest() {
 
             {selectedDate && availableSlots.length > 0 && (
               <div className="form-group">
-                <label>Select Time *</label>
+                <label>{t('booking.selectTime')} *</label>
                 <select
                   value={selectedTime}
                   onChange={(e) => setSelectedTime(e.target.value)}
                   required
                 >
-                  <option value="">Choose a time...</option>
+                  <option value="">{t('booking.selectTime')}...</option>
                   {availableSlots.map(slot => (
                     <option key={slot} value={slot}>
                       {slot}
@@ -465,17 +472,17 @@ function BookServiceGuest() {
 
             {selectedDate && availableSlots.length === 0 && (
               <div className="error" style={{ marginBottom: '15px' }}>
-                No available time slots for this date. Please select another date.
+                {t('errors.loadFailed')}
               </div>
             )}
 
             <div className="form-group">
-              <label>Additional Notes (Optional)</label>
+              <label>{t('booking.notes')}</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={4}
-                placeholder="Any special instructions or notes..."
+                placeholder={t('booking.notes')}
               />
             </div>
           </div>
@@ -486,11 +493,11 @@ function BookServiceGuest() {
             disabled={submitting || !selectedDate || !selectedTime || availableSlots.length === 0}
             style={{ width: '100%', padding: '15px', fontSize: '18px' }}
           >
-            {submitting ? 'Booking...' : 'Confirm Booking'}
+            {submitting ? t('common.loading') : t('booking.bookButton')}
           </button>
 
           <p style={{ marginTop: '20px', textAlign: 'center', color: '#475569', fontSize: '14px' }}>
-            By booking, you agree to receive a confirmation email at the provided email address.
+            {t('booking.confirmationMessage')}
           </p>
         </form>
       </div>

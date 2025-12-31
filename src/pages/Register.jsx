@@ -113,4 +113,18 @@ function Register({ setUser }) {
             </select>
           </div>
 
-          <b
+          <button type="submit" className="btn btn-primary" disabled={loading} style={{ width: '100%' }}>
+            {loading ? t('common.loading') : t('register.registerButton')}
+          </button>
+        </form>
+
+        <p style={{ marginTop: '20px', textAlign: 'center' }}>
+          {t('register.haveAccount')} <Link to="/login">{t('register.loginHere')}</Link>
+        </p>
+      </div>
+    </div>
+  )
+}
+
+export default Register
+

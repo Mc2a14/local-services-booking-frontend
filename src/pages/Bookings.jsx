@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function Bookings({ user }) {
   const navigate = useNavigate()
+  const { t, language } = useLanguage()
   const [bookings, setBookings] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -27,21 +30,24 @@ function Bookings({ user }) {
 
   return (
     <div className="container">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <button onClick={() => navigate('/')} className="btn btn-secondary" style={{ marginBottom: '20px' }}>
-        ← Back to Home
+        ← {t('common.backToHome')}
       </button>
-      <h1>My Bookings</h1>
+      <h1>{t('booking.myBookings')}</h1>
       {loading ? (
-        <div>Loading...</div>
+        <div>{t('common.loading')}</div>
       ) : bookings.length === 0 ? (
-        <div className="card">No bookings found</div>
+        <div className="card">{t('booking.noBookings')}</div>
       ) : (
         <div>
           {bookings.map(booking => (
             <div key={booking.id} className="card">
               <h3>{booking.service_title}</h3>
-              <p><strong>Date:</strong> {new Date(booking.booking_date).toLocaleString()}</p>
-              <p><strong>Status:</strong> <span style={{ 
+              <p><strong>{t('common.date')}:</strong> {new Date(booking.booking_date).toLocaleString(language === 'es' ? 'es-ES' : 'en-US')}</p>
+              <p><strong>{t('common.status')}:</strong> <span style={{ 
                 textTransform: 'capitalize',
                 padding: '4px 8px',
                 borderRadius: '4px',
@@ -51,23 +57,23 @@ function Bookings({ user }) {
                 color: booking.status === 'completed' ? '#155724' : 
                        booking.status === 'confirmed' ? '#004085' : 
                        booking.status === 'cancelled' ? '#721c24' : '#856404'
-              }}>{booking.status}</span></p>
+              }}>{t(`booking.${booking.status}`) || booking.status}</span></p>
               {user.user_type === 'customer' && booking.provider_name && (
-                <p><strong>Provider:</strong> {booking.provider_name}</p>
+                <p><strong>{t('booking.provider')}:</strong> {booking.provider_name}</p>
               )}
               {user.user_type === 'customer' && booking.business_name && (
-                <p><strong>Business:</strong> {booking.business_name}</p>
+                <p><strong>{t('booking.business')}:</strong> {booking.business_name}</p>
               )}
               {user.user_type === 'customer' && booking.price && (
-                <p><strong>Price:</strong> ${booking.price}</p>
+                <p><strong>{t('common.price')}:</strong> ${booking.price}</p>
               )}
               {booking.notes && (
-                <p><strong>Notes:</strong> {booking.notes}</p>
+                <p><strong>{t('booking.notes')}:</strong> {booking.notes}</p>
               )}
               {user.user_type === 'customer' && booking.status === 'completed' && (
                 <div style={{ marginTop: '15px', paddingTop: '15px', borderTop: '1px solid var(--border)' }}>
                   <Link to={`/feedback/${booking.id}`} className="btn btn-primary">
-                    Leave Feedback
+                    {t('booking.leaveFeedback')}
                   </Link>
                 </div>
               )}

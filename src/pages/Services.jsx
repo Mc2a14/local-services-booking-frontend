@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
+import LanguageToggle from '../components/LanguageToggle'
 
 function Services({ user }) {
   const navigate = useNavigate()
+  const { t } = useLanguage()
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
 
@@ -24,14 +27,17 @@ function Services({ user }) {
 
   return (
     <div className="container">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
+        <LanguageToggle />
+      </div>
       <button onClick={() => navigate('/')} className="btn btn-secondary" style={{ marginBottom: '20px' }}>
-        ← Back to Home
+        ← {t('common.backToHome')}
       </button>
-      <h1>Browse Services</h1>
+      <h1>{t('businessBooking.services')}</h1>
       {loading ? (
-        <div>Loading...</div>
+        <div>{t('common.loading')}</div>
       ) : services.length === 0 ? (
-        <div className="card">No services available</div>
+        <div className="card">{t('empty.noData')}</div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px' }}>
           {services.map(service => (
@@ -57,21 +63,21 @@ function Services({ user }) {
                   justifyContent: 'center',
                   color: '#E2E8F0'
                 }}>
-                  No Image
+                  {t('empty.noData')}
                 </div>
               )}
               <h3>{service.title}</h3>
               <p style={{ color: '#475569', marginBottom: '10px' }}>{service.description}</p>
               <p style={{ fontWeight: 'bold', fontSize: '20px', color: '#2563EB', marginBottom: '10px' }}>${service.price}</p>
               {service.average_rating && (
-                <p style={{ marginBottom: '15px' }}>⭐ {service.average_rating} ({service.review_count} reviews)</p>
+                <p style={{ marginBottom: '15px' }}>⭐ {service.average_rating}</p>
               )}
               <button 
                 onClick={() => navigate(`/book-service/${service.id}`)}
                 className="btn btn-primary"
                 style={{ width: '100%' }}
               >
-                Book Now
+                {t('booking.bookButton')}
               </button>
             </div>
           ))}
