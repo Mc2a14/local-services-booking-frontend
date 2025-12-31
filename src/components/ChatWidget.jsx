@@ -1,13 +1,22 @@
 import { useState, useRef, useEffect } from 'react'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = false, onSuggestBooking, services = [] }) {
+  const { t, language } = useLanguage()
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: `Hi! Need help booking or have a question?`
+      content: t('chat.greeting')
     }
   ])
+
+  // Update greeting when language changes
+  useEffect(() => {
+    if (messages.length === 1 && messages[0].role === 'assistant') {
+      setMessages([{ role: 'assistant', content: t('chat.greeting') }])
+    }
+  }, [language, t])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const messagesEndRef = useRef(null)
@@ -89,7 +98,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         },
         body: JSON.stringify({
           question: userMessage,
-          business_slug: businessSlug
+          business_slug: businessSlug,
+          language: language
         })
       })
 
@@ -111,7 +121,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             ...updatedMessages,
             {
               role: 'assistant',
-              content: 'Would you like me to book this for you? I can guide you through availability and help you schedule a session.',
+              content: `${t('chat.suggestionTitle')} ${t('chat.suggestionMessage')}`,
               isSuggestion: true
             }
           ])
@@ -127,7 +137,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         ...newMessages,
         {
           role: 'assistant',
-          content: 'Sorry, I encountered an error. Please try again or contact the business directly.'
+                content: t('chat.error')
         }
       ])
     } finally {
@@ -160,12 +170,12 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             onMouseLeave={(e) => {
               e.target.style.transform = 'translateY(0)'
             }}
-            aria-label="Open chat"
-          >
-            💬 Chat with our AI assistant
-          </button>
+            aria-label={t('chat.openChat')}
+            >
+              💬 {t('chat.chatWithAI')}
+            </button>
           <p style={{ marginTop: '10px', color: 'var(--text-secondary)', fontSize: '14px' }}>
-            Get instant answers about our services, hours, and more
+            {t('chat.chatDescription')}
           </p>
         </div>
       )
@@ -234,7 +244,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         }}
       >
         <div>
-          <div style={{ fontWeight: 'bold', fontSize: '16px' }}>Chat with our AI assistant</div>
+          <div style={{ fontWeight: 'bold', fontSize: '16px' }}>{t('chat.chatWithAI')}</div>
           <div style={{ fontSize: '12px', opacity: 0.9 }}>{businessName}</div>
         </div>
         <button
@@ -252,7 +262,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             alignItems: 'center',
             justifyContent: 'center'
           }}
-          aria-label="Close chat"
+          aria-label={t('chat.closeChat')}
         >
           ×
         </button>
@@ -322,7 +332,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 marginLeft: '0',
                 marginRight: 'auto'
               }}>
-                💡 Scroll down to see available services below
+                💡 {t('chat.suggestionHint')}
               </div>
             )}
           </div>
@@ -345,7 +355,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 marginRight: 'auto' // Push to left
               }}
             >
-              Thinking...
+              {t('chat.thinking')}
             </div>
           </div>
         )}
@@ -373,7 +383,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onFocus={handleInputFocus}
-          placeholder="Type your message..."
+          placeholder={t('chat.typeMessage')}
           disabled={loading}
           style={{
             flex: 1,
@@ -405,7 +415,7 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             flexShrink: 0
           }}
         >
-          Send
+          {t('chat.send')}
         </button>
       </form>
     </div>
