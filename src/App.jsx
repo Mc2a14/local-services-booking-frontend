@@ -77,7 +77,7 @@ function App() {
         {/* Provider-only routes */}
         <Route path="/add-service" element={user && user.user_type === 'provider' ? <AddService user={user} /> : <Navigate to="/login" />} />
         <Route path="/edit-service/:id" element={user && user.user_type === 'provider' ? <EditService user={user} /> : <Navigate to="/login" />} />
-        <Route path="/provider-profile" element={user && user.user_type === 'provider' ? <ProviderProfile user={user} /> : <Navigate to="/login" />} />
+        <Route path="/provider-profile" element={user && user.user_type === 'provider' ? <ProviderProfile user={user} setUser={setUser} /> : <Navigate to="/login" />} />
         <Route path="/availability" element={user && user.user_type === 'provider' ? <Availability user={user} /> : <Navigate to="/login" />} />
         <Route path="/manage-faqs" element={user && user.user_type === 'provider' ? <ManageFAQs user={user} /> : <Navigate to="/login" />} />
         <Route path="/manage-services" element={user && user.user_type === 'provider' ? <ManageServices user={user} /> : <Navigate to="/login" />} />

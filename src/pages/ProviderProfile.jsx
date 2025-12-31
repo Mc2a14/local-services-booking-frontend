@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { apiRequest } from '../utils/auth'
+import { apiRequest, getToken } from '../utils/auth'
 import ImageCropper from '../components/ImageCropper'
 
-function ProviderProfile({ user }) {
+function ProviderProfile({ user, setUser }) {
   const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState('profile') // 'profile' or 'credentials'
+  
+  // Business Profile state
   const [formData, setFormData] = useState({
     business_name: '',
     description: '',
@@ -22,6 +25,21 @@ function ProviderProfile({ user }) {
   const [hasProfile, setHasProfile] = useState(false)
   const [showCropper, setShowCropper] = useState(false)
   const [imageToCrop, setImageToCrop] = useState(null)
+  
+  // Change Credentials state
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
+  const [emailData, setEmailData] = useState({
+    newEmail: '',
+    password: ''
+  })
+  const [credentialsError, setCredentialsError] = useState('')
+  const [credentialsSuccess, setCredentialsSuccess] = useState('')
+  const [credentialsLoading, setCredentialsLoading] = useState(false)
+  const [credentialsTab, setCredentialsTab] = useState('password') // 'password' or 'email'
 
   useEffect(() => {
     checkProfile()
@@ -87,35 +105,202 @@ function ProviderProfile({ user }) {
     }
   }
 
+  // Redirect if not logged in
+  if (!getToken()) {
+    navigate('/login')
+    return null
+  }
+
+  // Change Credentials handlers
+  const handlePasswordChange = (e) => {
+    setPasswordData({
+      ...passwordData,
+      [e.target.name]: e.target.value
+    })
+    setCredentialsError('')
+    setCredentialsSuccess('')
+  }
+
+  const handleEmailChange = (e) => {
+    setEmailData({
+      ...emailData,
+      [e.target.name]: e.target.value
+    })
+    setCredentialsError('')
+    setCredentialsSuccess('')
+  }
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault()
+    setCredentialsError('')
+    setCredentialsSuccess('')
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setCredentialsError('New passwords do not match')
+      return
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setCredentialsError('Password must be at least 6 characters')
+      return
+    }
+
+    setCredentialsLoading(true)
+
+    try {
+      await apiRequest('/auth/change-password', {
+        method: 'PUT',
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword
+        })
+      })
+
+      setCredentialsSuccess('Password changed successfully!')
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      })
+    } catch (err) {
+      setCredentialsError(err.message || 'Failed to change password')
+    } finally {
+      setCredentialsLoading(false)
+    }
+  }
+
+  const handleEmailSubmit = async (e) => {
+    e.preventDefault()
+    setCredentialsError('')
+    setCredentialsSuccess('')
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(emailData.newEmail)) {
+      setCredentialsError('Invalid email format')
+      return
+    }
+
+    if (emailData.newEmail === user.email) {
+      setCredentialsError('New email must be different from your current email')
+      return
+    }
+
+    setCredentialsLoading(true)
+
+    try {
+      await apiRequest('/auth/change-email', {
+        method: 'PUT',
+        body: JSON.stringify({
+          newEmail: emailData.newEmail,
+          password: emailData.password
+        })
+      })
+
+      setCredentialsSuccess('Email changed successfully! Please login again with your new email.')
+      
+      setTimeout(() => {
+        localStorage.removeItem('token')
+        if (setUser) setUser(null)
+        navigate('/login')
+      }, 2000)
+    } catch (err) {
+      setCredentialsError(err.message || 'Failed to change email')
+    } finally {
+      setCredentialsLoading(false)
+    }
+  }
+
   if (checking) {
     return <div className="container">Loading...</div>
   }
 
   return (
     <div className="container" style={{ maxWidth: '600px' }}>
+      {/* Back to Dashboard Button */}
+      <button 
+        onClick={() => navigate('/dashboard')} 
+        className="btn btn-secondary" 
+        style={{ marginBottom: '20px' }}
+      >
+        ← Back to Dashboard
+      </button>
+
       <div className="card">
-        <h1>{hasProfile ? 'Update' : 'Create'} Provider Profile</h1>
-        <p style={{ color: '#475569', marginBottom: '30px' }}>
-          {hasProfile 
-            ? 'Update your business information'
-            : 'Set up your provider profile to start offering services'
-          }
-        </p>
+        <h1>My Profile</h1>
         
-        {error && <div className="error">{error}</div>}
-        
-        {success && (
-          <div style={{
-            backgroundColor: '#d1fae5',
-            border: '1px solid #10b981',
-            color: '#065f46',
-            padding: '15px',
-            borderRadius: '5px',
-            marginBottom: '20px'
-          }}>
-            {success}
-          </div>
-        )}
+        {/* Tabs */}
+        <div style={{ 
+          display: 'flex', 
+          gap: '10px', 
+          marginBottom: '30px',
+          borderBottom: '2px solid #E5E7EB'
+        }}>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('profile')
+              setError('')
+              setSuccess('')
+            }}
+            style={{
+              padding: '10px 20px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'profile' ? '2px solid #2563EB' : '2px solid transparent',
+              color: activeTab === 'profile' ? '#2563EB' : '#475569',
+              cursor: 'pointer',
+              fontWeight: activeTab === 'profile' ? 'bold' : 'normal',
+              marginBottom: '-2px'
+            }}
+          >
+            Business Profile
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setActiveTab('credentials')
+              setCredentialsError('')
+              setCredentialsSuccess('')
+            }}
+            style={{
+              padding: '10px 20px',
+              background: 'none',
+              border: 'none',
+              borderBottom: activeTab === 'credentials' ? '2px solid #2563EB' : '2px solid transparent',
+              color: activeTab === 'credentials' ? '#2563EB' : '#475569',
+              cursor: 'pointer',
+              fontWeight: activeTab === 'credentials' ? 'bold' : 'normal',
+              marginBottom: '-2px'
+            }}
+          >
+            Change Credentials
+          </button>
+        </div>
+
+        {/* Business Profile Tab */}
+        {activeTab === 'profile' && (
+          <>
+            <p style={{ color: '#475569', marginBottom: '30px' }}>
+              {hasProfile 
+                ? 'Update your business information'
+                : 'Set up your provider profile to start offering services'
+              }
+            </p>
+            
+            {error && <div className="error">{error}</div>}
+            
+            {success && (
+              <div style={{
+                backgroundColor: '#d1fae5',
+                border: '1px solid #10b981',
+                color: '#065f46',
+                padding: '15px',
+                borderRadius: '5px',
+                marginBottom: '20px'
+              }}>
+                {success}
+              </div>
+            )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -411,6 +596,179 @@ function ProviderProfile({ user }) {
             {loading ? 'Saving...' : hasProfile ? 'Update Profile' : 'Create Profile'}
           </button>
         </form>
+          </>
+        )}
+
+        {/* Change Credentials Tab */}
+        {activeTab === 'credentials' && (
+          <>
+            {credentialsError && <div className="error">{credentialsError}</div>}
+            {credentialsSuccess && (
+              <div style={{
+                backgroundColor: '#d1fae5',
+                border: '1px solid #10b981',
+                color: '#065f46',
+                padding: '15px',
+                borderRadius: '5px',
+                marginBottom: '20px'
+              }}>
+                {credentialsSuccess}
+              </div>
+            )}
+
+            {/* Credentials Sub-tabs */}
+            <div style={{ 
+              display: 'flex', 
+              gap: '10px', 
+              marginBottom: '30px',
+              borderBottom: '2px solid #E5E7EB'
+            }}>
+              <button
+                type="button"
+                onClick={() => {
+                  setCredentialsTab('password')
+                  setCredentialsError('')
+                  setCredentialsSuccess('')
+                }}
+                style={{
+                  padding: '10px 20px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: credentialsTab === 'password' ? '2px solid #2563EB' : '2px solid transparent',
+                  color: credentialsTab === 'password' ? '#2563EB' : '#475569',
+                  cursor: 'pointer',
+                  fontWeight: credentialsTab === 'password' ? 'bold' : 'normal',
+                  marginBottom: '-2px'
+                }}
+              >
+                Change Password
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setCredentialsTab('email')
+                  setCredentialsError('')
+                  setCredentialsSuccess('')
+                }}
+                style={{
+                  padding: '10px 20px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: credentialsTab === 'email' ? '2px solid #2563EB' : '2px solid transparent',
+                  color: credentialsTab === 'email' ? '#2563EB' : '#475569',
+                  cursor: 'pointer',
+                  fontWeight: credentialsTab === 'email' ? 'bold' : 'normal',
+                  marginBottom: '-2px'
+                }}
+              >
+                Change Email
+              </button>
+            </div>
+
+            {credentialsTab === 'password' ? (
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="form-group">
+                  <label>Current Password</label>
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    placeholder="Enter your current password"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>New Password</label>
+                  <input
+                    type="password"
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    minLength={6}
+                    placeholder="At least 6 characters"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Confirm New Password</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    minLength={6}
+                    placeholder="Re-enter your new password"
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  disabled={credentialsLoading} 
+                  style={{ width: '100%' }}
+                >
+                  {credentialsLoading ? 'Changing...' : 'Change Password'}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleEmailSubmit}>
+                <div className="form-group">
+                  <label>Current Email</label>
+                  <input
+                    type="email"
+                    value={user?.email || ''}
+                    disabled
+                    style={{ 
+                      backgroundColor: '#f3f4f6', 
+                      cursor: 'not-allowed',
+                      color: '#6b7280'
+                    }}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>New Email</label>
+                  <input
+                    type="email"
+                    name="newEmail"
+                    value={emailData.newEmail}
+                    onChange={handleEmailChange}
+                    required
+                    placeholder="Enter your new email address"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Current Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={emailData.password}
+                    onChange={handleEmailChange}
+                    required
+                    placeholder="Enter your current password to confirm"
+                  />
+                  <small style={{ color: '#475569', marginTop: '5px', display: 'block' }}>
+                    You must enter your current password to change your email address.
+                  </small>
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  disabled={credentialsLoading} 
+                  style={{ width: '100%' }}
+                >
+                  {credentialsLoading ? 'Changing...' : 'Change Email'}
+                </button>
+              </form>
+            )}
+          </>
+        )}
       </div>
 
       {/* Image Cropper Modal */}
