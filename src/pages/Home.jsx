@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getToken } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
@@ -6,15 +6,48 @@ import LanguageToggle from '../components/LanguageToggle'
 
 function Home() {
   const navigate = useNavigate()
-  const [businessSlug, setBusinessSlug] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [showResults, setShowResults] = useState(false)
   const token = getToken()
   const { t } = useLanguage()
+  const API_URL = import.meta.env.VITE_API_URL || '/api'
 
-  const handleBusinessSlugSubmit = (e) => {
-    e.preventDefault()
-    if (businessSlug.trim()) {
-      navigate(`/${businessSlug.trim()}`)
+  useEffect(() => {
+    // Debounce search
+    const timer = setTimeout(() => {
+      if (searchQuery.trim().length >= 2) {
+        searchBusinesses(searchQuery.trim())
+      } else {
+        setSearchResults([])
+        setShowResults(false)
+      }
+    }, 300)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery])
+
+  const searchBusinesses = async (query) => {
+    setIsSearching(true)
+    try {
+      const response = await fetch(`${API_URL}/public/search?q=${encodeURIComponent(query)}`)
+      const data = await response.json()
+      setSearchResults(data.businesses || [])
+      setShowResults(true)
+    } catch (error) {
+      console.error('Search error:', error)
+      setSearchResults([])
+    } finally {
+      setIsSearching(false)
     }
+  }
+
+  const handleBusinessClick = (businessSlug) => {
+    navigate(`/${businessSlug}`)
+    setSearchQuery('')
+    setSearchResults([])
+    setShowResults(false)
   }
 
   return (
@@ -125,55 +158,176 @@ function Home() {
         </div>
       </div>
 
-      {/* For Customers Section */}
-      <div className="card" style={{ padding: '40px', textAlign: 'center' }}>
-        <h2 style={{ marginBottom: '20px' }}>{t('home.findBusiness')}</h2>
-        <p style={{ color: '#475569', marginBottom: '20px', fontSize: '16px' }}>
-          Enter your business booking page URL to access services and make appointments.
+      {/* For Customers Section - Search Businesses */}
+      <div className="card" style={{ padding: '40px' }}>
+        <h2 style={{ marginBottom: '20px', textAlign: 'center' }}>{t('home.findBusiness')}</h2>
+        <p style={{ color: '#475569', marginBottom: '30px', textAlign: 'center', fontSize: '16px' }}>
+          Search for a business by name to view their services and book appointments.
         </p>
-        <p style={{ color: '#6b7280', marginBottom: '30px', fontSize: '14px' }}>
-          <strong>Tip:</strong> You can find your business URL in your business owner dashboard under "My Profile" → "Your Booking Page"
-        </p>
-        <form onSubmit={handleBusinessSlugSubmit} style={{ maxWidth: '500px', margin: '0 auto' }}>
-          <div style={{ display: 'flex', gap: '10px', marginBottom: '10px' }}>
-            <div style={{ 
-              display: 'flex', 
-              alignItems: 'center', 
-              padding: '0 12px',
-              backgroundColor: '#f3f4f6',
-              border: '1px solid #E5E7EB',
-              borderRight: 'none',
-              borderRadius: '5px 0 0 5px',
-              fontSize: '14px',
-              color: '#6b7280',
-              whiteSpace: 'nowrap'
-            }}>
-              atencio.app/
-            </div>
+        
+        <div style={{ maxWidth: '600px', margin: '0 auto', position: 'relative' }}>
+          <div style={{ position: 'relative' }}>
             <input
               type="text"
-              value={businessSlug}
-              onChange={(e) => setBusinessSlug(e.target.value)}
-              placeholder="business-slug-here"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search for a business name..."
               style={{
-                flex: 1,
-                padding: '12px',
+                width: '100%',
+                padding: '14px 50px 14px 16px',
                 fontSize: '16px',
-                border: '1px solid #E5E7EB',
-                borderLeft: 'none',
-                borderRight: 'none',
-                borderRadius: '0',
-                fontFamily: 'monospace'
+                border: '2px solid #E5E7EB',
+                borderRadius: '8px',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+              }}
+              onFocus={() => {
+                if (searchResults.length > 0) {
+                  setShowResults(true)
+                }
               }}
             />
-            <button type="submit" className="btn btn-primary" style={{ borderRadius: '0 5px 5px 0' }}>
-              {t('home.search')}
-            </button>
+            {isSearching && (
+              <div style={{
+                position: 'absolute',
+                right: '16px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: '#6b7280'
+              }}>
+                Searching...
+              </div>
+            )}
           </div>
-          <small style={{ display: 'block', marginTop: '10px', color: '#6b7280', fontSize: '13px' }}>
-            Example: If your booking page is <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '3px' }}>atencio.app/joes-plumbing</code>, enter <code style={{ backgroundColor: '#f3f4f6', padding: '2px 6px', borderRadius: '3px' }}>joes-plumbing</code>
-          </small>
-        </form>
+
+          {/* Search Results */}
+          {showResults && searchResults.length > 0 && (
+            <div style={{
+              position: 'absolute',
+              top: '100%',
+              left: 0,
+              right: 0,
+              backgroundColor: 'white',
+              border: '1px solid #E5E7EB',
+              borderRadius: '8px',
+              marginTop: '8px',
+              boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+              maxHeight: '400px',
+              overflowY: 'auto',
+              zIndex: 100
+            }}>
+              {searchResults.map((business) => (
+                <div
+                  key={business.id}
+                  onClick={() => handleBusinessClick(business.business_slug)}
+                  style={{
+                    padding: '16px',
+                    cursor: 'pointer',
+                    borderBottom: '1px solid #f3f4f6',
+                    display: 'flex',
+                    gap: '12px',
+                    alignItems: 'center',
+                    transition: 'background-color 0.2s'
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'white'}
+                >
+                  {business.business_image_url ? (
+                    <img
+                      src={business.business_image_url}
+                      alt={business.business_name}
+                      style={{
+                        width: '50px',
+                        height: '50px',
+                        borderRadius: '8px',
+                        objectFit: 'cover',
+                        flexShrink: 0
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none'
+                      }}
+                    />
+                  ) : (
+                    <div style={{
+                      width: '50px',
+                      height: '50px',
+                      borderRadius: '8px',
+                      backgroundColor: '#e5e7eb',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '24px',
+                      flexShrink: 0
+                    }}>
+                      🏢
+                    </div>
+                  )}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <h3 style={{ margin: 0, marginBottom: '4px', color: '#111827', fontSize: '16px', fontWeight: '600' }}>
+                      {business.business_name}
+                    </h3>
+                    {business.description && (
+                      <p style={{
+                        margin: 0,
+                        color: '#6b7280',
+                        fontSize: '14px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        {business.description}
+                      </p>
+                    )}
+                    {business.phone && (
+                      <p style={{ margin: '4px 0 0 0', color: '#9ca3af', fontSize: '12px' }}>
+                        📞 {business.phone}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {showResults && searchQuery.trim().length >= 2 && searchResults.length === 0 && !isSearching && (
+            <div style={{
+              marginTop: '16px',
+              padding: '20px',
+              textAlign: 'center',
+              color: '#6b7280',
+              backgroundColor: '#f9fafb',
+              borderRadius: '8px',
+              border: '1px solid #e5e7eb'
+            }}>
+              No businesses found matching "{searchQuery}". Try a different search term.
+            </div>
+          )}
+
+          {searchQuery.trim().length > 0 && searchQuery.trim().length < 2 && (
+            <div style={{
+              marginTop: '8px',
+              color: '#6b7280',
+              fontSize: '14px',
+              textAlign: 'center'
+            }}>
+              Type at least 2 characters to search
+            </div>
+          )}
+        </div>
+
+        {/* Click outside to close results */}
+        {showResults && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              zIndex: 99
+            }}
+            onClick={() => setShowResults(false)}
+          />
+        )}
       </div>
     </div>
   )
