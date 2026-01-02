@@ -240,8 +240,7 @@ function AtencioChatWidget() {
                   }
                 )
               }}
-            >
-          </div>
+            />
         ))}
         {loading && (
           <div
