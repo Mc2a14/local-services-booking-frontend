@@ -130,6 +130,7 @@ function Home() {
       <div style={{ 
         textAlign: 'center', 
         marginBottom: '50px',
+        marginTop: '25px',
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',

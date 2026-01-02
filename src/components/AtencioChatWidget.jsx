@@ -113,7 +113,7 @@ function AtencioChatWidget() {
           gap: '10px',
           fontWeight: 'bold',
           transition: 'all 0.2s',
-          marginBottom: '30px'
+          marginBottom: '15px'
         }}
         onMouseEnter={(e) => {
           e.target.style.transform = 'translateY(-2px)'
