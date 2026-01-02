@@ -159,9 +159,19 @@ function ManageServices({ user }) {
             </div>
           ) : (
             <div>
-              <p style={{ color: 'var(--text-secondary)', marginBottom: '15px', fontSize: '14px' }}>
-                💡 <strong>Tip:</strong> Drag services up or down to reorder them. The order will be saved automatically.
-              </p>
+              <div style={{ 
+                background: 'var(--bg-secondary)', 
+                padding: '15px', 
+                borderRadius: '8px', 
+                marginBottom: '20px',
+                border: '1px solid var(--border)'
+              }}>
+                <p style={{ color: 'var(--text-secondary)', margin: 0, fontSize: '14px', lineHeight: '1.6' }}>
+                  💡 <strong>How to reorder services:</strong> Click and hold any service card, then drag it to a new position. The order will be saved automatically. 
+                  <br />
+                  <span style={{ fontSize: '12px', opacity: 0.8 }}>Look for the drag handle (⋮⋮) icon in the top-right corner of each card.</span>
+                </p>
+              </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
                 {services.map((service, index) => (
                   <div 
@@ -173,22 +183,40 @@ function ManageServices({ user }) {
                     onDragEnd={handleDragEnd}
                     onDrop={(e) => handleDrop(e, index)}
                     style={{
-                      cursor: 'grab',
+                      cursor: draggedItem === null ? 'grab' : draggedItem === index ? 'grabbing' : 'default',
                       opacity: draggedItem === index ? 0.5 : 1,
-                      transition: 'opacity 0.2s',
-                      position: 'relative'
+                      transition: draggedItem === null ? 'opacity 0.2s, transform 0.2s' : 'none',
+                      position: 'relative',
+                      transform: draggedItem === index ? 'scale(0.95)' : 'scale(1)',
+                      border: draggedItem === index ? '2px dashed var(--accent)' : 'none'
                     }}
                   >
                     <div style={{ 
                       position: 'absolute', 
                       top: '10px', 
                       right: '10px',
-                      fontSize: '18px',
-                      color: 'var(--text-muted)',
+                      fontSize: '20px',
+                      color: draggedItem === null ? 'var(--text-muted)' : 'var(--accent)',
                       userSelect: 'none',
-                      pointerEvents: 'none'
+                      pointerEvents: 'none',
+                      fontWeight: 'bold',
+                      opacity: 0.6
                     }}>
                       ⋮⋮
+                    </div>
+                    <div style={{
+                      position: 'absolute',
+                      top: '10px',
+                      left: '10px',
+                      background: 'rgba(0,0,0,0.7)',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      display: draggedItem === null ? 'none' : 'block'
+                    }}>
+                      #{(index + 1)}
                     </div>
                   {service.image_url ? (
                     <img 
