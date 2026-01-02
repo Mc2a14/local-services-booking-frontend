@@ -6,6 +6,7 @@ import { useLanguage } from '../contexts/LanguageContext'
 function Availability({ user }) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useLanguage()
   const setupStep = searchParams.get('setup')
   const [availability, setAvailability] = useState([
     { day_of_week: 1, start_time: '09:00', end_time: '17:00', is_available: true },
