@@ -117,6 +117,21 @@ function ManageFAQs() {
 
   return (
     <div className="container" style={{ maxWidth: '800px' }}>
+      {setupStep === 'faqs' && (
+        <div style={{
+          padding: '15px',
+          backgroundColor: '#FEF3C7',
+          border: '1px solid #FCD34D',
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
+            <strong>💡 Quick Help:</strong><br />
+            FAQs help customers understand your services and answer common questions. Add at least 3 FAQs to improve customer experience.
+          </p>
+        </div>
+      )}
+
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
           <h1>Manage FAQs</h1>
