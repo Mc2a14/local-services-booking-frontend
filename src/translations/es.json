@@ -357,6 +357,18 @@
     "myServices": "Mis Servicios",
     "myBookings": "Mis Reservas"
   },
+  "atencioChat": {
+    "buttonLabel": "Pregúntale a Atencio",
+    "title": "Asistente IA de Atencio",
+    "subtitle": "Pregúntame cualquier cosa sobre reservas o servicio al cliente con IA",
+    "greeting": "Hola 👋 Soy Atencio. Pregúntame cualquier cosa sobre reservas o servicio al cliente con IA.",
+    "placeholder": "Escribe tu pregunta...",
+    "send": "Enviar",
+    "thinking": "Pensando...",
+    "error": "Lo siento, estoy teniendo problemas ahora mismo. Por favor, intenta de nuevo más tarde.",
+    "openChat": "Abrir chat",
+    "closeChat": "Cerrar chat"
+  },
   "setupProgress": {
     "title": "Completa Tu Configuración",
     "complete": "Completo",

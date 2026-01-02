@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getToken } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
+import AtencioChatWidget from '../components/AtencioChatWidget'
 
 function Home() {
   const navigate = useNavigate()
@@ -123,6 +124,18 @@ function Home() {
             {t('common.login')}
           </button>
         </div>
+      </div>
+
+      {/* Atencio AI Assistant */}
+      <div style={{ 
+        textAlign: 'center', 
+        marginBottom: '50px',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}>
+        <AtencioChatWidget />
       </div>
 
       {/* Features */}

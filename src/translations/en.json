@@ -357,6 +357,18 @@
     "myServices": "My Services",
     "myBookings": "My Bookings"
   },
+  "atencioChat": {
+    "buttonLabel": "Ask Atencio",
+    "title": "Atencio AI Assistant",
+    "subtitle": "Ask me anything about bookings or AI customer service",
+    "greeting": "Hi 👋 I'm Atencio. Ask me anything about bookings or AI customer service.",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "thinking": "Thinking...",
+    "error": "Sorry, I'm having trouble right now. Please try again later.",
+    "openChat": "Open chat",
+    "closeChat": "Close chat"
+  },
   "setupProgress": {
     "title": "Complete Your Setup",
     "complete": "Complete",
