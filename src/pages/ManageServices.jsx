@@ -193,14 +193,21 @@ function ManageServices({ user }) {
                   >
                     <div style={{ 
                       position: 'absolute', 
-                      top: '10px', 
-                      right: '10px',
-                      fontSize: '20px',
-                      color: draggedItem === null ? 'var(--text-muted)' : 'var(--accent)',
+                      top: '8px', 
+                      right: '8px',
+                      fontSize: '24px',
+                      color: 'var(--text-primary)',
                       userSelect: 'none',
                       pointerEvents: 'none',
                       fontWeight: 'bold',
-                      opacity: 0.6
+                      opacity: 0.8,
+                      background: 'rgba(255, 255, 255, 0.9)',
+                      borderRadius: '4px',
+                      padding: '4px 8px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      zIndex: 10,
+                      lineHeight: '1',
+                      letterSpacing: '2px'
                     }}>
                       ⋮⋮
                     </div>

@@ -297,4 +297,5 @@ function EditService({ user }) {
   )
 }
 
-export default EditSer
+export default EditService
+
