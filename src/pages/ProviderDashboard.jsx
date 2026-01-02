@@ -269,7 +269,7 @@ function ProviderDashboard({ user }) {
             <button
               onClick={() => {
                 if (!setupComplete) {
-                  alert(t('setupProgress.completeSetupFirst') || 'Please complete all setup steps before sharing your page.')
+                  alert(t('setupProgress.completeSetupFirst'))
                   return
                 }
                 const link = `${window.location.origin}/${provider.business_slug}`
@@ -285,7 +285,7 @@ function ProviderDashboard({ user }) {
             <button
               onClick={() => {
                 if (!setupComplete) {
-                  alert(t('setupProgress.completeSetupFirst') || 'Please complete all setup steps before previewing your page.')
+                  alert(t('setupProgress.completeSetupFirst'))
                   return
                 }
                 window.open(`/${provider.business_slug}`, '_blank')

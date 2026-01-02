@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function ManageFAQs() {
   const [searchParams] = useSearchParams()
+  const { t } = useLanguage()
   const setupStep = searchParams.get('setup')
   const [faqs, setFaqs] = useState([])
   const [loading, setLoading] = useState(true)
@@ -126,8 +128,8 @@ function ManageFAQs() {
           marginBottom: '20px'
         }}>
           <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
-            <strong>💡 Quick Help:</strong><br />
-            FAQs help customers understand your services and answer common questions. Add at least 3 FAQs to improve customer experience.
+            <strong>💡 {t('setupProgress.helperTitle')}:</strong><br />
+            {t('setupProgress.step4Helper')}
           </p>
         </div>
       )}

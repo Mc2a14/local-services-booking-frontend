@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function ManageServices({ user }) {
   const navigate = useNavigate()
@@ -130,8 +131,8 @@ function ManageServices({ user }) {
           marginBottom: '20px'
         }}>
           <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
-            <strong>💡 Quick Help:</strong><br />
-            Services are what customers can book. Add at least one service with clear pricing and description to get started.
+            <strong>💡 {t('setupProgress.helperTitle')}:</strong><br />
+            {t('setupProgress.step2Helper')}
           </p>
         </div>
       )}

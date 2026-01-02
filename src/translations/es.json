@@ -339,5 +339,30 @@
     "welcomeBack": "Bienvenido de nuevo",
     "myServices": "Mis Servicios",
     "myBookings": "Mis Reservas"
+  },
+  "setupProgress": {
+    "title": "Completa Tu Configuración",
+    "complete": "Completo",
+    "stepLabel": "Paso {{number}}",
+    "clickToComplete": "Haz clic para completar →",
+    "helperTitle": "Ayuda Rápida:",
+    "allComplete": "¡Todo Listo! Tu Asistente Atencio está Listo",
+    "readyMessage": "Comparte el enlace de tu página de reservas con los clientes para comenzar a recibir reservas.",
+    "locked": "Completa la configuración para desbloquear",
+    "completeSetupFirst": "Por favor completa todos los pasos de configuración antes de compartir tu página.",
+    "step1Title": "Información del Negocio",
+    "step1Desc": "Agrega el nombre y descripción de tu negocio",
+    "step1Helper": "El nombre y la descripción de tu negocio ayudan a los clientes a encontrarte y entender qué ofreces. Agrega una descripción clara y convincente de tus servicios.",
+    "step2Title": "Agregar Servicios",
+    "step2Desc": "Crea al menos un servicio",
+    "step2Helper": "Los servicios son lo que los clientes pueden reservar. Agrega al menos un servicio con precio y descripción claros para comenzar.",
+    "step3Title": "Establecer Horarios de Atención",
+    "step3Desc": "Define cuándo estás disponible",
+    "step3Helper": "Establecer tus horarios de atención le dice a los clientes cuándo pueden hacer reservas. Establece al menos un día con horarios disponibles.",
+    "step4Title": "Agregar Preguntas Frecuentes",
+    "step4Desc": "Crea al menos 3 preguntas frecuentes",
+    "step4Helper": "Las preguntas frecuentes ayudan a los clientes a entender tus servicios y responder preguntas comunes. Agrega al menos 3 preguntas frecuentes para mejorar la experiencia del cliente.",
+    "step5Title": "¡Tu Asistente Atencio está Listo!",
+    "step5Desc": "Comparte tu página de reservas con los clientes"
   }
 }

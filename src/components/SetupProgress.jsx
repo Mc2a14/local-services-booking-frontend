@@ -13,7 +13,7 @@ function SetupProgress({ onComplete }) {
 
   useEffect(() => {
     loadSetupProgress()
-  }, [location.pathname]) // Reload when navigating
+  }, [location.pathname, t]) // Reload when navigating or language changes
 
   const loadSetupProgress = async () => {
     setLoading(true)
@@ -75,14 +75,14 @@ function SetupProgress({ onComplete }) {
           alignItems: 'center',
           gap: '10px'
         }}>
-          🚀 {t('setupProgress.title') || 'Complete Your Setup'}
+          🚀 {t('setupProgress.title')}
           <span style={{ 
             fontSize: '14px', 
             fontWeight: 'normal',
             color: '#64748B',
             marginLeft: 'auto'
           }}>
-            {setupData.completedSteps}/{setupData.totalSteps} {t('setupProgress.complete') || 'Complete'}
+            {setupData.completedSteps}/{setupData.totalSteps} {t('setupProgress.complete')}
           </span>
         </h2>
         <div style={{
@@ -113,8 +113,11 @@ function SetupProgress({ onComplete }) {
           marginBottom: '20px'
         }}>
           <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
-            <strong>💡 {t('setupProgress.helperTitle') || 'Quick Help:'}</strong><br />
-            {setupData.steps.find(s => s.id === new URLSearchParams(window.location.search).get('setup'))?.helperText}
+            <strong>💡 {t('setupProgress.helperTitle')}</strong><br />
+            {(() => {
+              const step = setupData.steps.find(s => s.id === new URLSearchParams(window.location.search).get('setup'))
+              return step?.helperTextKey ? t(step.helperTextKey) : step?.helperText || ''
+            })()}
           </p>
         </div>
       )}
@@ -168,13 +171,13 @@ function SetupProgress({ onComplete }) {
                 color: step.completed ? '#10B981' : '#1E293B',
                 marginBottom: '4px'
               }}>
-                Step {step.number}: {step.title}
+                {t('setupProgress.stepLabel').replace('{{number}}', step.number)}: {step.titleKey ? t(step.titleKey) : step.title}
               </div>
               <div style={{
                 fontSize: '14px',
                 color: '#64748B'
               }}>
-                {step.description}
+                {step.descriptionKey ? t(step.descriptionKey) : step.description}
               </div>
             </div>
             {!step.completed && (
@@ -183,7 +186,7 @@ function SetupProgress({ onComplete }) {
                 fontWeight: '600',
                 fontSize: '14px'
               }}>
-                {t('setupProgress.clickToComplete') || 'Click to complete →'}
+                {t('setupProgress.clickToComplete')}
               </div>
             )}
           </div>
@@ -199,9 +202,9 @@ function SetupProgress({ onComplete }) {
           borderRadius: '8px',
           textAlign: 'center'
         }}>
-          <h3 style={{ margin: '0 0 10px 0' }}>🎉 {t('setupProgress.allComplete') || 'All Set! Your Atencio Assistant is Ready'}</h3>
+          <h3 style={{ margin: '0 0 10px 0' }}>🎉 {t('setupProgress.allComplete')}</h3>
           <p style={{ margin: 0, opacity: 0.9 }}>
-            {t('setupProgress.readyMessage') || 'Share your booking page link with customers to start receiving bookings.'}
+            {t('setupProgress.readyMessage')}
           </p>
         </div>
       )}

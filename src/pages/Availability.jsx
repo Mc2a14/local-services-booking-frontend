@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function Availability({ user }) {
   const navigate = useNavigate()
@@ -146,8 +147,8 @@ function Availability({ user }) {
           marginBottom: '20px'
         }}>
           <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
-            <strong>💡 Quick Help:</strong><br />
-            Setting your business hours tells customers when they can book appointments. Set at least one day with available hours.
+            <strong>💡 {t('setupProgress.helperTitle')}:</strong><br />
+            {t('setupProgress.step3Helper')}
           </p>
         </div>
       )}

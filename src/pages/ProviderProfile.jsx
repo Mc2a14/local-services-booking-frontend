@@ -216,8 +216,8 @@ function ProviderProfile({ user, setUser }) {
     return <div className="container">Loading...</div>
   }
 
-  const setupHelperText = setupStep === 'profile' ? 
-    'Your business name and description help customers find and understand what you offer. Add a clear, compelling description of your services.' : null
+  const { t } = useLanguage()
+  const setupHelperText = setupStep === 'profile' ? t('setupProgress.step1Helper') : null
 
   return (
     <div className="container" style={{ maxWidth: '600px' }}>
@@ -239,7 +239,7 @@ function ProviderProfile({ user, setUser }) {
           marginBottom: '20px'
         }}>
           <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
-            <strong>💡 Quick Help:</strong><br />
+            <strong>💡 {t('setupProgress.helperTitle')}:</strong><br />
             {setupHelperText}
           </p>
         </div>

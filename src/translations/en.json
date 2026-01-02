@@ -339,5 +339,30 @@
     "welcomeBack": "Welcome back",
     "myServices": "My Services",
     "myBookings": "My Bookings"
+  },
+  "setupProgress": {
+    "title": "Complete Your Setup",
+    "complete": "Complete",
+    "stepLabel": "Step {{number}}",
+    "clickToComplete": "Click to complete →",
+    "helperTitle": "Quick Help:",
+    "allComplete": "All Set! Your Atencio Assistant is Ready",
+    "readyMessage": "Share your booking page link with customers to start receiving bookings.",
+    "locked": "Complete setup to unlock",
+    "completeSetupFirst": "Please complete all setup steps before sharing your page.",
+    "step1Title": "Business Information",
+    "step1Desc": "Add your business name and description",
+    "step1Helper": "Your business name and description help customers find and understand what you offer. Add a clear, compelling description of your services.",
+    "step2Title": "Add Services",
+    "step2Desc": "Create at least one service",
+    "step2Helper": "Services are what customers can book. Add at least one service with clear pricing and description to get started.",
+    "step3Title": "Set Business Hours",
+    "step3Desc": "Define when you're available",
+    "step3Helper": "Setting your business hours tells customers when they can book appointments. Set at least one day with available hours.",
+    "step4Title": "Add FAQs",
+    "step4Desc": "Create at least 3 frequently asked questions",
+    "step4Helper": "FAQs help customers understand your services and answer common questions. Add at least 3 FAQs to improve customer experience.",
+    "step5Title": "Your Atencio Assistant is Ready!",
+    "step5Desc": "Share your booking page with customers"
   }
 }
