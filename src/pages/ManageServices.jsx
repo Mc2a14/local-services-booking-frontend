@@ -7,6 +7,7 @@ function ManageServices({ user }) {
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
   const [hasProfile, setHasProfile] = useState(false)
+  const [draggedItem, setDraggedItem] = useState(null)
 
   useEffect(() => {
     loadServices()
@@ -50,6 +51,63 @@ function ManageServices({ user }) {
     } catch (err) {
       alert(err.message)
     }
+  }
+
+  const handleDragStart = (e, index) => {
+    setDraggedItem(index)
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/html', e.target.outerHTML)
+    e.target.style.opacity = '0.5'
+  }
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDragEnd = (e) => {
+    e.target.style.opacity = '1'
+    setDraggedItem(null)
+  }
+
+  const handleDrop = async (e, dropIndex) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    if (draggedItem === null || draggedItem === dropIndex) {
+      return
+    }
+
+    const newServices = [...services]
+    const draggedService = newServices[draggedItem]
+    
+    // Remove dragged item
+    newServices.splice(draggedItem, 1)
+    
+    // Insert at new position
+    newServices.splice(dropIndex, 0, draggedService)
+    
+    // Update display_order for all services
+    const serviceOrders = newServices.map((service, index) => ({
+      id: service.id,
+      display_order: index
+    }))
+
+    // Optimistically update UI
+    setServices(newServices)
+
+    try {
+      await apiRequest('/services/reorder', {
+        method: 'POST',
+        body: JSON.stringify({ serviceOrders })
+      })
+    } catch (err) {
+      // Revert on error
+      loadServices()
+      alert('Failed to reorder services: ' + (err.message || 'Unknown error'))
+    }
+    
+    setDraggedItem(null)
   }
 
   return (
@@ -100,9 +158,38 @@ function ManageServices({ user }) {
               </button>
             </div>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-              {services.map(service => (
-                <div key={service.id} className="card">
+            <div>
+              <p style={{ color: 'var(--text-secondary)', marginBottom: '15px', fontSize: '14px' }}>
+                💡 <strong>Tip:</strong> Drag services up or down to reorder them. The order will be saved automatically.
+              </p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+                {services.map((service, index) => (
+                  <div 
+                    key={service.id} 
+                    className="card"
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, index)}
+                    onDragOver={handleDragOver}
+                    onDragEnd={handleDragEnd}
+                    onDrop={(e) => handleDrop(e, index)}
+                    style={{
+                      cursor: 'grab',
+                      opacity: draggedItem === index ? 0.5 : 1,
+                      transition: 'opacity 0.2s',
+                      position: 'relative'
+                    }}
+                  >
+                    <div style={{ 
+                      position: 'absolute', 
+                      top: '10px', 
+                      right: '10px',
+                      fontSize: '18px',
+                      color: 'var(--text-muted)',
+                      userSelect: 'none',
+                      pointerEvents: 'none'
+                    }}>
+                      ⋮⋮
+                    </div>
                   {service.image_url ? (
                     <img 
                       src={service.image_url} 
