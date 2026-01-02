@@ -291,6 +291,7 @@ function ManageServices({ user }) {
                   </div>
                 </div>
               ))}
+              </div>
             </div>
           )}
         </>
