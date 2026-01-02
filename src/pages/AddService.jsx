@@ -42,7 +42,7 @@ function AddService({ user }) {
         method: 'POST',
         body: JSON.stringify(serviceData)
       })
-      navigate('/')
+      navigate('/manage-services')
     } catch (err) {
       // Show helpful error message
       if (err.message.includes('Provider profile') || err.message.includes('Not Found')) {

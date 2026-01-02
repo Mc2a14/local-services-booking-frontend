@@ -63,7 +63,7 @@ function EditService({ user }) {
           duration_minutes: parseInt(formData.duration_minutes)
         })
       })
-      navigate('/dashboard')
+      navigate('/manage-services')
     } catch (err) {
       setError(err.message || 'Failed to update service. Please try again.')
     } finally {
