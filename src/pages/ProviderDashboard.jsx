@@ -25,6 +25,15 @@ function ProviderDashboard({ user }) {
     checkSetupStatus()
   }, [])
 
+  // Reload setup status when returning to dashboard
+  useEffect(() => {
+    const checkOnFocus = () => {
+      checkSetupStatus()
+    }
+    window.addEventListener('focus', checkOnFocus)
+    return () => window.removeEventListener('focus', checkOnFocus)
+  }, [])
+
   const checkSetupStatus = async () => {
     try {
       const setupData = await checkSetupProgress()
