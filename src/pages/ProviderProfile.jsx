@@ -2,10 +2,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiRequest, getToken } from '../utils/auth'
 import ImageCropper from '../components/ImageCropper'
+import { useLanguage } from '../contexts/LanguageContext'
 
 function ProviderProfile({ user, setUser }) {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { t } = useLanguage()
   const setupStep = searchParams.get('setup')
   const [activeTab, setActiveTab] = useState('profile') // 'profile' or 'credentials'
   
