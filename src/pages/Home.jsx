@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getToken } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
+import ThemeToggle from '../components/ThemeToggle'
 import AtencioChatWidget from '../components/AtencioChatWidget'
 
 function Home() {
@@ -69,28 +70,7 @@ function Home() {
         <h1 style={{ margin: 0, color: 'var(--accent)' }}>{t('home.title')}</h1>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <LanguageToggle />
-          {token ? (
-            <>
-              <button onClick={() => navigate('/dashboard')} className="btn btn-primary">
-                {t('common.dashboard')}
-              </button>
-              <button onClick={() => {
-                localStorage.removeItem('token')
-                window.location.href = '/'
-              }} className="btn btn-secondary">
-                {t('common.logout')}
-              </button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => navigate('/login')} className="btn btn-secondary">
-                {t('common.login')}
-              </button>
-              <button onClick={() => navigate('/register')} className="btn btn-primary">
-                {t('common.getStarted')}
-              </button>
-            </>
-          )}
+          <ThemeToggle />
         </div>
       </header>
 
