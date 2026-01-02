@@ -82,7 +82,7 @@ function ManageFAQs() {
   }
 
   const handleDelete = async (faqId) => {
-    if (!window.confirm('Are you sure you want to delete this FAQ?')) {
+    if (!window.confirm(t('faqs.deleteConfirm'))) {
       return
     }
 
@@ -111,7 +111,7 @@ function ManageFAQs() {
     return (
       <div className="container">
         <div className="card">
-          <div>Loading FAQs...</div>
+          <div>{t('faqs.loading')}</div>
         </div>
       </div>
     )
@@ -136,7 +136,7 @@ function ManageFAQs() {
 
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h1>Manage FAQs</h1>
+          <h1>{t('faqs.title')}</h1>
           <button
             className="btn btn-primary"
             onClick={() => {
@@ -151,47 +151,46 @@ function ManageFAQs() {
             }}
             disabled={showForm && !editingFAQ}
           >
-            + Add FAQ
+            + {t('faqs.addFAQ')}
           </button>
         </div>
 
         <p style={{ color: '#475569', marginBottom: '30px' }}>
-          Add frequently asked questions and answers that will help the AI customer service assist your customers better. 
-          The AI will use these FAQs to provide accurate and consistent answers.
+          {t('faqs.description')}
         </p>
 
         {error && <div className="error" style={{ marginBottom: '20px' }}>{error}</div>}
 
         {showForm && (
           <div className="card" style={{ marginBottom: '30px', backgroundColor: '#f8f9fa' }}>
-            <h2>{editingFAQ ? 'Edit FAQ' : 'Add New FAQ'}</h2>
+            <h2>{editingFAQ ? t('faqs.editFAQ') : t('faqs.addNewFAQ')}</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label>Question *</label>
+                <label>{t('faqs.question')} *</label>
                 <textarea
                   value={formData.question}
                   onChange={(e) => setFormData({ ...formData, question: e.target.value })}
                   required
                   rows="2"
-                  placeholder="e.g., What are your business hours?"
+                  placeholder={t('faqs.placeholderQuestion')}
                   style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
               </div>
 
               <div className="form-group">
-                <label>Answer *</label>
+                <label>{t('faqs.answer')} *</label>
                 <textarea
                   value={formData.answer}
                   onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
                   required
                   rows="4"
-                  placeholder="e.g., We are open Monday through Friday from 9:00 AM to 5:00 PM, and Saturday from 10:00 AM to 2:00 PM."
+                  placeholder={t('faqs.placeholderAnswer')}
                   style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
               </div>
 
               <div className="form-group">
-                <label>Display Order</label>
+                <label>{t('faqs.displayOrder')}</label>
                 <input
                   type="number"
                   value={formData.display_order}
@@ -201,7 +200,7 @@ function ManageFAQs() {
                   style={{ width: '100px', padding: '8px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
                 <small style={{ display: 'block', color: '#475569', marginTop: '5px' }}>
-                  Lower numbers appear first. Use this to control the order of FAQs.
+                  {t('faqs.displayOrderHelp')}
                 </small>
               </div>
 
@@ -212,16 +211,16 @@ function ManageFAQs() {
                     checked={formData.is_active}
                     onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })}
                   />
-                  Active (FAQ will be used by AI customer service)
+                  {t('faqs.active')}
                 </label>
               </div>
 
               <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
                 <button type="submit" className="btn btn-primary">
-                  {editingFAQ ? 'Update FAQ' : 'Create FAQ'}
+                  {editingFAQ ? t('faqs.updateFAQ') : t('faqs.createFAQ')}
                 </button>
                 <button type="button" className="btn" onClick={handleCancel}>
-                  Cancel
+                  {t('common.cancel')}
                 </button>
               </div>
             </form>
@@ -264,7 +263,7 @@ function ManageFAQs() {
                           fontSize: '12px',
                           marginBottom: '10px'
                         }}>
-                          INACTIVE
+                          {t('faqs.inactive')}
                         </span>
                       )}
                       <h3 style={{ marginBottom: '10px', color: '#0F172A' }}>Q: {faq.question}</h3>
@@ -272,7 +271,7 @@ function ManageFAQs() {
                         A: {faq.answer}
                       </p>
                       <small style={{ color: '#999' }}>
-                        Order: {faq.display_order} | Created: {new Date(faq.created_at).toLocaleDateString()}
+                        {t('faqs.order')}: {faq.display_order} | {t('faqs.created')}: {new Date(faq.created_at).toLocaleDateString()}
                       </small>
                     </div>
                     <div style={{ display: 'flex', gap: '10px', marginLeft: '20px' }}>
@@ -281,7 +280,7 @@ function ManageFAQs() {
                         onClick={() => handleEdit(faq)}
                         style={{ fontSize: '14px', padding: '8px 16px' }}
                       >
-                        Edit
+                        {t('common.edit')}
                       </button>
                       <button
                         className="btn"
@@ -294,7 +293,7 @@ function ManageFAQs() {
                           border: 'none'
                         }}
                       >
-                        Delete
+                        {t('common.delete')}
                       </button>
                     </div>
                   </div>
