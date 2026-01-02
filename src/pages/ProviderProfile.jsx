@@ -218,7 +218,6 @@ function ProviderProfile({ user, setUser }) {
     return <div className="container">Loading...</div>
   }
 
-  const { t } = useLanguage()
   const setupHelperText = setupStep === 'profile' ? t('setupProgress.step1Helper') : null
 
   return (
