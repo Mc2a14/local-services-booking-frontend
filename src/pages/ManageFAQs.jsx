@@ -230,15 +230,15 @@ function ManageFAQs() {
         {faqs.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
             <p style={{ color: '#475569', marginBottom: '20px' }}>
-              No FAQs yet. Click "Add FAQ" to get started!
+              {t('faqs.noFAQsDesc')}
             </p>
             <p style={{ color: '#475569', fontSize: '14px' }}>
-              FAQs help the AI customer service answer common questions accurately and consistently.
+              {t('faqs.noFAQsHelp')}
             </p>
           </div>
         ) : (
           <div>
-            <h2 style={{ marginBottom: '20px' }}>Your FAQs ({faqs.length})</h2>
+            <h2 style={{ marginBottom: '20px' }}>{t('faqs.yourFAQs')} ({faqs.length})</h2>
             {faqs
               .sort((a, b) => a.display_order - b.display_order)
               .map((faq) => (
