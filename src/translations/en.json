@@ -11,6 +11,7 @@
     "edit": "Edit",
     "delete": "Delete",
     "back": "Back",
+    "backToDashboard": "Back to Dashboard",
     "loading": "Loading...",
     "error": "Error",
     "success": "Success",

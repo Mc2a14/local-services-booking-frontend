@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
 
 function ManageFAQs() {
+  const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const { t } = useLanguage()
   const setupStep = searchParams.get('setup')
@@ -119,6 +120,15 @@ function ManageFAQs() {
 
   return (
     <div className="container" style={{ maxWidth: '800px' }}>
+      {/* Back to Dashboard Button */}
+      <button 
+        onClick={() => navigate('/dashboard')} 
+        className="btn btn-secondary" 
+        style={{ marginBottom: '20px' }}
+      >
+        ← {t('common.backToDashboard')}
+      </button>
+
       {setupStep === 'faqs' && (
         <div style={{
           padding: '15px',
