@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
 
 function ManageFAQs() {
+  const [searchParams] = useSearchParams()
+  const setupStep = searchParams.get('setup')
   const [faqs, setFaqs] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')

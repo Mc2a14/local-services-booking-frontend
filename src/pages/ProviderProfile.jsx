@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiRequest, getToken } from '../utils/auth'
 import ImageCropper from '../components/ImageCropper'
 
 function ProviderProfile({ user, setUser }) {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const setupStep = searchParams.get('setup')
   const [activeTab, setActiveTab] = useState('profile') // 'profile' or 'credentials'
   
   // Business Profile state
@@ -214,6 +216,9 @@ function ProviderProfile({ user, setUser }) {
     return <div className="container">Loading...</div>
   }
 
+  const setupHelperText = setupStep === 'profile' ? 
+    'Your business name and description help customers find and understand what you offer. Add a clear, compelling description of your services.' : null
+
   return (
     <div className="container" style={{ maxWidth: '600px' }}>
       {/* Back to Dashboard Button */}
@@ -224,6 +229,21 @@ function ProviderProfile({ user, setUser }) {
       >
         ← Back to Dashboard
       </button>
+
+      {setupStep === 'profile' && setupHelperText && (
+        <div style={{
+          padding: '15px',
+          backgroundColor: '#FEF3C7',
+          border: '1px solid #FCD34D',
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
+            <strong>💡 Quick Help:</strong><br />
+            {setupHelperText}
+          </p>
+        </div>
+      )}
 
       <div className="card">
         <h1>My Profile</h1>

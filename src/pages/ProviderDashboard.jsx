@@ -4,6 +4,8 @@ import { apiRequest, removeToken } from '../utils/auth'
 import ThemeToggle from '../components/ThemeToggle'
 import LanguageToggle from '../components/LanguageToggle'
 import { useLanguage } from '../contexts/LanguageContext'
+import SetupProgress from '../components/SetupProgress'
+import { checkSetupProgress } from '../utils/setupProgress'
 
 function ProviderDashboard({ user }) {
   const [services, setServices] = useState([])
@@ -14,12 +16,28 @@ function ProviderDashboard({ user }) {
   const [provider, setProvider] = useState(null)
   const [feedback, setFeedback] = useState([])
   const [showFeedback, setShowFeedback] = useState(false)
+  const [setupComplete, setSetupComplete] = useState(false)
   const navigate = useNavigate()
   const { t, language } = useLanguage()
 
   useEffect(() => {
     loadData()
+    checkSetupStatus()
   }, [])
+
+  const checkSetupStatus = async () => {
+    try {
+      const setupData = await checkSetupProgress()
+      setSetupComplete(setupData.isComplete)
+    } catch (error) {
+      console.error('Error checking setup status:', error)
+    }
+  }
+
+  const handleSetupComplete = () => {
+    setSetupComplete(true)
+    checkSetupStatus() // Refresh to be sure
+  }
 
   const loadData = async () => {
     try {
@@ -154,15 +172,54 @@ function ProviderDashboard({ user }) {
         <LanguageToggle />
       </div>
 
-      {/* Business Booking Link - Prominently Displayed */}
-      {hasProfile && provider?.business_slug && (
-        <div className="card" style={{ 
-          backgroundColor: '#e7f3ff', 
-          border: '2px solid #2563EB',
-          padding: '30px',
+      {/* Setup Progress - Show if setup is incomplete */}
+      {hasProfile && <SetupProgress onComplete={handleSetupComplete} />}
+
+      {/* Success message when setup completes */}
+      {setupComplete && hasProfile && (
+        <div className="card" style={{
           marginBottom: '30px',
+          backgroundColor: '#F0FDF4',
+          border: '2px solid #10B981',
+          padding: '20px',
           textAlign: 'center'
         }}>
+          <h3 style={{ margin: '0 0 10px 0', color: '#10B981' }}>
+            🎉 {t('setupProgress.allComplete') || 'Your Atencio Assistant is Ready!'}
+          </h3>
+          <p style={{ margin: 0, color: '#065F46' }}>
+            {t('setupProgress.readyMessage') || 'Share your booking page link with customers to start receiving bookings.'}
+          </p>
+        </div>
+      )}
+
+      {/* Business Booking Link - Prominently Displayed (Disabled if setup incomplete) */}
+      {hasProfile && provider?.business_slug && (
+        <div className="card" style={{ 
+          backgroundColor: setupComplete ? '#e7f3ff' : '#f1f5f9', 
+          border: setupComplete ? '2px solid #2563EB' : '2px solid #94a3b8',
+          padding: '30px',
+          marginBottom: '30px',
+          textAlign: 'center',
+          opacity: setupComplete ? 1 : 0.7,
+          position: 'relative'
+        }}>
+          {!setupComplete && (
+            <div style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              backgroundColor: '#FEF3C7',
+              border: '1px solid #FCD34D',
+              borderRadius: '6px',
+              padding: '8px 12px',
+              fontSize: '12px',
+              color: '#92400E',
+              fontWeight: '600'
+            }}>
+              🔒 {t('setupProgress.locked') || 'Complete setup to unlock'}
+            </div>
+          )}
           <h2 style={{ marginBottom: '15px', color: '#2563EB' }}>{t('providerDashboard.yourBookingPage')}</h2>
           <p style={{ fontSize: '18px', marginBottom: '20px', color: '#0F172A' }}>
             {t('providerDashboard.shareLink')}
@@ -202,18 +259,31 @@ function ProviderDashboard({ user }) {
             </div>
             <button
               onClick={() => {
+                if (!setupComplete) {
+                  alert(t('setupProgress.completeSetupFirst') || 'Please complete all setup steps before sharing your page.')
+                  return
+                }
                 const link = `${window.location.origin}/${provider.business_slug}`
                 navigator.clipboard.writeText(link)
                 alert(language === 'es' ? '¡Enlace copiado al portapapeles!' : 'Link copied to clipboard!')
               }}
               className="btn btn-primary"
-              style={{ marginRight: '10px' }}
+              style={{ marginRight: '10px', opacity: setupComplete ? 1 : 0.5, cursor: setupComplete ? 'pointer' : 'not-allowed' }}
+              disabled={!setupComplete}
             >
               📋 {t('providerDashboard.copyLink')}
             </button>
             <button
-              onClick={() => window.open(`/${provider.business_slug}`, '_blank')}
+              onClick={() => {
+                if (!setupComplete) {
+                  alert(t('setupProgress.completeSetupFirst') || 'Please complete all setup steps before previewing your page.')
+                  return
+                }
+                window.open(`/${provider.business_slug}`, '_blank')
+              }}
               className="btn btn-secondary"
+              style={{ opacity: setupComplete ? 1 : 0.5, cursor: setupComplete ? 'pointer' : 'not-allowed' }}
+              disabled={!setupComplete}
             >
               👁️ {t('providerDashboard.preview')}
             </button>

@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
 
 function ManageServices({ user }) {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const setupStep = searchParams.get('setup')
   const [services, setServices] = useState([])
   const [loading, setLoading] = useState(true)
   const [hasProfile, setHasProfile] = useState(false)
@@ -118,6 +120,21 @@ function ManageServices({ user }) {
           ← Back to Dashboard
         </button>
       </div>
+
+      {setupStep === 'services' && (
+        <div style={{
+          padding: '15px',
+          backgroundColor: '#FEF3C7',
+          border: '1px solid #FCD34D',
+          borderRadius: '8px',
+          marginBottom: '20px'
+        }}>
+          <p style={{ margin: 0, color: '#92400E', fontSize: '14px', lineHeight: '1.6' }}>
+            <strong>💡 Quick Help:</strong><br />
+            Services are what customers can book. Add at least one service with clear pricing and description to get started.
+          </p>
+        </div>
+      )}
 
       {!hasProfile ? (
         <div className="error" style={{ marginBottom: '20px' }}>
