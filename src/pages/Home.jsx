@@ -97,7 +97,7 @@ function Home() {
       {/* Hero Section for Business Owners */}
       <div style={{ 
         textAlign: 'center', 
-        marginBottom: '50px',
+        marginBottom: '25px',
         padding: '60px 20px',
         backgroundColor: '#f8f9fa',
         borderRadius: '10px'
