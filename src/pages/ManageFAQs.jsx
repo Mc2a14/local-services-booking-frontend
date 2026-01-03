@@ -19,6 +19,7 @@ function ManageFAQs() {
     display_order: 0,
     is_active: true
   })
+  const formRef = useRef(null)
 
   useEffect(() => {
     loadFAQs()
@@ -80,6 +81,12 @@ function ManageFAQs() {
       is_active: faq.is_active
     })
     setShowForm(true)
+    // Scroll to form after state updates
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 100)
   }
 
   const handleDelete = async (faqId) => {
@@ -172,7 +179,7 @@ function ManageFAQs() {
         {error && <div className="error" style={{ marginBottom: '20px' }}>{error}</div>}
 
         {showForm && (
-          <div className="card" style={{ marginBottom: '30px', backgroundColor: '#f8f9fa' }}>
+          <div ref={formRef} className="card" style={{ marginBottom: '30px', backgroundColor: '#f8f9fa' }}>
             <h2>{editingFAQ ? t('faqs.editFAQ') : t('faqs.addNewFAQ')}</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
