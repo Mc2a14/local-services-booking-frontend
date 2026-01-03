@@ -260,7 +260,7 @@ function AtencioChatWidget() {
                 __html: message.content.replace(
                   /(to get started click here:)\s*(\/[\w-]+)/gi,
                   (match, text, path) => {
-                    return `${text} <a href="${path}" style="color: var(--accent); text-decoration: underline; font-weight: 600; cursor: pointer;" onclick="event.preventDefault(); window.location.href='${path}'; return false;">${path}</a>`
+                    return `${text} <a href="${path}" data-path="${path}" style="color: var(--accent); text-decoration: underline; font-weight: 600; cursor: pointer;">${path}</a>`
                   }
                 )
               }}
