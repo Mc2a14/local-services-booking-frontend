@@ -172,7 +172,7 @@ function ManageFAQs() {
           </button>
         </div>
 
-        <p style={{ color: '#475569', marginBottom: '30px' }}>
+        <p style={{ color: 'var(--text-secondary)', marginBottom: '30px' }}>
           {t('faqs.description')}
         </p>
 
@@ -216,7 +216,7 @@ function ManageFAQs() {
                   placeholder="0"
                   style={{ width: '100px', padding: '8px', borderRadius: '5px', border: '1px solid #E5E7EB' }}
                 />
-                <small style={{ display: 'block', color: '#475569', marginTop: '5px' }}>
+                <small style={{ display: 'block', color: 'var(--text-muted)', marginTop: '5px' }}>
                   {t('faqs.displayOrderHelp')}
                 </small>
               </div>
@@ -246,10 +246,10 @@ function ManageFAQs() {
 
         {faqs.length === 0 ? (
           <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
-            <p style={{ color: '#475569', marginBottom: '20px' }}>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>
               {t('faqs.noFAQsDesc')}
             </p>
-            <p style={{ color: '#475569', fontSize: '14px' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '14px' }}>
               {t('faqs.noFAQsHelp')}
             </p>
           </div>
@@ -283,11 +283,11 @@ function ManageFAQs() {
                           {t('faqs.inactive')}
                         </span>
                       )}
-                      <h3 style={{ marginBottom: '10px', color: '#0F172A' }}>Q: {faq.question}</h3>
-                      <p style={{ color: '#475569', marginBottom: '10px', lineHeight: '1.6' }}>
+                      <h3 style={{ marginBottom: '10px', color: 'var(--text-primary)' }}>Q: {faq.question}</h3>
+                      <p style={{ color: 'var(--text-secondary)', marginBottom: '10px', lineHeight: '1.6' }}>
                         A: {faq.answer}
                       </p>
-                      <small style={{ color: '#999' }}>
+                      <small style={{ color: 'var(--text-muted)' }}>
                         {t('faqs.order')}: {faq.display_order} | {t('faqs.created')}: {new Date(faq.created_at).toLocaleDateString()}
                       </small>
                     </div>
