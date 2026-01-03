@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useLanguage } from '../contexts/LanguageContext'
 
 function AtencioChatWidget() {
+  const navigate = useNavigate()
   const { t, language } = useLanguage()
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([
@@ -47,6 +49,28 @@ function AtencioChatWidget() {
       isInitialRender.current = false
     }
   }, [])
+
+  // Handle clicks on links in messages
+  useEffect(() => {
+    const handleLinkClick = (e) => {
+      const link = e.target.closest('a[data-path]')
+      if (link) {
+        e.preventDefault()
+        const path = link.getAttribute('data-path')
+        if (path) {
+          window.location.href = path
+        }
+      }
+    }
+
+    const messagesContainer = messagesContainerRef.current
+    if (messagesContainer) {
+      messagesContainer.addEventListener('click', handleLinkClick)
+      return () => {
+        messagesContainer.removeEventListener('click', handleLinkClick)
+      }
+    }
+  }, [messages])
 
   const sendMessage = async (e) => {
     e?.preventDefault()
