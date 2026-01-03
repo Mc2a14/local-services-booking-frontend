@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { apiRequest, setToken } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
+import PasswordInput from '../components/PasswordInput'
 
 function Register({ setUser }) {
   const [formData, setFormData] = useState({
@@ -80,8 +81,7 @@ function Register({ setUser }) {
 
           <div className="form-group">
             <label>{t('register.password')}</label>
-            <input
-              type="password"
+            <PasswordInput
               name="password"
               value={formData.password}
               onChange={handleChange}

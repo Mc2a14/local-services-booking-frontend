@@ -562,8 +562,7 @@ function ProviderProfile({ user, setUser }) {
               <label>
                 Email App Password <span style={{ color: '#999', fontSize: '12px' }}>(Optional but recommended)</span>
               </label>
-              <input
-                type="password"
+              <PasswordInput
                 name="email_password"
                 value={formData.email_password}
                 onChange={handleChange}
@@ -690,8 +689,7 @@ function ProviderProfile({ user, setUser }) {
               <form onSubmit={handlePasswordSubmit}>
                 <div className="form-group">
                   <label>Current Password</label>
-                  <input
-                    type="password"
+                  <PasswordInput
                     name="currentPassword"
                     value={passwordData.currentPassword}
                     onChange={handlePasswordChange}
@@ -702,8 +700,7 @@ function ProviderProfile({ user, setUser }) {
 
                 <div className="form-group">
                   <label>New Password</label>
-                  <input
-                    type="password"
+                  <PasswordInput
                     name="newPassword"
                     value={passwordData.newPassword}
                     onChange={handlePasswordChange}
@@ -715,8 +712,7 @@ function ProviderProfile({ user, setUser }) {
 
                 <div className="form-group">
                   <label>Confirm New Password</label>
-                  <input
-                    type="password"
+                  <PasswordInput
                     name="confirmPassword"
                     value={passwordData.confirmPassword}
                     onChange={handlePasswordChange}
@@ -765,8 +761,7 @@ function ProviderProfile({ user, setUser }) {
 
                 <div className="form-group">
                   <label>Current Password</label>
-                  <input
-                    type="password"
+                  <PasswordInput
                     name="password"
                     value={emailData.password}
                     onChange={handleEmailChange}

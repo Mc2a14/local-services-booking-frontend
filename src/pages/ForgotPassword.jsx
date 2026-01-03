@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { apiRequest } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
+import PasswordInput from '../components/PasswordInput'
 
 function ForgotPassword() {
   const navigate = useNavigate()
@@ -146,8 +147,7 @@ function ForgotPassword() {
             <form onSubmit={handleResetPassword}>
               <div className="form-group">
                 <label>{t('resetPassword.newPassword')}</label>
-                <input
-                  type="password"
+                <PasswordInput
                   name="newPassword"
                   value={formData.newPassword}
                   onChange={handleChange}
@@ -159,8 +159,7 @@ function ForgotPassword() {
 
               <div className="form-group">
                 <label>{t('resetPassword.confirmPassword')}</label>
-                <input
-                  type="password"
+                <PasswordInput
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleChange}

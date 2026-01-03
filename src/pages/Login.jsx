@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { apiRequest, setToken } from '../utils/auth'
 import { useLanguage } from '../contexts/LanguageContext'
 import LanguageToggle from '../components/LanguageToggle'
+import PasswordInput from '../components/PasswordInput'
 
 function Login({ setUser }) {
   const [email, setEmail] = useState('')
@@ -77,8 +78,7 @@ function Login({ setUser }) {
                 {t('login.forgotPassword')}
               </Link>
             </div>
-            <input
-              type="password"
+            <PasswordInput
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
