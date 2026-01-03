@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { apiRequest, getToken } from '../utils/auth'
+import PasswordInput from '../components/PasswordInput'
 
 function ChangeCredentials({ user, setUser }) {
   const navigate = useNavigate()
@@ -201,8 +202,7 @@ function ChangeCredentials({ user, setUser }) {
           <form onSubmit={handlePasswordSubmit}>
             <div className="form-group">
               <label>Current Password</label>
-              <input
-                type="password"
+              <PasswordInput
                 name="currentPassword"
                 value={passwordData.currentPassword}
                 onChange={handlePasswordChange}
@@ -213,8 +213,7 @@ function ChangeCredentials({ user, setUser }) {
 
             <div className="form-group">
               <label>New Password</label>
-              <input
-                type="password"
+              <PasswordInput
                 name="newPassword"
                 value={passwordData.newPassword}
                 onChange={handlePasswordChange}
@@ -226,8 +225,7 @@ function ChangeCredentials({ user, setUser }) {
 
             <div className="form-group">
               <label>Confirm New Password</label>
-              <input
-                type="password"
+              <PasswordInput
                 name="confirmPassword"
                 value={passwordData.confirmPassword}
                 onChange={handlePasswordChange}
@@ -276,8 +274,7 @@ function ChangeCredentials({ user, setUser }) {
 
             <div className="form-group">
               <label>Current Password</label>
-              <input
-                type="password"
+              <PasswordInput
                 name="password"
                 value={emailData.password}
                 onChange={handleEmailChange}
