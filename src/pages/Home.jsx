@@ -57,7 +57,7 @@ function Home() {
   }
 
   return (
-    <div className="container" style={{ maxWidth: '900px' }}>
+    <div className="container" style={{ maxWidth: '900px', paddingBottom: '0' }}>
       {/* Header */}
       <header style={{ 
         display: 'flex', 
