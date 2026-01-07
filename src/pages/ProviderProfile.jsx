@@ -646,7 +646,8 @@ function ProviderProfile({ user, setUser }) {
                   display: 'inline-block', 
                   width: '51px', 
                   height: '31px',
-                  margin: 0
+                  margin: 0,
+                  cursor: 'pointer'
                 }}>
                   <input
                     type="checkbox"
@@ -665,30 +666,26 @@ function ProviderProfile({ user, setUser }) {
                   />
                   <span style={{
                     position: 'absolute',
-                    cursor: 'pointer',
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
                     backgroundColor: '#E5E5E7',
-                    transition: 'all 0.3s ease',
                     borderRadius: '31px',
                     border: '1px solid rgba(0, 0, 0, 0.1)'
-                  }}>
-                    <span style={{
-                      position: 'absolute',
-                      content: '""',
-                      height: '27px',
-                      width: '27px',
-                      left: '2px',
-                      top: '2px',
-                      backgroundColor: formData.booking_enabled ? '#34C759' : 'white',
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      borderRadius: '50%',
-                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
-                      transform: formData.booking_enabled ? 'translateX(20px)' : 'translateX(0)'
-                    }} />
-                  </span>
+                  }} />
+                  <span style={{
+                    position: 'absolute',
+                    height: '27px',
+                    width: '27px',
+                    left: '2px',
+                    top: '2px',
+                    backgroundColor: formData.booking_enabled ? '#34C759' : 'white',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    borderRadius: '50%',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
+                    transform: formData.booking_enabled ? 'translateX(20px)' : 'translateX(0)'
+                  }} />
                 </label>
               </label>
             </div>
@@ -717,7 +714,8 @@ function ProviderProfile({ user, setUser }) {
                   display: 'inline-block', 
                   width: '51px', 
                   height: '31px',
-                  margin: 0
+                  margin: 0,
+                  cursor: 'pointer'
                 }}>
                   <input
                     type="checkbox"
@@ -736,30 +734,26 @@ function ProviderProfile({ user, setUser }) {
                   />
                   <span style={{
                     position: 'absolute',
-                    cursor: 'pointer',
                     top: 0,
                     left: 0,
                     right: 0,
                     bottom: 0,
                     backgroundColor: '#E5E5E7',
-                    transition: 'all 0.3s ease',
                     borderRadius: '31px',
                     border: '1px solid rgba(0, 0, 0, 0.1)'
-                  }}>
-                    <span style={{
-                      position: 'absolute',
-                      content: '""',
-                      height: '27px',
-                      width: '27px',
-                      left: '2px',
-                      top: '2px',
-                      backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : 'white',
-                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                      borderRadius: '50%',
-                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
-                      transform: formData.inquiry_collection_enabled ? 'translateX(20px)' : 'translateX(0)'
-                    }} />
-                  </span>
+                  }} />
+                  <span style={{
+                    position: 'absolute',
+                    height: '27px',
+                    width: '27px',
+                    left: '2px',
+                    top: '2px',
+                    backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : 'white',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    borderRadius: '50%',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
+                    transform: formData.inquiry_collection_enabled ? 'translateX(20px)' : 'translateX(0)'
+                  }} />
                 </label>
               </label>
             </div>
