@@ -19,6 +19,14 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
   }, [language, t])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
+  const [showInquiryForm, setShowInquiryForm] = useState(false)
+  const [submittingInquiry, setSubmittingInquiry] = useState(false)
+  const [inquiryForm, setInquiryForm] = useState({
+    customer_name: '',
+    customer_email: '',
+    customer_phone: '',
+    inquiry_message: ''
+  })
   const messagesEndRef = useRef(null)
   const messagesContainerRef = useRef(null)
   const inputRef = useRef(null)
@@ -77,6 +85,117 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
     // Input is fixed at bottom of container, always visible
   }
 
+  // Handle "Request Contact" button click
+  const handleRequestContact = () => {
+    setShowInquiryForm(true)
+    // Add a message to the chat
+    setMessages([
+      ...messages,
+      {
+        role: 'assistant',
+        content: t('inquiries.aiSuggestion', { businessName: businessName || t('inquiries.businessName') }),
+        isInquirySuggestion: true
+      }
+    ])
+  }
+
+  // Handle inquiry form submission
+  const handleInquirySubmit = async (e) => {
+    e.preventDefault()
+    
+    // Validate at least one field is filled
+    const hasAnyField = inquiryForm.customer_name.trim() || 
+                        inquiryForm.customer_email.trim() || 
+                        inquiryForm.customer_phone.trim() || 
+                        inquiryForm.inquiry_message.trim()
+    
+    if (!hasAnyField) {
+      // Show error message
+      setMessages([
+        ...messages,
+        {
+          role: 'assistant',
+          content: t('inquiries.errorAtLeastOneField')
+        }
+      ])
+      return
+    }
+
+    setSubmittingInquiry(true)
+
+    try {
+      const response = await fetch(`${API_URL}/inquiries`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          business_slug: businessSlug,
+          customer_name: inquiryForm.customer_name.trim() || null,
+          customer_email: inquiryForm.customer_email.trim() || null,
+          customer_phone: inquiryForm.customer_phone.trim() || null,
+          inquiry_message: inquiryForm.inquiry_message.trim() || null
+        })
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to submit inquiry')
+      }
+
+      const data = await response.json()
+      
+      // Show success message
+      setMessages([
+        ...messages,
+        {
+          role: 'assistant',
+          content: data.message || t('inquiries.infoSubmitted'),
+          isSuccess: true
+        }
+      ])
+
+      // Reset form and hide it
+      setInquiryForm({
+        customer_name: '',
+        customer_email: '',
+        customer_phone: '',
+        inquiry_message: ''
+      })
+      setShowInquiryForm(false)
+    } catch (error) {
+      console.error('Inquiry submission error:', error)
+      setMessages([
+        ...messages,
+        {
+          role: 'assistant',
+          content: t('inquiries.errorSubmission') || 'Sorry, there was an error submitting your information. Please try again.'
+        }
+      ])
+    } finally {
+      setSubmittingInquiry(false)
+    }
+  }
+
+  // Handle inquiry form field change
+  const handleInquiryFormChange = (field, value) => {
+    setInquiryForm(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  // Cancel inquiry form
+  const handleCancelInquiry = () => {
+    setShowInquiryForm(false)
+    setInquiryForm({
+      customer_name: '',
+      customer_email: '',
+      customer_phone: '',
+      inquiry_message: ''
+    })
+  }
+
   const sendMessage = async (e) => {
     e?.preventDefault()
     
@@ -113,6 +232,19 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       // Add AI response
       const updatedMessages = [...newMessages, { role: 'assistant', content: data.response }]
       setMessages(updatedMessages)
+
+      // Handle shouldCollectInfo flag - show inquiry form if AI suggests it
+      if (data.shouldCollectInfo) {
+        setTimeout(() => {
+          const aiSuggestionMessage = {
+            role: 'assistant',
+            content: t('inquiries.aiSuggestion', { businessName: businessName || t('inquiries.businessName') }),
+            isInquirySuggestion: true
+          }
+          setMessages([...updatedMessages, aiSuggestionMessage])
+          setShowInquiryForm(true)
+        }, 1000)
+      }
 
       // Suggest booking if relevant
       if (shouldSuggestBooking(data.response, userMessage)) {
@@ -335,6 +467,35 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
                 💡 {t('chat.suggestionHint')}
               </div>
             )}
+            {message.isInquirySuggestion && (
+              <div style={{
+                maxWidth: '85%',
+                padding: '8px 12px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: '8px',
+                fontSize: '12px',
+                color: 'var(--text-secondary)',
+                marginLeft: '0',
+                marginRight: 'auto'
+              }}>
+                📋 {t('inquiries.formWillAppear')}
+              </div>
+            )}
+            {message.isSuccess && (
+              <div style={{
+                maxWidth: '85%',
+                padding: '8px 12px',
+                backgroundColor: 'var(--success-bg, #d4edda)',
+                borderRadius: '8px',
+                fontSize: '12px',
+                color: 'var(--success-text, #155724)',
+                marginLeft: '0',
+                marginRight: 'auto',
+                marginTop: '8px'
+              }}>
+                ✅ {message.content}
+              </div>
+            )}
           </div>
         ))}
         {loading && (
@@ -359,65 +520,232 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
             </div>
           </div>
         )}
+        
+        {/* Inquiry Form */}
+        {showInquiryForm && (
+          <div style={{
+            width: '100%',
+            maxWidth: '85%',
+            marginLeft: '0',
+            marginRight: 'auto',
+            marginTop: '8px'
+          }}>
+            <form onSubmit={handleInquirySubmit} style={{
+              backgroundColor: 'var(--bg-secondary)',
+              border: '1px solid var(--border)',
+              borderRadius: '12px',
+              padding: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px'
+            }}>
+              <div style={{ fontSize: '14px', fontWeight: '600', marginBottom: '4px', color: 'var(--text-primary)' }}>
+                {t('inquiries.contactInfo')}
+              </div>
+              
+              <input
+                type="text"
+                placeholder={t('inquiries.namePlaceholder')}
+                value={inquiryForm.customer_name}
+                onChange={(e) => handleInquiryFormChange('customer_name', e.target.value)}
+                disabled={submittingInquiry}
+                style={{
+                  padding: '10px 12px',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  backgroundColor: 'var(--bg-primary)',
+                  color: 'var(--text-primary)',
+                  outline: 'none'
+                }}
+              />
+              
+              <input
+                type="email"
+                placeholder={t('inquiries.emailPlaceholder')}
+                value={inquiryForm.customer_email}
+                onChange={(e) => handleInquiryFormChange('customer_email', e.target.value)}
+                disabled={submittingInquiry}
+                style={{
+                  padding: '10px 12px',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  backgroundColor: 'var(--bg-primary)',
+                  color: 'var(--text-primary)',
+                  outline: 'none'
+                }}
+              />
+              
+              <input
+                type="tel"
+                placeholder={t('inquiries.phonePlaceholder')}
+                value={inquiryForm.customer_phone}
+                onChange={(e) => handleInquiryFormChange('customer_phone', e.target.value)}
+                disabled={submittingInquiry}
+                style={{
+                  padding: '10px 12px',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  backgroundColor: 'var(--bg-primary)',
+                  color: 'var(--text-primary)',
+                  outline: 'none'
+                }}
+              />
+              
+              <textarea
+                placeholder={t('inquiries.messagePlaceholder')}
+                value={inquiryForm.inquiry_message}
+                onChange={(e) => handleInquiryFormChange('inquiry_message', e.target.value)}
+                disabled={submittingInquiry}
+                rows={3}
+                style={{
+                  padding: '10px 12px',
+                  border: '1px solid var(--border)',
+                  borderRadius: '8px',
+                  fontSize: '14px',
+                  backgroundColor: 'var(--bg-primary)',
+                  color: 'var(--text-primary)',
+                  outline: 'none',
+                  resize: 'vertical',
+                  fontFamily: 'inherit'
+                }}
+              />
+              
+              <div style={{ fontSize: '12px', color: 'var(--text-secondary)', fontStyle: 'italic' }}>
+                {t('inquiries.allFieldsOptional')}
+              </div>
+              
+              <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
+                <button
+                  type="submit"
+                  disabled={submittingInquiry}
+                  className="btn btn-primary"
+                  style={{
+                    flex: 1,
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: submittingInquiry ? 'not-allowed' : 'pointer',
+                    opacity: submittingInquiry ? 0.6 : 1
+                  }}
+                >
+                  {submittingInquiry ? t('inquiries.submitting') : t('inquiries.submit')}
+                </button>
+                <button
+                  type="button"
+                  onClick={handleCancelInquiry}
+                  disabled={submittingInquiry}
+                  className="btn btn-secondary"
+                  style={{
+                    padding: '10px 16px',
+                    borderRadius: '8px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    cursor: submittingInquiry ? 'not-allowed' : 'pointer',
+                    opacity: submittingInquiry ? 0.6 : 1
+                  }}
+                >
+                  {t('common.cancel')}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
+        
         <div ref={messagesEndRef} />
       </div>
 
       {/* Input - Always visible at bottom of container */}
-      <form
-        onSubmit={sendMessage}
-        style={{
-          padding: '12px 16px',
-          borderTop: '1px solid var(--border)',
-          display: 'flex',
-          gap: '10px',
-          flexShrink: 0,
-          backgroundColor: 'var(--bg-primary)',
-          // Always at bottom - never moves
-          position: 'relative',
-          zIndex: 1
-        }}
-      >
-        <input
-          ref={inputRef}
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onFocus={handleInputFocus}
-          placeholder={t('chat.typeMessage')}
-          disabled={loading}
+      <div style={{
+        padding: '12px 16px',
+        borderTop: '1px solid var(--border)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '8px',
+        flexShrink: 0,
+        backgroundColor: 'var(--bg-primary)',
+        position: 'relative',
+        zIndex: 1
+      }}>
+        {/* Request Contact Button */}
+        {!showInquiryForm && (
+          <button
+            type="button"
+            onClick={handleRequestContact}
+            className="btn btn-secondary"
+            style={{
+              width: '100%',
+              padding: '10px 16px',
+              borderRadius: '8px',
+              fontSize: '14px',
+              fontWeight: '600',
+              backgroundColor: 'var(--btn-secondary)',
+              color: 'var(--btn-secondary-text)',
+              border: '1px solid var(--border)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+          >
+            📞 {t('inquiries.requestContact')}
+          </button>
+        )}
+        
+        <form
+          onSubmit={sendMessage}
           style={{
-            flex: 1,
-            padding: '12px 16px',
-            border: '1px solid var(--border)',
-            borderRadius: '24px',
-            fontSize: '16px',
-            outline: 'none',
-            backgroundColor: 'var(--bg-primary)',
-            color: 'var(--text-primary)',
-            minHeight: '44px',
-            // Prevent any browser scroll behavior
-            touchAction: 'manipulation'
-          }}
-        />
-        <button
-          type="submit"
-          disabled={loading || !input.trim()}
-          className="btn btn-primary"
-          style={{
-            padding: '12px 20px',
-            minHeight: '44px',
-            minWidth: '70px',
-            borderRadius: '24px',
-            cursor: loading || !input.trim() ? 'not-allowed' : 'pointer',
-            opacity: loading || !input.trim() ? 0.5 : 1,
-            fontSize: '15px',
-            fontWeight: '600',
-            flexShrink: 0
+            display: 'flex',
+            gap: '10px',
+            width: '100%'
           }}
         >
-          {t('chat.send')}
-        </button>
-      </form>
+          <input
+            ref={inputRef}
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onFocus={handleInputFocus}
+            placeholder={t('chat.typeMessage')}
+            disabled={loading || showInquiryForm}
+            style={{
+              flex: 1,
+              padding: '12px 16px',
+              border: '1px solid var(--border)',
+              borderRadius: '24px',
+              fontSize: '16px',
+              outline: 'none',
+              backgroundColor: 'var(--bg-primary)',
+              color: 'var(--text-primary)',
+              minHeight: '44px',
+              touchAction: 'manipulation',
+              opacity: showInquiryForm ? 0.5 : 1
+            }}
+          />
+          <button
+            type="submit"
+            disabled={loading || !input.trim() || showInquiryForm}
+            className="btn btn-primary"
+            style={{
+              padding: '12px 20px',
+              minHeight: '44px',
+              minWidth: '70px',
+              borderRadius: '24px',
+              cursor: (loading || !input.trim() || showInquiryForm) ? 'not-allowed' : 'pointer',
+              opacity: (loading || !input.trim() || showInquiryForm) ? 0.5 : 1,
+              fontSize: '15px',
+              fontWeight: '600',
+              flexShrink: 0
+            }}
+          >
+            {t('chat.send')}
+          </button>
+        </form>
+      </div>
     </div>
   )
 }

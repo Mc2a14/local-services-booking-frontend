@@ -306,6 +306,7 @@ function ProviderDashboard({ user }) {
         <button onClick={() => navigate('/manage-services')} className="btn btn-primary">{t('providerDashboard.myServices')}</button>
         <button onClick={() => navigate('/availability')} className="btn btn-primary">{t('providerDashboard.setAvailability')}</button>
         <button onClick={() => navigate('/manage-faqs')} className="btn btn-primary">💬 {t('providerDashboard.manageFAQs')}</button>
+        <button onClick={() => navigate('/inquiries')} className="btn btn-primary">📋 {t('inquiries.title')}</button>
         <button onClick={() => navigate('/requests')} className="btn btn-primary">📥 {t('providerDashboard.requests')}</button>
         <button 
           onClick={() => setShowFeedback(!showFeedback)} 

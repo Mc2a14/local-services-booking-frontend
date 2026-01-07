@@ -17,6 +17,7 @@ import Availability from './pages/Availability'
 import ManageFAQs from './pages/ManageFAQs'
 import ManageServices from './pages/ManageServices'
 import Requests from './pages/Requests'
+import CustomerInquiries from './pages/CustomerInquiries'
 import ForgotPassword from './pages/ForgotPassword'
 import ResetPassword from './pages/ResetPassword'
 import ChangeCredentials from './pages/ChangeCredentials'
@@ -82,6 +83,7 @@ function App() {
         <Route path="/manage-faqs" element={user && user.user_type === 'provider' ? <ManageFAQs user={user} /> : <Navigate to="/login" />} />
         <Route path="/manage-services" element={user && user.user_type === 'provider' ? <ManageServices user={user} /> : <Navigate to="/login" />} />
         <Route path="/requests" element={user && user.user_type === 'provider' ? <Requests user={user} /> : <Navigate to="/login" />} />
+        <Route path="/inquiries" element={user && user.user_type === 'provider' ? <CustomerInquiries user={user} /> : <Navigate to="/login" />} />
         <Route path="/change-credentials" element={user ? <ChangeCredentials user={user} setUser={setUser} /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
