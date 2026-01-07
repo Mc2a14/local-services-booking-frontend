@@ -394,6 +394,13 @@
     "step5Title": "Your Atencio Assistant is Ready!",
     "step5Desc": "Share your booking page with customers"
   },
+  "profile": {
+    "featureToggles": "Feature Settings",
+    "enableOnlineBooking": "Enable Online Booking",
+    "enableOnlineBookingDesc": "Allow customers to book your services directly online. When disabled, customers can still view services and contact you via chat.",
+    "customerInquiryCollection": "Customer Inquiry Collection",
+    "customerInquiryCollectionDesc": "Allow the AI assistant to collect customer contact information (name, email, phone) when customers request to be contacted."
+  },
   "inquiries": {
     "title": "Customer Inquiries",
     "requestContact": "Request Contact",

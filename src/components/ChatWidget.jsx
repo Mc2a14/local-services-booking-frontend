@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { useLanguage } from '../contexts/LanguageContext'
 
-function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = false, onSuggestBooking, services = [] }) {
+function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = false, onSuggestBooking, services = [], inquiryCollectionEnabled = true }) {
   const { t, language } = useLanguage()
   const [isOpen, setIsOpen] = useState(defaultOpen)
   const [messages, setMessages] = useState([
@@ -233,8 +233,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
       const updatedMessages = [...newMessages, { role: 'assistant', content: data.response }]
       setMessages(updatedMessages)
 
-      // Handle shouldCollectInfo flag - show inquiry form if AI suggests it
-      if (data.shouldCollectInfo) {
+      // Handle shouldCollectInfo flag - show inquiry form if AI suggests it (only if inquiry collection is enabled)
+      if (data.shouldCollectInfo && inquiryCollectionEnabled) {
         setTimeout(() => {
           const aiSuggestionMessage = {
             role: 'assistant',
@@ -670,8 +670,8 @@ function ChatWidget({ businessSlug, businessName, inline = false, defaultOpen = 
         position: 'relative',
         zIndex: 1
       }}>
-        {/* Request Contact Button */}
-        {!showInquiryForm && (
+        {/* Request Contact Button - Only show if inquiry collection is enabled */}
+        {!showInquiryForm && inquiryCollectionEnabled && (
           <button
             type="button"
             onClick={handleRequestContact}

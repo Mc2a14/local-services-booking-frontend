@@ -21,7 +21,9 @@ function ProviderProfile({ user, setUser }) {
     email_password: '',
     email_service_type: 'gmail',
     business_slug: '',
-    business_image_url: ''
+    business_image_url: '',
+    booking_enabled: true,
+    inquiry_collection_enabled: true
   })
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -63,7 +65,9 @@ function ProviderProfile({ user, setUser }) {
           email_password: '', // Don't show existing password for security
           email_service_type: data.provider.email_service_type || 'gmail',
           business_slug: data.provider.business_slug || '',
-          business_image_url: data.provider.business_image_url || ''
+          business_image_url: data.provider.business_image_url || '',
+          booking_enabled: data.provider.booking_enabled !== false, // Default to true
+          inquiry_collection_enabled: data.provider.inquiry_collection_enabled !== false // Default to true
         })
       }
     } catch (err) {
@@ -606,6 +610,155 @@ function ProviderProfile({ user, setUser }) {
                 Customers will still see their booking confirmation on the website.
               </div>
             )}
+          </div>
+
+          {/* Feature Toggles */}
+          <div style={{ 
+            marginTop: '30px', 
+            paddingTop: '30px', 
+            borderTop: '2px solid #E5E7EB' 
+          }}>
+            <h3 style={{ marginBottom: '20px', fontSize: '18px' }}>
+              {t('profile.featureToggles')}
+            </h3>
+            
+            <div className="form-group" style={{ marginBottom: '20px' }}>
+              <label style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                padding: '15px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: '8px',
+                border: '1px solid var(--border)'
+              }}>
+                <div>
+                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                    {t('profile.enableOnlineBooking')}
+                  </div>
+                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                    {t('profile.enableOnlineBookingDesc')}
+                  </div>
+                </div>
+                <label style={{ 
+                  position: 'relative', 
+                  display: 'inline-block', 
+                  width: '50px', 
+                  height: '26px',
+                  margin: 0
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={formData.booking_enabled}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        booking_enabled: e.target.checked
+                      })
+                    }}
+                    style={{ 
+                      opacity: 0, 
+                      width: 0, 
+                      height: 0 
+                    }}
+                  />
+                  <span style={{
+                    position: 'absolute',
+                    cursor: 'pointer',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: formData.booking_enabled ? '#2563EB' : '#ccc',
+                    transition: '.4s',
+                    borderRadius: '26px'
+                  }}>
+                    <span style={{
+                      position: 'absolute',
+                      content: '""',
+                      height: '20px',
+                      width: '20px',
+                      left: '3px',
+                      bottom: '3px',
+                      backgroundColor: 'white',
+                      transition: '.4s',
+                      borderRadius: '50%',
+                      transform: formData.booking_enabled ? 'translateX(24px)' : 'translateX(0)'
+                    }} />
+                  </span>
+                </label>
+              </label>
+            </div>
+
+            <div className="form-group" style={{ marginBottom: '20px' }}>
+              <label style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                cursor: 'pointer',
+                padding: '15px',
+                backgroundColor: 'var(--bg-secondary)',
+                borderRadius: '8px',
+                border: '1px solid var(--border)'
+              }}>
+                <div>
+                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                    {t('profile.customerInquiryCollection')}
+                  </div>
+                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                    {t('profile.customerInquiryCollectionDesc')}
+                  </div>
+                </div>
+                <label style={{ 
+                  position: 'relative', 
+                  display: 'inline-block', 
+                  width: '50px', 
+                  height: '26px',
+                  margin: 0
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={formData.inquiry_collection_enabled}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        inquiry_collection_enabled: e.target.checked
+                      })
+                    }}
+                    style={{ 
+                      opacity: 0, 
+                      width: 0, 
+                      height: 0 
+                    }}
+                  />
+                  <span style={{
+                    position: 'absolute',
+                    cursor: 'pointer',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    backgroundColor: formData.inquiry_collection_enabled ? '#2563EB' : '#ccc',
+                    transition: '.4s',
+                    borderRadius: '26px'
+                  }}>
+                    <span style={{
+                      position: 'absolute',
+                      content: '""',
+                      height: '20px',
+                      width: '20px',
+                      left: '3px',
+                      bottom: '3px',
+                      backgroundColor: 'white',
+                      transition: '.4s',
+                      borderRadius: '50%',
+                      transform: formData.inquiry_collection_enabled ? 'translateX(24px)' : 'translateX(0)'
+                    }} />
+                  </span>
+                </label>
+              </label>
+            </div>
           </div>
 
           <button 

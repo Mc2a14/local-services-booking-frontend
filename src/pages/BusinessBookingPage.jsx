@@ -14,6 +14,8 @@ function BusinessBookingPage() {
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [bookingEnabled, setBookingEnabled] = useState(true)
+  const [inquiryCollectionEnabled, setInquiryCollectionEnabled] = useState(true)
   const [isBusinessInfoExpanded, setIsBusinessInfoExpanded] = useState(false)
   const [isPhoneExpanded, setIsPhoneExpanded] = useState(false)
   const [isHoursExpanded, setIsHoursExpanded] = useState(false)
@@ -84,6 +86,8 @@ function BusinessBookingPage() {
       setBusiness(data.business)
       setServices(data.services || [])
       setTestimonials(data.testimonials || [])
+      setBookingEnabled(data.business.booking_enabled !== false)
+      setInquiryCollectionEnabled(data.business.inquiry_collection_enabled !== false)
     } catch (err) {
       setError(err.message || t('errors.businessNotFound'))
     } finally {
@@ -92,6 +96,9 @@ function BusinessBookingPage() {
   }
 
   const handleBookService = (serviceId) => {
+    if (!bookingEnabled) {
+      return // Don't navigate if booking is disabled
+    }
     navigate(`/book-service/${serviceId}`)
   }
 
@@ -284,6 +291,7 @@ function BusinessBookingPage() {
               defaultOpen={false}
               onSuggestBooking={handleBookingSuggestion}
               services={services}
+              inquiryCollectionEnabled={inquiryCollectionEnabled}
             />
           </div>
         </div>
@@ -313,18 +321,20 @@ function BusinessBookingPage() {
                   key={service.id} 
                   className="card" 
                   style={{ 
-                    cursor: 'pointer',
+                    cursor: bookingEnabled ? 'pointer' : 'default',
                     transition: 'all 0.2s'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'translateY(-2px)'
-                    e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+                    if (bookingEnabled) {
+                      e.currentTarget.style.transform = 'translateY(-2px)'
+                      e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'
+                    }
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = 'translateY(0)'
                     e.currentTarget.style.boxShadow = 'none'
                   }}
-                  onClick={() => handleBookService(service.id)}
+                  onClick={() => bookingEnabled && handleBookService(service.id)}
                 >
                   {service.image_url && (
                     <img
@@ -379,15 +389,17 @@ function BusinessBookingPage() {
                         </span>
                       )}
                     </div>
-                    <button 
-                      className="btn btn-primary"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleBookService(service.id)
-                      }}
-                    >
-                      {t('businessBooking.bookService')}
-                    </button>
+                    {bookingEnabled && (
+                      <button 
+                        className="btn btn-primary"
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleBookService(service.id)
+                        }}
+                      >
+                        {t('businessBooking.bookService')}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}

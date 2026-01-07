@@ -394,6 +394,13 @@
     "step5Title": "¡Tu Asistente Atencio está Listo!",
     "step5Desc": "Comparte tu página de reservas con los clientes"
   },
+  "profile": {
+    "featureToggles": "Configuración de Características",
+    "enableOnlineBooking": "Habilitar Reservas en Línea",
+    "enableOnlineBookingDesc": "Permite que los clientes reserven tus servicios directamente en línea. Cuando está deshabilitado, los clientes aún pueden ver los servicios y contactarte por chat.",
+    "customerInquiryCollection": "Recopilación de Consultas de Clientes",
+    "customerInquiryCollectionDesc": "Permite que el asistente IA recopile información de contacto del cliente (nombre, email, teléfono) cuando los clientes soliciten ser contactados."
+  },
   "inquiries": {
     "title": "Consultas de Clientes",
     "requestContact": "Solicitar Contacto",
