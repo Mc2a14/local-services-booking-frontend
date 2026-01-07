@@ -91,12 +91,19 @@ function BusinessBookingPage() {
       console.log('Booking enabled from API:', data.business.booking_enabled)
       console.log('Inquiry collection enabled from API:', data.business.inquiry_collection_enabled)
       
-      // Set booking enabled - explicitly handle false vs null/undefined
-      const bookingEnabledValue = data.business.booking_enabled === false ? false : (data.business.booking_enabled === true ? true : true)
-      const inquiryEnabledValue = data.business.inquiry_collection_enabled === false ? false : (data.business.inquiry_collection_enabled === true ? true : true)
+      // Set booking enabled - handle false explicitly
+      // booking_enabled can be: true, false, null, or undefined
+      // We want: false = false, everything else = true (default enabled)
+      const bookingEnabledValue = data.business.booking_enabled === false ? false : true
+      const inquiryEnabledValue = data.business.inquiry_collection_enabled === false ? false : true
       
-      console.log('Setting bookingEnabled to:', bookingEnabledValue)
-      console.log('Setting inquiryCollectionEnabled to:', inquiryEnabledValue)
+      // Debug logging
+      console.log('[BookingPage] API Response:', {
+        booking_enabled: data.business.booking_enabled,
+        inquiry_collection_enabled: data.business.inquiry_collection_enabled,
+        bookingEnabledValue,
+        inquiryEnabledValue
+      })
       
       setBookingEnabled(bookingEnabledValue)
       setInquiryCollectionEnabled(inquiryEnabledValue)
@@ -233,7 +240,6 @@ function BusinessBookingPage() {
           )}
 
           {/* Primary CTA Button - Centered (only show if booking is enabled) */}
-          {console.log('Rendering button check - bookingEnabled:', bookingEnabled, 'should show:', bookingEnabled === true)}
           {bookingEnabled === true && (
             <div style={{ 
               display: 'flex', 
