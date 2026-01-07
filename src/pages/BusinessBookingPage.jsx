@@ -14,8 +14,8 @@ function BusinessBookingPage() {
   const [testimonials, setTestimonials] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [bookingEnabled, setBookingEnabled] = useState(true)
-  const [inquiryCollectionEnabled, setInquiryCollectionEnabled] = useState(true)
+  const [bookingEnabled, setBookingEnabled] = useState(null) // null = not loaded yet, true/false = loaded
+  const [inquiryCollectionEnabled, setInquiryCollectionEnabled] = useState(null)
   const [isBusinessInfoExpanded, setIsBusinessInfoExpanded] = useState(false)
   const [isPhoneExpanded, setIsPhoneExpanded] = useState(false)
   const [isHoursExpanded, setIsHoursExpanded] = useState(false)
@@ -221,7 +221,7 @@ function BusinessBookingPage() {
           )}
 
           {/* Primary CTA Button - Centered (only show if booking is enabled) */}
-          {bookingEnabled && (
+          {bookingEnabled === true && (
             <div style={{ 
               display: 'flex', 
               justifyContent: 'center', 
@@ -391,7 +391,7 @@ function BusinessBookingPage() {
                         </span>
                       )}
                     </div>
-                    {bookingEnabled && (
+                    {bookingEnabled === true && (
                       <button 
                         className="btn btn-primary"
                         onClick={(e) => {
