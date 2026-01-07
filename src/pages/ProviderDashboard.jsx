@@ -301,7 +301,6 @@ function ProviderDashboard({ user }) {
       )}
 
       <nav style={{ display: 'flex', justifyContent: 'center', gap: '15px', marginBottom: '30px', paddingBottom: '20px', borderBottom: '1px solid var(--border)', flexWrap: 'wrap', alignItems: 'center' }}>
-        <button onClick={() => navigate('/dashboard')} className="btn btn-primary">{t('common.dashboard')}</button>
         <button onClick={() => navigate('/provider-profile')} className="btn btn-secondary">{t('providerDashboard.myProfile')}</button>
         <button onClick={() => navigate('/manage-services')} className="btn btn-primary">{t('providerDashboard.myServices')}</button>
         <button onClick={() => navigate('/availability')} className="btn btn-primary">{t('providerDashboard.setAvailability')}</button>
