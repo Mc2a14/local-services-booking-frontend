@@ -670,12 +670,10 @@ function ProviderProfile({ user, setUser }) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: formData.booking_enabled ? '#34C759' : '#E5E5E7',
+                    backgroundColor: '#E5E5E7',
                     transition: 'all 0.3s ease',
                     borderRadius: '31px',
-                    boxShadow: formData.booking_enabled 
-                      ? 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)' 
-                      : 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)'
+                    border: '1px solid rgba(0, 0, 0, 0.1)'
                   }}>
                     <span style={{
                       position: 'absolute',
@@ -684,7 +682,7 @@ function ProviderProfile({ user, setUser }) {
                       width: '27px',
                       left: '2px',
                       top: '2px',
-                      backgroundColor: 'white',
+                      backgroundColor: formData.booking_enabled ? '#34C759' : 'white',
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       borderRadius: '50%',
                       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
@@ -743,12 +741,10 @@ function ProviderProfile({ user, setUser }) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : '#E5E5E7',
+                    backgroundColor: '#E5E5E7',
                     transition: 'all 0.3s ease',
                     borderRadius: '31px',
-                    boxShadow: formData.inquiry_collection_enabled 
-                      ? 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)' 
-                      : 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)'
+                    border: '1px solid rgba(0, 0, 0, 0.1)'
                   }}>
                     <span style={{
                       position: 'absolute',
@@ -757,7 +753,7 @@ function ProviderProfile({ user, setUser }) {
                       width: '27px',
                       left: '2px',
                       top: '2px',
-                      backgroundColor: 'white',
+                      backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : 'white',
                       transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       borderRadius: '50%',
                       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
