@@ -644,8 +644,8 @@ function ProviderProfile({ user, setUser }) {
                 <label style={{ 
                   position: 'relative', 
                   display: 'inline-block', 
-                  width: '50px', 
-                  height: '26px',
+                  width: '51px', 
+                  height: '31px',
                   margin: 0
                 }}>
                   <input
@@ -670,21 +670,25 @@ function ProviderProfile({ user, setUser }) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: formData.booking_enabled ? '#2563EB' : '#ccc',
-                    transition: '.4s',
-                    borderRadius: '26px'
+                    backgroundColor: formData.booking_enabled ? '#34C759' : '#E5E5E7',
+                    transition: 'all 0.3s ease',
+                    borderRadius: '31px',
+                    boxShadow: formData.booking_enabled 
+                      ? 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)' 
+                      : 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)'
                   }}>
                     <span style={{
                       position: 'absolute',
                       content: '""',
-                      height: '20px',
-                      width: '20px',
-                      left: '3px',
-                      bottom: '3px',
+                      height: '27px',
+                      width: '27px',
+                      left: '2px',
+                      top: '2px',
                       backgroundColor: 'white',
-                      transition: '.4s',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       borderRadius: '50%',
-                      transform: formData.booking_enabled ? 'translateX(24px)' : 'translateX(0)'
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
+                      transform: formData.booking_enabled ? 'translateX(20px)' : 'translateX(0)'
                     }} />
                   </span>
                 </label>
@@ -713,8 +717,8 @@ function ProviderProfile({ user, setUser }) {
                 <label style={{ 
                   position: 'relative', 
                   display: 'inline-block', 
-                  width: '50px', 
-                  height: '26px',
+                  width: '51px', 
+                  height: '31px',
                   margin: 0
                 }}>
                   <input
@@ -739,21 +743,25 @@ function ProviderProfile({ user, setUser }) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: formData.inquiry_collection_enabled ? '#2563EB' : '#ccc',
-                    transition: '.4s',
-                    borderRadius: '26px'
+                    backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : '#E5E5E7',
+                    transition: 'all 0.3s ease',
+                    borderRadius: '31px',
+                    boxShadow: formData.inquiry_collection_enabled 
+                      ? 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)' 
+                      : 'inset 0 0 0 0.5px rgba(0, 0, 0, 0.1)'
                   }}>
                     <span style={{
                       position: 'absolute',
                       content: '""',
-                      height: '20px',
-                      width: '20px',
-                      left: '3px',
-                      bottom: '3px',
+                      height: '27px',
+                      width: '27px',
+                      left: '2px',
+                      top: '2px',
                       backgroundColor: 'white',
-                      transition: '.4s',
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       borderRadius: '50%',
-                      transform: formData.inquiry_collection_enabled ? 'translateX(24px)' : 'translateX(0)'
+                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
+                      transform: formData.inquiry_collection_enabled ? 'translateX(20px)' : 'translateX(0)'
                     }} />
                   </span>
                 </label>
