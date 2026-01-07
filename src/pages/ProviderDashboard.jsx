@@ -502,14 +502,4 @@ function ProviderDashboard({ user }) {
                     {t('feedback.submitted')}: {new Date(item.created_at).toLocaleString(language === 'es' ? 'es-ES' : 'en-US')}
                   </p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  )
-}
-
-export default ProviderDashboard
-
+      

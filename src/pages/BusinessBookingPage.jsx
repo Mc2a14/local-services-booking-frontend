@@ -220,32 +220,34 @@ function BusinessBookingPage() {
             </p>
           )}
 
-          {/* Primary CTA Button - Centered */}
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'center', 
-            marginBottom: '16px' 
-          }}>
-            <button
-              onClick={() => {
-                // Scroll to services section
-                const servicesSection = document.querySelector('.services-section')
-                if (servicesSection) {
-                  servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                }
-              }}
-              className="btn btn-primary"
-              style={{
-                fontSize: '18px',
-                padding: '16px 40px',
-                borderRadius: '8px',
-                fontWeight: '600',
-                boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
-              }}
-            >
-              {t('businessBooking.bookService')}
-            </button>
-          </div>
+          {/* Primary CTA Button - Centered (only show if booking is enabled) */}
+          {bookingEnabled && (
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'center', 
+              marginBottom: '16px' 
+            }}>
+              <button
+                onClick={() => {
+                  // Scroll to services section
+                  const servicesSection = document.querySelector('.services-section')
+                  if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+                className="btn btn-primary"
+                style={{
+                  fontSize: '18px',
+                  padding: '16px 40px',
+                  borderRadius: '8px',
+                  fontWeight: '600',
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)'
+                }}
+              >
+                {t('businessBooking.bookService')}
+              </button>
+            </div>
+          )}
 
           {/* Theme Toggle and Language Toggle - Below Book Service Button */}
           <div style={{ 
