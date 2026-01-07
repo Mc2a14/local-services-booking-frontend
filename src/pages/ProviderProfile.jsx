@@ -618,25 +618,26 @@ function ProviderProfile({ user, setUser }) {
             paddingTop: '30px', 
             borderTop: '2px solid #E5E7EB' 
           }}>
-            <h3 style={{ marginBottom: '20px', fontSize: '18px' }}>
+            <h3 style={{ marginBottom: '24px', fontSize: '18px', fontWeight: '600' }}>
               {t('profile.featureToggles')}
             </h3>
             
-            <div className="form-group" style={{ marginBottom: '20px' }}>
+            <div className="form-group" style={{ marginBottom: '24px' }}>
               <div style={{ 
                 display: 'flex', 
-                alignItems: 'center', 
+                alignItems: 'flex-start', 
                 justifyContent: 'space-between',
-                padding: '15px',
+                padding: '20px',
                 backgroundColor: 'var(--bg-secondary)',
-                borderRadius: '8px',
-                border: '1px solid var(--border)'
+                borderRadius: '12px',
+                border: '1px solid var(--border)',
+                gap: '20px'
               }}>
-                <div>
-                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                <div style={{ flex: 1, minWidth: 0, paddingRight: '10px' }}>
+                  <div style={{ fontWeight: '600', marginBottom: '8px', fontSize: '16px' }}>
                     {t('profile.enableOnlineBooking')}
                   </div>
-                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                     {t('profile.enableOnlineBookingDesc')}
                   </div>
                 </div>
@@ -646,7 +647,8 @@ function ProviderProfile({ user, setUser }) {
                   width: '51px', 
                   height: '31px',
                   margin: 0,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  flexShrink: 0
                 }}>
                   <input
                     type="checkbox"
@@ -685,7 +687,7 @@ function ProviderProfile({ user, setUser }) {
                     boxShadow: formData.booking_enabled 
                       ? '0 2px 8px rgba(52, 199, 89, 0.4)' 
                       : '0 2px 8px rgba(0, 0, 0, 0.2)',
-                    transform: formData.booking_enabled ? 'translateX(20px)' : 'translateX(0)',
+                    transform: formData.booking_enabled ? 'translateX(0)' : 'translateX(20px)',
                     zIndex: 10
                   }} />
                 </label>
@@ -695,18 +697,19 @@ function ProviderProfile({ user, setUser }) {
             <div className="form-group" style={{ marginBottom: '20px' }}>
               <div style={{ 
                 display: 'flex', 
-                alignItems: 'center', 
+                alignItems: 'flex-start', 
                 justifyContent: 'space-between',
-                padding: '15px',
+                padding: '20px',
                 backgroundColor: 'var(--bg-secondary)',
-                borderRadius: '8px',
-                border: '1px solid var(--border)'
+                borderRadius: '12px',
+                border: '1px solid var(--border)',
+                gap: '20px'
               }}>
-                <div>
-                  <div style={{ fontWeight: '600', marginBottom: '4px' }}>
+                <div style={{ flex: 1, minWidth: 0, paddingRight: '10px' }}>
+                  <div style={{ fontWeight: '600', marginBottom: '8px', fontSize: '16px' }}>
                     {t('profile.customerInquiryCollection')}
                   </div>
-                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+                  <div style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: '1.5' }}>
                     {t('profile.customerInquiryCollectionDesc')}
                   </div>
                 </div>
@@ -716,7 +719,8 @@ function ProviderProfile({ user, setUser }) {
                   width: '51px', 
                   height: '31px',
                   margin: 0,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  flexShrink: 0
                 }}>
                   <input
                     type="checkbox"
@@ -755,7 +759,7 @@ function ProviderProfile({ user, setUser }) {
                     boxShadow: formData.inquiry_collection_enabled 
                       ? '0 2px 8px rgba(52, 199, 89, 0.4)' 
                       : '0 2px 8px rgba(0, 0, 0, 0.2)',
-                    transform: formData.inquiry_collection_enabled ? 'translateX(20px)' : 'translateX(0)',
+                    transform: formData.inquiry_collection_enabled ? 'translateX(0)' : 'translateX(20px)',
                     zIndex: 10
                   }} />
                 </label>
