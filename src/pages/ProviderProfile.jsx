@@ -623,11 +623,10 @@ function ProviderProfile({ user, setUser }) {
             </h3>
             
             <div className="form-group" style={{ marginBottom: '20px' }}>
-              <label style={{ 
+              <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'space-between',
-                cursor: 'pointer',
                 padding: '15px',
                 backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '8px',
@@ -670,9 +669,9 @@ function ProviderProfile({ user, setUser }) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: '#E5E5E7',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     borderRadius: '31px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)'
+                    border: '1px solid rgba(255, 255, 255, 0.2)'
                   }} />
                   <span style={{
                     position: 'absolute',
@@ -680,22 +679,24 @@ function ProviderProfile({ user, setUser }) {
                     width: '27px',
                     left: '2px',
                     top: '2px',
-                    backgroundColor: formData.booking_enabled ? '#34C759' : 'white',
+                    backgroundColor: formData.booking_enabled ? '#34C759' : '#ffffff',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     borderRadius: '50%',
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
-                    transform: formData.booking_enabled ? 'translateX(20px)' : 'translateX(0)'
+                    boxShadow: formData.booking_enabled 
+                      ? '0 2px 8px rgba(52, 199, 89, 0.4)' 
+                      : '0 2px 8px rgba(0, 0, 0, 0.2)',
+                    transform: formData.booking_enabled ? 'translateX(20px)' : 'translateX(0)',
+                    zIndex: 10
                   }} />
                 </label>
-              </label>
+              </div>
             </div>
 
             <div className="form-group" style={{ marginBottom: '20px' }}>
-              <label style={{ 
+              <div style={{ 
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'space-between',
-                cursor: 'pointer',
                 padding: '15px',
                 backgroundColor: 'var(--bg-secondary)',
                 borderRadius: '8px',
@@ -738,9 +739,9 @@ function ProviderProfile({ user, setUser }) {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    backgroundColor: '#E5E5E7',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
                     borderRadius: '31px',
-                    border: '1px solid rgba(0, 0, 0, 0.1)'
+                    border: '1px solid rgba(255, 255, 255, 0.2)'
                   }} />
                   <span style={{
                     position: 'absolute',
@@ -748,14 +749,17 @@ function ProviderProfile({ user, setUser }) {
                     width: '27px',
                     left: '2px',
                     top: '2px',
-                    backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : 'white',
+                    backgroundColor: formData.inquiry_collection_enabled ? '#34C759' : '#ffffff',
                     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                     borderRadius: '50%',
-                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2), 0 1px 2px rgba(0, 0, 0, 0.1)',
-                    transform: formData.inquiry_collection_enabled ? 'translateX(20px)' : 'translateX(0)'
+                    boxShadow: formData.inquiry_collection_enabled 
+                      ? '0 2px 8px rgba(52, 199, 89, 0.4)' 
+                      : '0 2px 8px rgba(0, 0, 0, 0.2)',
+                    transform: formData.inquiry_collection_enabled ? 'translateX(20px)' : 'translateX(0)',
+                    zIndex: 10
                   }} />
                 </label>
-              </label>
+              </div>
             </div>
           </div>
 
