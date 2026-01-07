@@ -86,8 +86,20 @@ function BusinessBookingPage() {
       setBusiness(data.business)
       setServices(data.services || [])
       setTestimonials(data.testimonials || [])
-      setBookingEnabled(data.business.booking_enabled !== false)
-      setInquiryCollectionEnabled(data.business.inquiry_collection_enabled !== false)
+      
+      // Log for debugging
+      console.log('Booking enabled from API:', data.business.booking_enabled)
+      console.log('Inquiry collection enabled from API:', data.business.inquiry_collection_enabled)
+      
+      // Set booking enabled - explicitly handle false vs null/undefined
+      const bookingEnabledValue = data.business.booking_enabled === false ? false : (data.business.booking_enabled === true ? true : true)
+      const inquiryEnabledValue = data.business.inquiry_collection_enabled === false ? false : (data.business.inquiry_collection_enabled === true ? true : true)
+      
+      console.log('Setting bookingEnabled to:', bookingEnabledValue)
+      console.log('Setting inquiryCollectionEnabled to:', inquiryEnabledValue)
+      
+      setBookingEnabled(bookingEnabledValue)
+      setInquiryCollectionEnabled(inquiryEnabledValue)
     } catch (err) {
       setError(err.message || t('errors.businessNotFound'))
     } finally {
@@ -221,6 +233,7 @@ function BusinessBookingPage() {
           )}
 
           {/* Primary CTA Button - Centered (only show if booking is enabled) */}
+          {console.log('Rendering button check - bookingEnabled:', bookingEnabled, 'should show:', bookingEnabled === true)}
           {bookingEnabled === true && (
             <div style={{ 
               display: 'flex', 
