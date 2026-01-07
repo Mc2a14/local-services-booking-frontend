@@ -801,3 +801,170 @@ function ProviderProfile({ user, setUser }) {
                 type="button"
                 onClick={() => {
                   setCredentialsTab('password')
+                  setCredentialsError('')
+                  setCredentialsSuccess('')
+                }}
+                style={{
+                  padding: '10px 20px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: credentialsTab === 'password' ? '2px solid #2563EB' : '2px solid transparent',
+                  color: credentialsTab === 'password' ? '#2563EB' : '#475569',
+                  cursor: 'pointer',
+                  fontWeight: credentialsTab === 'password' ? 'bold' : 'normal',
+                  marginBottom: '-2px'
+                }}
+              >
+                Change Password
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setCredentialsTab('email')
+                  setCredentialsError('')
+                  setCredentialsSuccess('')
+                }}
+                style={{
+                  padding: '10px 20px',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: credentialsTab === 'email' ? '2px solid #2563EB' : '2px solid transparent',
+                  color: credentialsTab === 'email' ? '#2563EB' : '#475569',
+                  cursor: 'pointer',
+                  fontWeight: credentialsTab === 'email' ? 'bold' : 'normal',
+                  marginBottom: '-2px'
+                }}
+              >
+                Change Email
+              </button>
+            </div>
+
+            {credentialsTab === 'password' ? (
+              <form onSubmit={handlePasswordSubmit}>
+                <div className="form-group">
+                  <label>Current Password</label>
+                  <PasswordInput
+                    name="currentPassword"
+                    value={passwordData.currentPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    placeholder="Enter your current password"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>New Password</label>
+                  <PasswordInput
+                    name="newPassword"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    minLength={6}
+                    placeholder="At least 6 characters"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Confirm New Password</label>
+                  <PasswordInput
+                    name="confirmPassword"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    required
+                    minLength={6}
+                    placeholder="Re-enter your new password"
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  disabled={credentialsLoading} 
+                  style={{ width: '100%' }}
+                >
+                  {credentialsLoading ? 'Changing...' : 'Change Password'}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleEmailSubmit}>
+                <div className="form-group">
+                  <label>Current Email</label>
+                  <input
+                    type="email"
+                    value={user?.email || ''}
+                    disabled
+                    style={{ 
+                      backgroundColor: '#f3f4f6', 
+                      cursor: 'not-allowed',
+                      color: '#6b7280'
+                    }}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>New Email</label>
+                  <input
+                    type="email"
+                    name="newEmail"
+                    value={emailData.newEmail}
+                    onChange={handleEmailChange}
+                    required
+                    placeholder="Enter your new email address"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Current Password</label>
+                  <PasswordInput
+                    name="password"
+                    value={emailData.password}
+                    onChange={handleEmailChange}
+                    required
+                    placeholder="Enter your current password to confirm"
+                  />
+                  <small style={{ color: '#475569', marginTop: '5px', display: 'block' }}>
+                    You must enter your current password to change your email address.
+                  </small>
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="btn btn-primary" 
+                  disabled={credentialsLoading} 
+                  style={{ width: '100%' }}
+                >
+                  {credentialsLoading ? 'Changing...' : 'Change Email'}
+                </button>
+              </form>
+            )}
+          </>
+        )}
+      </div>
+
+      {/* Image Cropper Modal */}
+      {showCropper && imageToCrop && (
+        <ImageCropper
+          imageSrc={imageToCrop}
+          onCropComplete={(croppedImage) => {
+            setFormData({
+              ...formData,
+              business_image_url: croppedImage
+            })
+            setShowCropper(false)
+            setImageToCrop(null)
+          }}
+          onCancel={() => {
+            setShowCropper(false)
+            setImageToCrop(null)
+            const fileInput = document.querySelector('input[type="file"]')
+            if (fileInput) fileInput.value = ''
+          }}
+        />
+      )}
+    </div>
+  )
+}
+
+export default ProviderProfile
+
+
