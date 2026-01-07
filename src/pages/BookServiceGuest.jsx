@@ -230,7 +230,7 @@ function BookServiceGuest() {
     }
 
     return (
-      <div className="container" style={{ maxWidth: '700px' }}>
+      <div className="container" style={{ maxWidth: '700px', paddingBottom: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
           <LanguageToggle />
         </div>
@@ -361,7 +361,7 @@ function BookServiceGuest() {
   }
 
   return (
-    <div className="container" style={{ maxWidth: '600px' }}>
+    <div className="container" style={{ maxWidth: '600px', paddingBottom: '20px' }}>
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '10px' }}>
         <LanguageToggle />
       </div>

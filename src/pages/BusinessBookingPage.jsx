@@ -283,7 +283,7 @@ function BusinessBookingPage() {
       </div>
 
       {/* Main Content Container */}
-      <div className="container" style={{ maxWidth: '900px' }}>
+      <div className="container" style={{ maxWidth: '900px', paddingBottom: '0' }}>
 
         {/* AI Chat Section */}
         <div style={{ marginTop: '30px', marginBottom: '30px' }}>
@@ -685,8 +685,9 @@ function BusinessBookingPage() {
 
         {/* Atencio Platform Branding - Subtle Footer */}
         <div style={{
-          marginTop: '40px',
-          paddingTop: '24px',
+          marginTop: '32px',
+          paddingTop: '20px',
+          paddingBottom: '20px',
           borderTop: '1px solid var(--border)',
           textAlign: 'center'
         }}>
