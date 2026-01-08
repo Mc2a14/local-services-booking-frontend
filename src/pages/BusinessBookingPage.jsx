@@ -689,7 +689,8 @@ function BusinessBookingPage() {
           paddingTop: '20px',
           paddingBottom: '20px',
           borderTop: '1px solid var(--border)',
-          textAlign: 'center'
+          textAlign: 'center',
+          marginBottom: 0
         }}>
           <p style={{
             fontSize: '11px',
